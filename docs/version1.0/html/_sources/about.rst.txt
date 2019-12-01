@@ -11,7 +11,7 @@ Not all Pylinac's capabilities are implemented. Trajectory logs cannot be analyz
 
 QAserver contains little original code, just enough to connect Pylinac and Orthanc. Some dependencies are included in the distribution of QAserver, other dependencies must be installed separately. I tried to list included dependencies along with corresponding licenses. You can read about it in the bottom table.
 
-You can contribute to this project with suggestions or bug reports: 
+You can contribute to this project with suggestions or bug reports: brjdenis2000@gmail.com.
 
 
 .. warning::

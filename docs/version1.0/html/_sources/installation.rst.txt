@@ -75,7 +75,7 @@ After you install Anaconda, you can either use the "base" environment, or make a
 
 Download QAserver
 -----------------
-Download QAserver archive from:
+Download QAserver archive from: `Link <https://github.com/brjdenis/qaserver>`_
 
 
 Unzip it into a special directory. Give it the name "qaserver". After that open Command Prompt or Anaconda Prompt with Administrator privileges, and go to that folder and try to start the server with 
