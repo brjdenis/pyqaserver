@@ -26,6 +26,6 @@ Installation instructions and the user guide are available at:
 
 # Bugs and requests
 
-You can contribute to this project with suggestions or bug reports to 
+You can contribute to this project with suggestions or bug reports to: brjdenis2000@gmail.com.
 
 I don't really understand how github works, so the best way to reach me is to send me an email. I will probably respond, I have nothing better to do anyway.
