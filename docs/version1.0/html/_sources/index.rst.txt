@@ -1,0 +1,26 @@
+.. QAserver documentation master file, created by
+   sphinx-quickstart on Tue Apr 30 21:40:06 2019.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+QAserver user guide
+=================================================
+
+.. toctree::
+	:maxdepth: 1
+
+	about.rst
+	installation.rst
+	configuration.rst
+	winstonlutz.rst
+	starshot.rst
+	picketfence.rst
+	planarimaging.rst
+	catphan.rst
+	dynalog.rst
+	flatsym.rst
+	vmat.rst
+	fieldsize.rst
+	imagereview.rst
+	changelog.rst
+	license.rst

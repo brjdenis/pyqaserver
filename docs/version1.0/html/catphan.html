@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>CT module &#8212; QAserver 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dynalog module" href="dynalog.html" />
+    <link rel="prev" title="Planar imaging module" href="planarimaging.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="ct-module">
+<h1>CT module<a class="headerlink" href="#ct-module" title="Permalink to this headline">¶</a></h1>
+<p>Al four catphan models that Pylinac can analyze are implemented:</p>
+<ul class="simple">
+<li><p>Capthan 503</p></li>
+<li><p>Catphan 504</p></li>
+<li><p>Catphan 600</p></li>
+<li><p>Catphan 604</p></li>
+</ul>
+<p>When scanning the phantom follow Pylinac’s guidelines. Scan the whole phantom by placing the center of the phantom in the center of the image. Make sure it is well positioned, that is, aligned to the room lasers or other systems.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The analysis of one single CT/CBCT scan with an axial length of 26 cm (approx. 130 slices with 2 mm slice thickness), and a resolution  of 512x512 will take about 30 seconds to complete on a regular computer.</p>
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Select phantom</strong></dt><dd><p>Select the phantom that you wish to analyze. Pylinac cannot determine the phantom model from the image, you must tell Pylinac which model you are using.</p>
+</dd>
+<dt><strong>Select imager</strong></dt><dd><p>If you are using reference images, you can select the appropriate reference image for your imager. See the section “configuration” for more details about how to set the reference images.</p>
+</dd>
+<dt><strong>Analyze reference?</strong></dt><dd><p>Chose whether you wish to analyze the reference image. If you chose to do so, the analysis will take twice as long.</p>
+</dd>
+<dt><strong>Show HU Delta?</strong></dt><dd><p>If you check this box, the HU plot will show differences, and not absolute values of HU.</p>
+</dd>
+<dt><strong>Tolerances</strong></dt><dd><p>Tolerances are defined in the configuration file.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="interpreting-results">
+<h2>Interpreting results<a class="headerlink" href="#interpreting-results" title="Permalink to this headline">¶</a></h2>
+<p>Each phantom model contains specific regions for studying different aspects of image quality. Models 504, 600 and 604 contain modules CTP404, CTP486, CTP528 and CTP515. Model 503 contains modules CTP404, CTP486 and CTP 528.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The results of the analysis are gathered in tabs. Each module has its own tab. Next to the name of the module a <strong>pass</strong>/<strong>fail</strong> statement is given. A module gives general passing result if each submodule has passed the test. For example, the CTP404 module gives a passing result if the HU, LCV, slice thickness etc. have passed.</p>
+</div>
+<div class="section" id="ctp528">
+<h3>CTP528<a class="headerlink" href="#ctp528" title="Permalink to this headline">¶</a></h3>
+<p>This module is used to test the high-frequency contrast of the image. Eight line-pair regions are analyzed.</p>
+<img alt="_images/catphan1.png" class="align-center" src="_images/catphan1.png" />
+<p>The relative transfer modulation function is calculated similarly to that of the Planar imaging module. Within the circular band containing the line-pair region, profiles are drawn and averaged for each region. From the profiles min and max pixel values are calculated. For region  2, say, there are three peaks and two valleys, and hence three max values will be averaged into one, and two min values will be averaged in to one. At the end, the rMTF for this region will be:</p>
+<div class="math">
+<p><img src="_images/math/e1c7f31203e02afdb442a882c446b1f33bd277ea.png" alt="\textrm{rMTF}\,(H_i) = \left.\frac{\mathrm{max}\,(H_i)-\mathrm{min}\,(H_i)}{\mathrm{max}\,(H_i)+\mathrm{min}\,(H_i)} \middle/ \frac{\mathrm{max}\,(H_0)-\mathrm{min}\,(H_0)}{\mathrm{max}\,(H_0)+\mathrm{min}\,(H_0)}\right."/></p>
+</div><p>Where min and max are averaged min and max values.</p>
+<p>If the difference between the reference and current rMTF (50)% is not greater than <strong>MTF tolerance</strong>, the test will pass.</p>
+</div>
+<div class="section" id="ctp404">
+<h3>CTP404<a class="headerlink" href="#ctp404" title="Permalink to this headline">¶</a></h3>
+<p>This module is used to test the low-frequency contrast, HU units and geometry of the image.</p>
+<img alt="_images/catphan2.png" class="align-center" src="_images/catphan2.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Hover over the phantom image to reveal detected ROIs.</p>
+</div>
+<p>If a particular material has passed the HU test, it will be colored green, otherwise red. Blue circles are background ROIs.</p>
+<p>A ROI has passed the test if the difference between nominal and current HU is less than <strong>HU and uniformity tol.</strong>.</p>
+<img alt="_images/catphan3.png" class="align-center" src="_images/catphan3.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>CBCT scans normally give a failed status for the HU units.</p>
+</div>
+<p>Low contrast visibility is calculated in two ways. The LCV is calculated according to Pylinac. Here are the formulas:</p>
+<div class="math">
+<p><img src="_images/math/2dc71e10f6e5cee12d7a993e624a057fbd029265.png" alt="\mathrm{LCV}= 2\times\left|\frac{\textrm{median HU}\,(\textrm{LDPE})-\textrm{median HU}\,(\textrm{Poly})}{\textrm{std HU}\,(\textrm{LDPE})+\textrm{std HU}\,(\textrm{Poly})}\right|"/></p>
+</div><div class="math">
+<p><img src="_images/math/3cc7b9499d91454a36d73c0019bb92059fb15b8c.png" alt="\mathrm{LCV2}= \left|\frac{\left[\textrm{nominal HU}\,(\textrm{Poly})-\textrm{nominal HU}\,(\textrm{LDPE})\right]/10}{2\times\left[\textrm{mean HU}\,(\mathrm{Poly})-\textrm{mean HU}\,(\mathrm{LDPE})\right]/\left[\textrm{std HU}\,(\mathrm{Poly})+\textrm{std HU}\,(\mathrm{LDPE})\right]}\right|"/></p>
+</div><p>The LCV will have a passing status if it is withing the <strong>LCV tolerance</strong>. In the configuration file you can chose whether this tolerance will be applied to LCV or LCV2.</p>
+<p>Slice thickness will pass the test if the difference between the nominal value and the measured value is within <strong>Slice thickness tol.</strong> If your image is very noisy or of low quality in general, it may happen that Pylinac will not calculate slice thickness properly.</p>
+<p>Geometry scaling will pass the tolerance if all the lines (marked as Lines 1, 2, 3, 4) have a length of 50 mm plus-minus <strong>Scaling tolerance</strong>.</p>
+<p>Phantom roll measures the axial rotation of the image. It has no tolerance, but you can use it to see if the image is axially well orientated. To do that, you must set the phantom accurately to well adjusted room lasers. Or use the spirit level. If you detect a phantom roll of, say, 1 degree, this means that your image is rotated. Which is bad.</p>
+</div>
+</div>
+<div class="section" id="ctp486">
+<h2>CTP486<a class="headerlink" href="#ctp486" title="Permalink to this headline">¶</a></h2>
+<p>This module is used to test the uniformity of the image (HU).</p>
+<img alt="_images/catphan4.png" class="align-center" src="_images/catphan4.png" />
+<p>The test will pass if the sampled HUs are close enough to the nominal values, the tolerance being <strong>HU and uniformity tol.</strong>.</p>
+<p>The uniformity index is calculated in two ways:</p>
+<div class="math">
+<p><img src="_images/math/692c2de1f5d0923a72715d59b7d0592df168df5f.png" alt="\textrm{uniformity index} = 100\times\,\max\limits_{i=0,1,2,3}\left\{\frac{\textrm{median HU}\,(\mathrm{ROI}_i) - \textrm{median HU}\,(\mathrm{center})}{\textrm{median HU}\,(\mathrm{center})+1000}\right\}"/></p>
+</div><div class="math">
+<p><img src="_images/math/42af8af97f5923704678fe065d13e070381e4b3c.png" alt="\textrm{uniformity index 2} = 100\times\frac{\textrm{max}\,(\textrm{median PV}(\mathrm{ROIs})) - \textrm{min}\,(\textrm{median PV}(\mathrm{ROIs}))}{\textrm{max}\,(\textrm{median PV}(\mathrm{ROIs}))}"/></p>
+</div><p>In the first formula, the maximum value is sought within a list of absolute values, however, the sign is preserved in the final presentation. In the second formula, median pixel values are evaluated not HUs. Both formulas give practically the same result.</p>
+<p>The uniformity index will pass, if the HUs are within the <strong>HU and uniformity</strong> tolerance. The uniformity index 2 will pass, if it is within the <strong>Uniformity index 2</strong> tolerance (in percent).</p>
+<p>The uniformity profiles may be uniform, but the test may still fail if the HUs are not close enough to the expected nominal values.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For CBCT scans the uniformity index may fail for large FOV or in combination with some types of filters. This is not a reason to be alarmed, it is normal. Neither HUs or uniformity profiles are of great relevance in CBCT scans.</p>
+</div>
+<p>The image below gives an example of a perfectly normal CBCT scan with passing Uniformity index, but a failed CTP486 test.</p>
+<img alt="_images/catphan5.png" class="align-center" src="_images/catphan5.png" />
+</div>
+<div class="section" id="ctp515">
+<h2>CTP515<a class="headerlink" href="#ctp515" title="Permalink to this headline">¶</a></h2>
+<p>This module is used to study low-contrast resolution.  Pylinac samples the image with several ROIs. The usual contrast constant is calculated and plotted as a function of circle diameter.</p>
+<p>The test will pass if Pylinac detects at least a certain number of ROIs that are defined with <strong>Low contrast tolerance</strong> (number of ROIs that must be seen). In order for a ROI to be seen, the CNR constant must be greater than the <strong>CNR threshold</strong>. CNR constant is the product of CNR and circle diameter.</p>
+<img alt="_images/catphan6.png" class="align-center" src="_images/catphan6.png" />
+<p>The CNR is defined as</p>
+<div class="math">
+<p><img src="_images/math/e097df7ce7e4373ce3c50da331afedaa325d4aa9.png" alt="\textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B_i)}{\mathrm{std}\,(L_i)}"/></p>
+</div><p>Background Bi are the average of inner and outer background ROIs corresponding to Li.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">QAserver</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="planarimaging.html" title="previous chapter">Planar imaging module</a></li>
+      <li>Next: <a href="dynalog.html" title="next chapter">Dynalog module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Denis Brojan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/catphan.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

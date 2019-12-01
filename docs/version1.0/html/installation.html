@@ -1,0 +1,439 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Installation &#8212; QAserver 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration" href="configuration.html" />
+    <link rel="prev" title="About" href="about.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>QAserver is designed to work with Orthanc and its RESTful interface. It will not work without it.</p>
+<p>Follow this instructions to properly install QAserver. I suggest that you reserve a computer for QAserver that is connected to your hospital (local) network. There are no special requirements, a normal desktop computer should be sufficient.</p>
+<blockquote>
+<div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not make QAserver available to the public domain. QAserver does not implement any safety features, so by making QAserver public you are at risk of exposing your data.</p>
+</div>
+</div></blockquote>
+<p>QAserver cannot be installed as a Python package. A special procedure must be followed. Each version of QAserver is compatible only with specific versions of dependent software, so you must pay attention to the version of software you install within your Python environment.</p>
+<div class="section" id="version-1-0-compatibility">
+<h2>Version 1.0 compatibility<a class="headerlink" href="#version-1-0-compatibility" title="Permalink to this headline">¶</a></h2>
+<p>The table below gives the versions of three dependencies that must be observed. More recent versions of dependencies, especially Pylinac and Bokeh, will not work with QAserver.</p>
+<table class="colwidths-given docutils align-center">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Python</p></td>
+<td><p>&gt;= 3.7</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pylinac</p></td>
+<td><p>2.2.6 or 2.2.7</p></td>
+</tr>
+<tr class="row-even"><td><p>bokeh</p></td>
+<td><p>1.3.4</p></td>
+</tr>
+</tbody>
+</table>
+<p>Here is a list of version of other dependencies that were used during development:</p>
+<table class="colwidths-given docutils align-center">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Bottle</p></td>
+<td><p>0.12.17</p></td>
+</tr>
+<tr class="row-odd"><td><p>json</p></td>
+<td><p>2.0.9</p></td>
+</tr>
+<tr class="row-even"><td><p>json</p></td>
+<td><p>2.0.9</p></td>
+</tr>
+<tr class="row-odd"><td><p>sqlite3</p></td>
+<td><p>2.6.0</p></td>
+</tr>
+<tr class="row-even"><td><p>numpy</p></td>
+<td><p>1.16.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>scipy</p></td>
+<td><p>1.3.1</p></td>
+</tr>
+<tr class="row-even"><td><p>matplotlib</p></td>
+<td><p>3.1.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>scikit-image</p></td>
+<td><p>0.15.0</p></td>
+</tr>
+<tr class="row-even"><td><p>scikit-learn</p></td>
+<td><p>0.21.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>pydicom</p></td>
+<td><p>1.3.0</p></td>
+</tr>
+<tr class="row-even"><td><p>httplib2</p></td>
+<td><p>0.14.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>prettytable</p></td>
+<td><p>0.7.2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="instaling-anaconda">
+<h2>Instaling Anaconda<a class="headerlink" href="#instaling-anaconda" title="Permalink to this headline">¶</a></h2>
+<p>Download the latest <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a>. The version I am using in this user manual is Anaconda3 2019.10.</p>
+<p>When you install Anaconda, chose to add Anaconda to your PATH environment variable. If you chose not to, then you may have problems running  the servers with Windows Task Scheduler.</p>
+<p>After you install Anaconda, you can either use the “base” environment, or make a new environment for QAserver. The instructions that follow cover both ways of doing the installation. Making a special environment is necessary if you are using much more recent versions of Anaconda/Python, but need to install older versions of dependencies.</p>
+</div>
+<div class="section" id="download-qaserver">
+<h2>Download QAserver<a class="headerlink" href="#download-qaserver" title="Permalink to this headline">¶</a></h2>
+<p>Download QAserver archive from:</p>
+<p>Unzip it into a special directory. Give it the name “qaserver”. After that open Command Prompt or Anaconda Prompt with Administrator privileges, and go to that folder and try to start the server with</p>
+<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">start.py</span></code></p>
+<p>You should get import errors. The first one will probably be a missing “bottle” module. So basically, what you need to do is install all the missing packages until the server starts without giving errors. As said before, you have two options: installing packages in the base environment or create a special environment for QAserver.</p>
+</div>
+<div class="section" id="installing-missing-packages-in-the-base-environment">
+<h2>Installing missing packages in the base environment<a class="headerlink" href="#installing-missing-packages-in-the-base-environment" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install certain packages may destroy your python distribution, so follow this to install everything correctly. Pay attention to when <code class="docutils literal notranslate"><span class="pre">conda</span></code> is used instead of <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+</div>
+<p>Start Anaconda Prompt with Admin privileges. Your base environment should be active by default.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Install bottle with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">bottle</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Install httplib2 with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">httplib2</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Install pylinac with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pylinac==2.2.7</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Reinstall bokeh with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">bokeh==1.3.4</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Install paste with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">paste</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Install prettytable with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">prettytable</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Now you should be able to start the server with <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">start.py</span></code>. Some additional steps are necessary to fix a couple of Pylinac’s modules.</p>
+<img alt="_images/cmd.png" class="align-center" src="_images/cmd.png" />
+</div>
+<div class="section" id="installing-missing-packages-in-a-new-environment">
+<h2>Installing missing packages in a new environment<a class="headerlink" href="#installing-missing-packages-in-a-new-environment" title="Permalink to this headline">¶</a></h2>
+<p>Open Anaconda Prompt with Admin privileges and type this to create an environment called “qaserver” with a specific version of Python:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span> <span class="pre">-n</span> <span class="pre">qaserver</span> <span class="pre">python=3.7</span></code></p>
+</div></blockquote>
+<p>Then active this environment with</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">activate</span> <span class="pre">qaserver</span></code></p>
+</div></blockquote>
+<p>Within the new environment you must install missing packages (keep to the order as defined below):</p>
+<ul>
+<li><dl class="simple">
+<dt>Install bottle with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">bottle</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Install scipy with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">scipy</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Install httplib2 with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">httplib2</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Install scikit-image and scikit-learn with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">scikit-image</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">scikit-learn</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Install pylinac with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pylinac==2.2.7</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Install jinja with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jinja2</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Install bokeh with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">bokeh==1.3.4</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Install paste with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">paste</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Install prettytable with</dt><dd><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">prettytable</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Now you should be able to start the server with <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">start.py</span></code>. Some additional steps are necessary to fix a couple of Pylinac’s modules.</p>
+</div>
+<div class="section" id="fixing-planar-imaging-module">
+<h2>Fixing planar imaging module<a class="headerlink" href="#fixing-planar-imaging-module" title="Permalink to this headline">¶</a></h2>
+<p>Find the planar_imaging.py module of pylinac. Go to line 538 and change the <code class="docutils literal notranslate"><span class="pre">phantom_angle(self)</span></code> function so that the function returns a 45 degree angle. Like this</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">phantom_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The angle of the phantom.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    angle : float</span>
+<span class="sd">        The angle in degrees.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#return -np.rad2deg(self.phantom_ski_region.orientation)</span>
+    <span class="k">return</span> <span class="mi">45</span>
+</pre></div>
+</div>
+<p><strong>This fix is valid only for pylinac version 2.2.7.</strong></p>
+</div>
+<div class="section" id="fixing-the-catphan-module">
+<h2>Fixing the Catphan module<a class="headerlink" href="#fixing-the-catphan-module" title="Permalink to this headline">¶</a></h2>
+<p>Find the ct.py module of Pylinac. Go to line 850 and edit the module so that it looks like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">overall_passed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Whether there were enough low contrast ROIs &quot;seen&quot;.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">roi</span><span class="o">.</span><span class="n">passed_cnr_constant</span> <span class="k">for</span> <span class="n">roi</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rois</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span>
+</pre></div>
+</div>
+<p><strong>This fix is valid only for pylinac version 2.2.7.</strong></p>
+</div>
+<div class="section" id="fixing-the-vmat-module">
+<h2>Fixing the VMAT module<a class="headerlink" href="#fixing-the-vmat-module" title="Permalink to this headline">¶</a></h2>
+<p>Find the vmat.py module of Pylinac. Go to line 423 and edit the module so that it looks like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">passed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Return whether the segment passed or failed.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">r_dev</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tolerance</span> <span class="o">*</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p><strong>This fix is valid only for pylinac version 2.2.7.</strong></p>
+</div>
+<div class="section" id="setting-up-orthanc">
+<h2>Setting up Orthanc<a class="headerlink" href="#setting-up-orthanc" title="Permalink to this headline">¶</a></h2>
+<p>Download Orthanc from their <a class="reference external" href="https://www.orthanc-server.com/">webpage</a>, and install it in a separate folder. You can even install it on a different computer.</p>
+<p>The folder should contain a special JSON configuration file. If the file is not already present, you can generate it by running this in Windows Command Prompt (after opening CMD go to the Orthanc folder):</p>
+<p><code class="docutils literal notranslate"><span class="pre">orthanc</span> <span class="pre">--config=Configuration.json</span></code></p>
+<p>Open the file in a text editor like Notepad++ (be careful, sometimes there is a problem with the encoding, and changing the file will make it unreadable by Orthanc). First, set the HTTP port for REST services and GUI.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;HttpServerEnabled&quot;</span> <span class="pre">:</span> <span class="pre">true</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;HttpPort&quot;</span> <span class="pre">:</span> <span class="pre">8042</span></code></p>
+<p>Next, set the dicom port to either 4242 or 104. Port 104 is usually used for dicom transport, but 4242 will also work.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;DicomServerEnabled&quot;</span> <span class="pre">:</span> <span class="pre">true</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;DicomPort&quot;</span> <span class="pre">:</span> <span class="pre">104</span></code></p>
+<p>When you configure your imaging workstation to send images to Orthanc, use these settings.</p>
+<p>Change the UnknownSopClassAccepted to true:</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;UnknownSopClassAccepted&quot;</span> <span class="pre">:</span> <span class="pre">true</span></code></p>
+<p>Set RemoteAccessAllowed to true:</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;RemoteAccessAllowed&quot;</span> <span class="pre">:</span> <span class="pre">true</span></code></p>
+<p>Set AuthenticationEnabled to true:</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;AuthenticationEnabled&quot;</span> <span class="pre">:</span> <span class="pre">true</span></code></p>
+<p>Define credentials for accessing the server:</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;RegisteredUsers&quot;</span> <span class="pre">:</span> <span class="pre">{</span> <span class="pre">&quot;orthancuser&quot;</span> <span class="pre">:</span> <span class="pre">&quot;orthancpass&quot;</span> <span class="pre">},</span></code></p>
+<p>Delete “//” in front of the line to uncomment it. Chose appropriate username and password of the orthanc user. At a later moment you will tell QAserver to use these credentials when connecting with Orthanc.</p>
+<p>Save the configuration file and run the Orthanc server:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Orthanc</span> <span class="pre">configuration.json</span></code></p>
+<p>If everything is OK, you should be able to access the GUI of the server at</p>
+<p><a class="reference external" href="http://127.0.0.1:8042">http://127.0.0.1:8042</a>.</p>
+<p>A hint: If you want to stop the server, press CTRL + C.</p>
+<p>Orthanc is independent from QAserver. You will tell QAserver what settings must be used to access it.</p>
+</div>
+<div class="section" id="configuring-qaserver">
+<h2>Configuring QAserver<a class="headerlink" href="#configuring-qaserver" title="Permalink to this headline">¶</a></h2>
+<p>All the settings of QAserver are contained in <strong>config.ini</strong>. <strong>Do not leave empty definitions!</strong></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>INSTITUTION</strong></dt><dd><p>Set the name of your institution. It will be printed in the menu page.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>PLWEB_IP</strong> and <strong>PLWEB_PORT</strong></dt><dd><p>The IP address and PORT of the computer that will be running QAserver. You can check it in your network settings. I suggest that you use PORT = 80.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>ORTHANC_IP</strong> and <strong>ORTHANC_PORT</strong></dt><dd><p>The IP address and port where Orthanc is running. If Orthanc is on the same computer as QAserver, then match the IP address with PLWEB_IP.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>PLWEB_USERNAME</strong> and <strong>PLWEB_PASSWORD</strong></dt><dd><p>The username and password you will be using to connect to QAserver. Only one username/password is possible.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>ORTHANC_USERNAME</strong> and <strong>ORTHANC_PASSWORD</strong></dt><dd><p>The Orthanc username and password that you defined in the Orthanc configuration file.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>There are additional settings for each module. They are explained in a separate chapter.</p>
+</div>
+<div class="section" id="starting-the-servers-as-windows-tasks">
+<h2>Starting the servers as Windows Tasks<a class="headerlink" href="#starting-the-servers-as-windows-tasks" title="Permalink to this headline">¶</a></h2>
+<p>Once everything is set up, you can start the QAserver in Anaconda Prompt (or Command Prompt) with:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">start.py</span></code></p>
+</div></blockquote>
+<p>And Orthanc with:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">orthanc</span> <span class="pre">configuration.json</span></code></p>
+</div></blockquote>
+<p>If you are using one computer for both servers, then this should be it. Everybody in your network should be able to use QAserver and Orthanc. It is a good idea to check that Windows Firewall is not blocking Python.exe or Orthanc.exe, in case you have problems.</p>
+<p>Anyway, having two Prompts open all the time may not be the optimal solution. You could create two Windows Tasks to be run anytime the computer is powered on. Open Windows Task Scheduler. Click on Create Basic Task. Input the info for QAserver and Orthanc. Images below will help you set up the action for both tasks. Make sure you you select “Run whether user is logged on or not”, and “Run with highest privileges”.</p>
+<img alt="_images/task4.png" src="_images/task4.png" />
+<img alt="_images/task7.png" src="_images/task7.png" />
+<p>This will only work if you are using the base environment and if you added Anaconda to your system PATH.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">QAserver</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">CT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="about.html" title="previous chapter">About</a></li>
+      <li>Next: <a href="configuration.html" title="next chapter">Configuration</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Denis Brojan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/installation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Planar imaging module &#8212; QAserver 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CT module" href="catphan.html" />
+    <link rel="prev" title="Picket Fence module" href="picketfence.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="planar-imaging-module">
+<h1>Planar imaging module<a class="headerlink" href="#planar-imaging-module" title="Permalink to this headline">¶</a></h1>
+<p>This module is used to test the constancy of two-dimensional MV or kV image. All three phantoms recognized by Pylinac can be used:</p>
+<ul class="simple">
+<li><p>Standard Imaging QC3</p></li>
+<li><p>Leeds TOR 18</p></li>
+<li><p>Las Vegas</p></li>
+</ul>
+<p>In order to be able to compare image quantifiers with the baseline, you have the option of saving a reference image into the QAserver folder structure. This image can then be analyzed at the same time as the currently acquired image.</p>
+<p>Read <a class="footnote-reference brackets" href="#id7" id="id1">1</a> and <a class="footnote-reference brackets" href="#id8" id="id2">2</a> so that you will be able to understand the analysis.</p>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Image</strong></dt><dd><p>The acquired image. If <em>Analyze reference?</em> is unchecked, only this image will be analyzed.</p>
+</dd>
+<dt><strong>Phantom</strong></dt><dd><p>A list of available phantoms recognized by Pylinac. Always pick the correct phantom.</p>
+</dd>
+<dt><strong>Imager</strong></dt><dd><p>Here you can select the reference image of the phantom for a particular machine (imager). See “Configuration” for more details about how to add reference images to QAserver. If you don’t have a reference image prepared, then skip this setting, and untick the <em>Analyze reference?</em> checkbox.</p>
+</dd>
+<dt><strong>Clip box</strong></dt><dd><p>Here you can enter the size of the central portion of the image beyond which pixel values will be set to background signal. If you don’t want to clip the image, put 0.</p>
+</dd>
+<dt><strong>LeedsTor rot</strong></dt><dd><p>Here you can force the angle of the Leeds TOR phantom.</p>
+</dd>
+<dt><strong>Show bounding box?</strong></dt><dd><p>If checked, a bounding box will be drawn around the phantom, and the image will be zoomed-in.</p>
+</dd>
+<dt><strong>Invert image?</strong></dt><dd><p>Check this if you need to invert the image.</p>
+</dd>
+<dt><strong>Use Pylinac?</strong></dt><dd><p>If checked, the analysis will give original Pylinac results. If unchecked, the analysis will be performed with Pylinac, however the results will be presented in a slightly different fashion (see further down for more explanation).</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="how-to-use-the-module">
+<h2>How to use the module<a class="headerlink" href="#how-to-use-the-module" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Acquire your image in such a way that Pylinac will be able to analyze it.</p></li>
+<li><p>To set a reference for comparison have your engineers optimize image quality, then acquire a good image that satisfies your clinical demands. This image can then be downloaded from Orthanc and stored into QAserver for future use.</p></li>
+<li><p>Select the appropriate Phantom. If the reference image is available, it will show up in the dropdown menu (Imager). If not, then you can work without them. In this case uncheck <em>Analyze reference?</em>.</p></li>
+</ul>
+</div>
+<div class="section" id="regions-of-interest-rois">
+<h2>Regions of interest (ROIs)<a class="headerlink" href="#regions-of-interest-rois" title="Permalink to this headline">¶</a></h2>
+<p>Pylinac will find several ROIs on each phantom. The following image shows ROIs for each phantom. Red circles mark those ROIs that are used for studying contrast (low frequency contrast resolution), blue circles are those ROIs that are used for studying MTF (high frequency contrast resolution) and yellow circles are the background ROIs.</p>
+<img alt="_images/planar1.png" class="align-center" src="_images/planar1.png" />
+<p>When <em>Use Pylinac?</em> is checked, both low contrast and high contrast ROIs will be colored blue or red depending on whether they pass the threshold tolerance. If <em>Use Pylinac?</em> is unchecked, low contrast ROIs will always be colored red, and high contrast ROIs will always be colored blue (no passing tolerance is applied in this case). Background ROIs are always colored yellow.</p>
+<p>We denote low contrast, high contrast, and background ROIs with</p>
+<div class="math">
+<p><img src="_images/math/2fd5c8a2713fe2e4466aad34070bc110baf45181.png" alt="L, H, B_{L}, B_{H}"/></p>
+</div><p>Where <em>L</em> stands for low frequency ROI, <em>H</em> for high frequency ROI and <em>B</em> is the background.</p>
+<p>The QC3 phantom has 5 high frequency ROIs, 5 low frequency ROIs, and one background ROI:</p>
+<div class="math">
+<p><img src="_images/math/de37e8577c5aa1b9e1638ab1d86ad387434b3961.png" alt="H_0, H_1, H_2, H_3, H_4\\
+L_0, L_1, L_2, L_3, L_4\\
+B"/></p>
+</div><p>The LeedsTOR phantom has 9 high frequency ROIs with 2 corresponding background ROIs, and 18 low frequency ROIs with corresponding 18 background ROIs.</p>
+<div class="math">
+<p><img src="_images/math/3d96dda8de131d570c75d709dba077dc8b4fe66f.png" alt="H_0, H_1, \ldots, H_8\\
+L_0, L_1, \ldots, L_{17}\\
+B_{H1}, B_{H2}\\
+B_{L0}, B_{L1}, \ldots, B_{L17}"/></p>
+</div><p>The Las Vegas phantom has 20 low frequency ROIs and 4 background ROIs.</p>
+<div class="math">
+<p><img src="_images/math/6ddfa0803f5f50dde0087644ffc06bded616d010.png" alt="L_0, L_1, \ldots, L_{19}\\
+B_{L0}, B_{L1}, B_{L2}, B_{L3}"/></p>
+</div><p>Once ROIs are defined, pixel values within can be extracted from the image. Random noise is not calculated according to [2], instead the standard deviation of pixel values within low contrast or background ROIs is used.</p>
+</div>
+<div class="section" id="qc3-analysis">
+<h2>QC3 Analysis<a class="headerlink" href="#qc3-analysis" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="use-pylinac-checked">
+<h3><em>Use Pylinac?</em> checked<a class="headerlink" href="#use-pylinac-checked" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/qc3-2.png" class="align-center" src="_images/qc3-2.png" />
+<p><strong>Low-frequency contrast</strong> for each <em>L</em> is calculated as the low-frequency constant, which is the product of contrast and the diameter of the ROI.</p>
+<div class="math">
+<p><img src="_images/math/8600547ac8f6d4572c49d0debbaf5fd82f173916.png" alt="\textrm{contrast constant}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B)}{\mathrm{median}\,(L_i)+\mathrm{median}\,(B)}\times \textrm{diameter}\,(L_i)"/></p>
+</div><p>The green line on the low-frequency plot represents the <em>low_threshold</em> defined in the configuration file. If the contrast constant is above the green line, the ROI is considered “visible”.</p>
+<p><strong>Contrast-to-noise ratio</strong> is defined as</p>
+<div class="math">
+<p><img src="_images/math/b86fac9d0428ec71fba5f3190be550cb97ef476f.png" alt="\textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B)}{\mathrm{std}\,(L_i)}"/></p>
+</div><p><strong>Relative modulation transfer function</strong> is calculated as</p>
+<div class="math">
+<p><img src="_images/math/e1c7f31203e02afdb442a882c446b1f33bd277ea.png" alt="\textrm{rMTF}\,(H_i) = \left.\frac{\mathrm{max}\,(H_i)-\mathrm{min}\,(H_i)}{\mathrm{max}\,(H_i)+\mathrm{min}\,(H_i)} \middle/ \frac{\mathrm{max}\,(H_0)-\mathrm{min}\,(H_0)}{\mathrm{max}\,(H_0)+\mathrm{min}\,(H_0)}\right."/></p>
+</div><p>Note that it is normalized to 1 for the first high-frequency region. The green line on the plot represents the high_threshold defined in the configuration file. If the points are above the green line, then the lines in the corresponding region can be resolved.</p>
+<p><strong>Relative lppmm</strong> are calculated for 30%, 40%, 50% and 80% rMTF. The result is not in units of lppmm.</p>
+<p><strong>Median contrast</strong> is calculated as the median of contrast values for all low-frequency regions. Note that this is not the median of contrast constants.</p>
+<p><strong>Median CNR</strong> is calculated as the median of all CNR values.</p>
+</div>
+<div class="section" id="use-pylinac-unchecked">
+<h3><em>Use Pylinac?</em> unchecked<a class="headerlink" href="#use-pylinac-unchecked" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/qc3-3.png" class="align-center" src="_images/qc3-3.png" />
+<p>The analysis is similar, however these definitions are in use.</p>
+<p><strong>Low-frequency contrast</strong>:</p>
+<div class="math">
+<p><img src="_images/math/48ab34e27cca95b5664258dbfb337be02c8acd5f.png" alt="\textrm{contrast}\,(L_i) = 100\times\frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B)}{\mathrm{median}\,(B)}"/></p>
+</div><p><strong>Relative modulation transfer function</strong>:</p>
+<div class="math">
+<p><img src="_images/math/0a3adec8861e9976091d0c4362dd9aa922489e0e.png" alt="\textrm{rMTF}\,(H_i) = \left.\sqrt{(\mathrm{std}(H_i))^2-(\mathrm{std}(L_0))^2}\middle/ \sqrt{(\mathrm{std}(H_0))^2-(\mathrm{std}(L_0))^2}\right."/></p>
+</div><p><strong>lppmm</strong> is returned in real units based on the calibration of line pairs in the configuration file.</p>
+<p><strong>Noise</strong> is the average value of standard deviations for all low-frequency regions and the background region:</p>
+<div class="math">
+<p><img src="_images/math/a4bfa160f7444bb71952381674d31660799c21a7.png" alt="\textrm{noise} = \frac{1}{6}\left(\sum_{i=0}^{i=4}\mathrm{std}\,(L_i) + \mathrm{std}\,(B)\right)"/></p>
+</div><p><strong>Contrast-to-noise ratio</strong> is calculated like this:</p>
+<div class="math">
+<p><img src="_images/math/082fce190ce3e5d79ef19594939e7db50329d000.png" alt="\textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B)}{\textrm{noise}}"/></p>
+</div><p><strong>CNR</strong> is the CNR of the first low-frequency region.</p>
+</div>
+</div>
+<div class="section" id="leeds-tor-analysis">
+<h2>Leeds TOR Analysis<a class="headerlink" href="#leeds-tor-analysis" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3><em>Use Pylinac?</em> checked<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/lt-1.png" class="align-center" src="_images/lt-1.png" />
+<p>Pylinac uses a different background for each low-frequency ROI.</p>
+<p><strong>Low-frequency contrast</strong> is again the product of <strong>contrast</strong> and the ROI diameter:</p>
+<div class="math">
+<p><img src="_images/math/a039ffbe3cd246c46e81480b47712889f8e2335e.png" alt="\textrm{contrast constant}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B_{Li})}{\mathrm{median}\,(L_i)+\mathrm{median}\,(B_{Li})}\times \textrm{diameter}\,(L_i)"/></p>
+</div><p>The green line on the low-frequency plot represents the low_threshold defined in the configuration file. If contrast-constant is above the green line, the ROI is considered “visible”.</p>
+<p><strong>Contrast-to-noise ratio</strong> is defined as</p>
+<div class="math">
+<p><img src="_images/math/992cdad9f1ede572e4effee31080b97c1466e3c6.png" alt="\textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B_{Li})}{\mathrm{std}\,(L_i)}"/></p>
+</div><p><strong>Relative modulation transfer function</strong> is calculated like this:</p>
+<div class="math">
+<p><img src="_images/math/288201fd7c534a21315335c0d96cb8c6f279bcd9.png" alt="\textrm{rMTF}\,(H_i) = \left.\frac{\mathrm{max}\,(H_i)-\mathrm{min}\,(H_i)}{\mathrm{max}\,(H_i)+\mathrm{min}\,(H_i)} \middle/ \frac{\mathrm{max}\,(B_{H0})-\mathrm{min}\,(B_{H1})}{\mathrm{max}\,(B_{H0})+\mathrm{min}\,(B_{H1})}\right."/></p>
+</div><p>The function is normalized to 1 at the two background ROIs, if one is to take these two ROIs to form a starting line-pair region. Note that beause of this the plot is shifted to the right by one region. The green line on the plot represents the high_threshold defined in the configuration file. If the points are above the green line, then the lines in the corresponding region can be resolved.</p>
+<p><strong>Relative lppmm</strong> are calculated for 30%, 40%, 50% and 80% rMTF. The result is not in units of lppmm.</p>
+<p><strong>Median contrast</strong> is calculated as the median of contrast values for all low-frequency regions. Note that this is not the median of contrast-constants.</p>
+<p><strong>Median CNR</strong> is calculated as the median of all CNR values.</p>
+</div>
+<div class="section" id="id4">
+<h3><em>Use Pylinac?</em> unchecked<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/lt-2.png" class="align-center" src="_images/lt-2.png" />
+<p><strong>Low-frequency contrast</strong>:</p>
+<div class="math">
+<p><img src="_images/math/5795712f08c005e3c50e210ba9863ef4e43d0463.png" alt="\textrm{contrast}\,(L_i) = 100\times\frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B_{Li})}{\mathrm{median}\,(B_{Li})}"/></p>
+</div><p><strong>Relative modulation transfer function</strong>:</p>
+<div class="math">
+<p><img src="_images/math/96a59cdaf134c8abd27159de2ba33f224b2d7b62.png" alt="\textrm{rMTF}\,(H_i) = \left.\sqrt{(\mathrm{std}(H_i))^2-(\mathrm{std}((B_{H0}))^2}\middle/ \sqrt{(\mathrm{std}(H_0))^2-(\mathrm{std}(B_{H0}))^2}\right."/></p>
+</div><p>rMTF is normalized to 1 at the max value, usually at H0.</p>
+<p><strong>lppmm</strong> is returned in real units based on the calibration of line pairs in the configuration file.</p>
+<p><strong>Noise</strong> is the average value of standard deviations for all low-frequency background regions:</p>
+<div class="math">
+<p><img src="_images/math/bff1c149d79034b5fbcfac18172bb6c69f5e1e1f.png" alt="\textrm{noise} = \frac{1}{18}\sum_{i=0}^{i=17}\mathrm{std}\,(B_{Li})"/></p>
+</div><p><strong>Contrast-to-noise ratio</strong> is calculated like this:</p>
+<div class="math">
+<p><img src="_images/math/0871cc6ea5df6006477018f3a4ce173fb78e11db.png" alt="\textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B_{Li})}{\textrm{noise}}"/></p>
+</div><p><strong>CNR</strong> is the CNR of the first low-frequency region.</p>
+</div>
+</div>
+<div class="section" id="las-vegas-analysis">
+<h2>Las Vegas analysis<a class="headerlink" href="#las-vegas-analysis" title="Permalink to this headline">¶</a></h2>
+<p>The Las Vegas phantom has only low-frequency regions.</p>
+<div class="section" id="id5">
+<h3><em>Use Pylinac?</em> checked<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p><strong>Low-fequency constant</strong> is the product of contrast and the diameter of the ROI:</p>
+<div class="math">
+<p><img src="_images/math/0633271cf315a1219c78dc065d29efdf4bfdf6eb.png" alt="\textrm{contrast constant}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{average}\,(B)}{\mathrm{median}\,(L_i)+\mathrm{average}\,(B)}\times \textrm{diameter}\,(L_i)"/></p>
+</div><p>Where the average background is</p>
+<div class="math">
+<p><img src="_images/math/dede4f0170d3ff70a1873cc83290591e86ea87d6.png" alt="\textrm{average}\,(B)=\frac{1}{4}\sum_{i=0}^{i=3}\textrm{median}\,(B_{Li})"/></p>
+</div><p>The green line on the low-frequency plot represents the low_threshold defined in the configuration file. If contrast constant is above the green line, the ROI is considered “visible”.</p>
+<p><strong>Contrast-to-noise ratio</strong> is defined as</p>
+<div class="math">
+<p><img src="_images/math/c12ca02ef6ce29d2a716146dcfa4a558285df73f.png" alt="\textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{average}\,(B)}{\mathrm{std}\,(L_i)}"/></p>
+</div><p><strong>Median contrast</strong> is calculated as the median of contrast values for all low-frequency regions. Note that this is not the median of contrast constants.</p>
+<p><strong>Median CNR</strong> is calculated as the median of all CNR values.</p>
+</div>
+<div class="section" id="id6">
+<h3><em>Use Pylinac?</em> unchecked<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p><strong>Low-frequency contrast</strong>:</p>
+<div class="math">
+<p><img src="_images/math/dce3591f034cfef779318169ca199974433b8c62.png" alt="\textrm{contrast}\,(L_i) = 100\times\frac{\mathrm{median}\,(L_i)-\mathrm{average}\,(B)}{\mathrm{average}\,(B)}"/></p>
+</div><p><strong>Noise</strong> is the average of standard deviations for all low-frequency background regions:</p>
+<div class="math">
+<p><img src="_images/math/58b2dd7bb85ad71129ad091cd4d80e81fe7707a4.png" alt="\textrm{noise} = \frac{1}{4}\sum_{i=0}^{i=3}\mathrm{std}\,(B_{Li})"/></p>
+</div><p><strong>Contrast-to-noise ratio</strong> is calculated like this:</p>
+<div class="math">
+<p><img src="_images/math/daffc3dbc33d73073a6e03f5c9cd99f0714f804a.png" alt="\textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{average}\,(B)}{\textrm{noise}}"/></p>
+</div><p><strong>CNR</strong> is the CNR of the fourth low-frequency region.</p>
+</div>
+</div>
+<div class="section" id="literature">
+<h2>Literature<a class="headerlink" href="#literature" title="Permalink to this headline">¶</a></h2>
+<dl class="footnote brackets">
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Ronald T. Droege, <em>A practical method to routinely monitor resolution in digital images</em>, Medical Physics 10, 337 (1983)</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><ol class="upperalpha simple" start="18">
+<li><p>Rajapakshe, K. Luchka, and S. Shalev, <em>A quality control test for electronic portal imaging devices</em>, Medical Physics 23, 1237 (1996)</p></li>
+</ol>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">QAserver</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">CT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="picketfence.html" title="previous chapter">Picket Fence module</a></li>
+      <li>Next: <a href="catphan.html" title="next chapter">CT module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Denis Brojan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/planarimaging.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

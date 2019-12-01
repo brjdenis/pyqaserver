@@ -1,0 +1,221 @@
+.. index: 
+
+Configuration
+=============
+
+QAserver can be configured by changing ``config.ini``.
+
+After you change the configuration file, you must restart the server.
+
+Winston-Lutz
+-------------
+
+When you click Analyze, QAserver will fetch dicom files from Orthanc and temporarily store them into the *temp_dcm_archive* folder. Then Pylinac will analyze them. When the results are ready, temporary files will be deleted. If there was an error, files will remain in the temp folder.
+
+**PASS_RATE**
+	The radius (in mm) of the red circle in the "scatter diagram" section. At the same time the "failed" tolerance level.
+
+**SUCCESS_RATE**
+	The radius (in mm) of the green circle in the "scatter diagram" section. But also the "passed" tolerance level.
+
+**APPLY_TOLERANCE_TO_COLL_ASYM**
+	Chose whether the tolerance level will be applied to each analyzed image or to the section "Effect of collimator rotation". Possible values are True and False.
+
+
+Starshot
+--------
+The module works similarly to the Winston-Lutz module. If you are using tiff images, they will be stored into *temp_nondicom_archive* folder. The PDF report is stored in *temp_pdf_reports* folder.
+
+**TOLERANCE**
+	The tolerance for circle diameter (in mm).
+
+**GENERATE_PDF_REPORT**
+	Chose whether to generate a pdf report. Possible values are True or False.
+
+Picket Fence
+------------
+The module works similarly to the Winston-Lutz module. The PDF report is stored in *temp_pdf_reports* folder.
+
+**TOLERANCE**
+	The tolerance for the test in mm.
+
+**USE_ORIGINAL_PYLINAC**
+	Chose whether normal Pylinac should be used for analysis or a modified picketfence.py module. The modified code gives you the option of using Elekta MLCs. Possible values are True and False.
+	
+	.. warning::
+		If you enable this feature, then a specially modified Pylinac module will be used for analysis. This may give unexpected results.
+
+**GENERATE_PDF_REPORT**
+	Chose whether to generate a pdf report. Possible values are True and False.
+
+Planar Imaging
+---------------
+The module works similarly to the Winston-Lutz module. The PDF report is stored in *temp_pdf_reports* folder.
+
+**LOW_THRESHOLD**
+	The threshold for low contrast evaluation. See Pylinac for further details.
+
+**HIGH_THRESHOLD**
+	The threshold for high contrast evaluation. See Pylinac for further details.
+
+**QC3_MACHINES**
+	A list of reference images: subfolders that contain the reference images for each machine. The folders must be in the **reference_images/planar_imaging/QC3** folder. Example: say you have two machines, Linac1 and Linac2. Create two subfolders Linac1 and Linac2 and to each folder add a reference image called **First.dcm**.
+	
+	Putting it in full form:
+		* reference_images/planar_imaging/QC3/Linac1/First.dcm
+		* reference_images/planar_imaging/QC3/Linac2/First.dcm
+
+	These reference images must have exactly this name and extension. Once you run the test, QAserver will analyze the current image as well as the reference image.
+
+
+**LEEDSTOR_MACHINES**
+	Exactly the same as in QC3_MACHINES, except that you must add the reference images to the folder **reference_images/planar_imaging/LeedsTOR**.
+
+**LASVEGAS_MACHINES**
+	Exactly the same as in QC3_MACHINES, except that you must add the reference images to the folder **reference_images/planar_imaging/LasVegas**.
+
+**LPPMM_QC3**
+	A list of line pairs per mm for the QC3 phantom. You can read the values from your certificate. The list can contain only 5 elements in increasing order.
+
+**LPPMM_LEEDSTOR**
+	A list of line pairs per mm for the LeedsTOR phantom. You can read the values from your certificate. The list can contain only 9 elements in increasing order.
+
+**GENERATE_PDF_REPORT**
+	Chose whether to generate a pdf report. Possible values are True and False.
+
+
+Catphan
+--------
+After you click Analyze, the whole series is transferred from Orthanc to a temp folder. After the analysis is over, the folder is deleted.
+
+**503_MACHINES**
+	A list of reference images. In fact, this is a list of subfolders that contain the reference images for each imager. The subfolders must be in the **reference_images/ct/Catphan503** folder. Example: say you have two linacs with XVI. For each linac you would create three subfolders because you have three independent FOV (a sort of "imagers"). Into each subfolder copy reference CBCT scans that you acquired when the conditions were optimal. You can get reference scans if you send them to Orthanc and then download them as dicom files. Putting it together:
+		* reference_images/ct/Catphan503/Linac1_SFOV
+		* reference_images/ct/Catphan503/Linac1_MFOV
+		* reference_images/ct/Catphan503/Linac1_LFOV
+		* reference_images/ct/Catphan503/Linac2_SFOV
+		* reference_images/ct/Catphan503/Linac2_MFOV
+		* reference_images/ct/Catphan503/Linac2_LFOV
+		
+
+**504_MACHINES**
+	Exactly the same as 503_MACHINES with one difference: add subfolders to **reference_images/ct/Catphan504**.
+
+**600_MACHINES**
+	Exactly the same as 503_MACHINES with one difference: add subfolders to **reference_images/ct/Catphan600**.
+
+**604_MACHINES**
+	Exactly the same as 503_MACHINES with one difference: add subfolders to **reference_images/ct/Catphan604**.
+
+**TOLERANCE_HU**
+	The tolerance for Hounsfield units and the uniformity module.
+
+**TOLERANCE_LCV**
+	The tolerance for low contrast visibility. Note that two definitions exist in QAserver. Using either of them can be controlled with USE_LCV2TOL.
+
+**TOLERANCE_SCALING**
+	The tolerance for geometric scaling in mm. 
+
+**TOLERANCE_THICKNESS**
+	The tolerance for the difference between nominal and actual slice thickness in mm.
+
+**TOLERANCE_LOWCONTRAST**
+	The tolerance level for low contrast visibility. This is the number of ROIs that must be seen on the CTP515 module for the test to pass.
+
+**THRESHOLD_CNR**
+	The threshold for the low contrast ROI of the CTP515 module to be seen. It is measured in the same units as the CNR constant.
+
+**TOLERANCE_MTF**
+	The tolerance for the difference between reference and current 50% rMTF.
+
+**TOLERANCE_UNIFORMITYIDX**
+	The tolerance for the uniformity index. Note that two definitions exist in QAserver. Using either of them can be controlled with USE_UNIFORMITYIDX2.
+
+**USE_LCV2TOL**
+	If set to True, the tolerance will be applied to LCV, otherwise to LCV2.
+
+**USE_UNIFORMITYIDX2**
+	If set to True, the tolerance will be applied to Uniformity index, otherwise to Uniformity index 2.
+
+
+Dynalog
+--------
+
+Before you can use the module, you must run the analyze_dynalog.py module to fill the dynalog database with records. The ``config.ini`` file is read by analyze_dynalogs.py, so no special edition of the latter should be necessary. The dynalog module can be configured to send emails after the analysis has been completed, but to begin you can turn this off by setting SEND_EMAIL to False.
+
+Configure the module first, then run the **analyze_dynalogs.py** module from the command prompt by typing:
+
+.. code-block:: python
+
+	python analyze_dynalogs.py
+
+Once you get familiar with this, you can schedule the module to start every day with Task Scheduler.
+
+When run, the analyze_dynalogs.py module will read dynalogs from listed repositories (DYNALOG_REPOSITORIES).  Dynalogs in the designated folders will be analyzed. There will be a short log about the analysis in \\dynalog_database\\log.txt. The results of the analysis will be entered into a special sqlite database (\\dynalog_database\\dynalog_database.db). When you search the records within the web interface, you are scrolling across this database. If a dynalog was analyzed successfully, it will be added to a zip archive located in \\dynalog_database\\ARCHIVE\\. The name of the archive is normally "YYYY_MM.zip". Each month a new archive will be created, so you do not have too large files. The zip archive and the sqlite database are linked. 
+
+.. warning::
+	Do not edit the zip archive or the sqlite database manually unless you really have to. Also, do not run the analysis at midnight.
+
+When the analyze_dynalogs.py module analyzes dynalogs, it gives a special label to each record depending on the name of the repository from where the dynalog was taken. That is how you can separate dynalogs for different linacs. Labels are defined with REPOSITORIES_LABELS.
+
+If there was an error while analyzing dynalogs, the problematic dynalog will be copied to the *dynalogs_with_errors* folder.
+
+When you use the web interface to analyze one particular record, the corresponding dynalog is extracted from the zip archive and analyzed again with settings that you can define in the interface.
+
+**TOLERANCE_DTA**
+	The (gamma) distance-to-agreement tolerance for automatic analysis. In mm.
+
+**TOLERANCE_DD**
+	The (gamma) dose difference tolerance for automatic analysis. In %.
+
+**THRESHOLD**
+	The dose threshold for gamma analysis. In %.
+
+**RESOLUTION**
+	Resolution for gamma calculation in mm.
+
+**DYNALOG_REPOSITORIES**
+	A list of paths where dynalogs are located. Normally each linac (or MLC controller) stores dynalogs in a particular network folder. You can ask your engineers to set this up. Enter the full path of the folder. For many repositories make a list:
+	
+		DYNALOG_REPOSITORIES = \\network_path1\\linac1\\dynalogs, \\network_path2\\linac2\\dynalogs
+
+	Of course the paths need not be network paths. If you wish to experiment, you can just use local folders with dynalogs.
+
+**REPOSITORIES_LABELS**
+	A list of names (labels) for each entry to DYNALOG_REPOSITORIES. Keep the same order as DYNALOG_REPOSITORIES.
+
+**SEND_EMAIL**
+	If set to True, after the analysis is over, QAserver will send a short summary of the results via email.
+
+**SMTP_SERVER**
+	The SMTP server address. For example: smtp.gmail.com.
+
+**SMTP_PORT**
+	The SMTP port. For example: 587.
+
+**SEND_FROM_USER**
+	Your email account for sending messages.
+	
+**SEND_FROM_PASSWORD**
+	The password that you are using to access the account. Sorry, it is not encrypted.
+
+**SEND_TO**
+	A list of receivers. For example: person1@gmail.com, person2@gmail.com, etc.
+
+
+VMAT
+------
+
+**TOLERANCE**
+	The tolerance for the test. See Pylinac for further info.
+
+
+Keeping it clean
+-----------------
+
+From time to time check the folders for remaining files. In particular: temp_dcm_archive, temp_dynalog_folder, temp_nondicom_archive and temp_pdf_reports. The last one may be full of old pdf reports.
+
+Sending data to Orthanc
+------------------------
+Imaging workstation can be configured to send images directly to Orthanc via dicom transfer. This is particularly easy to do on Elekta's iView and XVI. If you do not feel competent to configure the export filters, ask your system administrator to do it.
+

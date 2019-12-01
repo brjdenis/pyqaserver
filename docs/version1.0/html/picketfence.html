@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Picket Fence module &#8212; QAserver 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Planar imaging module" href="planarimaging.html" />
+    <link rel="prev" title="Starshot module" href="starshot.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="picket-fence-module">
+<h1>Picket Fence module<a class="headerlink" href="#picket-fence-module" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Before you start using this module make sure that it is working as you would expect. You should create a dynamic beam that simulates a picket fence with intentional errors, and see if Pylinac/QAserver detects them correctly.</p>
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><strong>Clip box</strong></dt><dd><p>Sometimes images have unwanted artifacts at the edges. Here you can enter the size of the central portion of the image beyond which pixel values will be set to background signal. If you don’t want to clip the image, put 0.</p>
+</dd>
+<dt><strong>Filter</strong></dt><dd><p>Apply a median filter to the image. If 0, then no additional filtering is performed. See Pylinac and scipy.ndimage.median_filter for further information.</p>
+</dd>
+<dt><strong>Num of pickets</strong></dt><dd><p>If too many pickets are detected, you can try to force the number of pickets beforehand. If 0, no number is defined. See Pylinac for further information.</p>
+</dd>
+<dt><strong>Sag adjust</strong></dt><dd><p>If 0, no adjustment is made. Otherwise Pylinac will shift the MLCs laterally according to the value that you entered.</p>
+</dd>
+<dt><strong>MLC type</strong></dt><dd><p>Select the appropriate MLC type. Elekta_80, Elekta_160 and Varian_80 are available if QAserver has been configured to use a modified Pylinac module, otherwise only Varian_120 and Varian_120HD will be available. See the configuration instructions.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If QAserver has been configured to work with Elekta_80, Elekta_160 and Varian_80 MLCs, then a modified Pylinac module will be used for analysis. This may give unexpected results. Use it at your own peril. You can test whether you are using the unmodified  Pylinac module by trying to run the analysis with, say, Elekta_160 MLCs.</p>
+</div>
+</dd>
+<dt><strong>Orientation</strong></dt><dd><p>If you have problems with the orientation of the pickets, you can force the orientation here.</p>
+</dd>
+<dt><strong>Invert image?</strong></dt><dd><p>Check this box if you wish to invert the image.</p>
+</dd>
+<dt><strong>Load machine log</strong></dt><dd><p>Not available in this version.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="results">
+<h2>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><strong>Image</strong></dt><dd><p>Each picket is delimited with two green lines. The spacing between the lines corresponds to the tolerance level.</p>
+<p>Within the lines dashes correspond to the center (fwhm) of the region formed by the MLC pairs. If the leaf pair has passed the tolerance, the dash will be colored blue. If the leaf pair has passed the tolerance, but not the action tolerance, the dash will be colored purple. If the leaf pair is not within tolerance, the dash will be colored red.</p>
+<p>The error histogram shows the error and std of each leaf pair averaged over all the pickets. If you hover over the bars, additional information will be shown. The yellow line is the action tolerance, the red line is the tolerance.</p>
+<p>The red cross on the image represents the image center.</p>
+<img alt="_images/picketfence1.png" class="align-center" src="_images/picketfence1.png" />
+</dd>
+<dt><strong>Results</strong></dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>Nr of picket</dt><dd><p>How many pickets were detected.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Pass prcnt</dt><dd><p>Passing percentage.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Max error</dt><dd><p>Maximum deviation of leaf pair fwhm that was detected.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Max error picket</dt><dd><p>Which picket line has the max error.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Max error leaf</dt><dd><p>Which leaf pair has the max error. Leaf pair are enumerated from left to right (or up-down), starting with 0.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Median error</dt><dd><p>The median of all errors.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Mean picket spacing</dt><dd><p>The average spacing between picket lines.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Mean FWHM</dt><dd><p>The average fwhm of all picket lines. Fwhm is evaluated from the mean MLC profile for each peak.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Offset from CAX</dt><dd><p>The distance of each picket line from the image center (red cross).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>FWHM</dt><dd><p>The fwhm of each picket line evaluated from the mean MLC profile.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Passed</dt><dd><p>If the max error is within tolerance, the picket will pass the test.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Histogram shows the distribution of errors for all leaf pairs. If there are 7 pickets, each having 50 leaf pairs, then the histogram will have 350 counts altogether.</p>
+<p>The MLC mean profile plot demonstrates the peaks for each picket line. Yellow dots signal the start and stop pixels between which peaks and fwhm are calculated. Horizontal dashes represent the fwhm. Because of the rounding effect, dashes may not be exactly horizontal.</p>
+<img alt="_images/picketfence2.png" class="align-center" src="_images/picketfence2.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The calculation of FWHM is done independently of Pylinac.</p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">QAserver</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">CT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="starshot.html" title="previous chapter">Starshot module</a></li>
+      <li>Next: <a href="planarimaging.html" title="next chapter">Planar imaging module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Denis Brojan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/picketfence.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

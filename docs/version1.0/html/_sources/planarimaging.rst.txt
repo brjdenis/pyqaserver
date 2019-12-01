@@ -1,0 +1,269 @@
+.. index: 
+
+Planar imaging module
+======================
+This module is used to test the constancy of two-dimensional MV or kV image. All three phantoms recognized by Pylinac can be used: 
+
+* Standard Imaging QC3
+* Leeds TOR 18
+* Las Vegas
+
+In order to be able to compare image quantifiers with the baseline, you have the option of saving a reference image into the QAserver folder structure. This image can then be analyzed at the same time as the currently acquired image. 
+
+Read [1]_ and [2]_ so that you will be able to understand the analysis.
+
+Options
+-------
+
+**Image**
+	The acquired image. If *Analyze reference?* is unchecked, only this image will be analyzed.
+**Phantom**
+	A list of available phantoms recognized by Pylinac. Always pick the correct phantom.
+**Imager**
+	Here you can select the reference image of the phantom for a particular machine (imager). See "Configuration" for more details about how to add reference images to QAserver. If you don't have a reference image prepared, then skip this setting, and untick the *Analyze reference?* checkbox.
+**Clip box**
+	Here you can enter the size of the central portion of the image beyond which pixel values will be set to background signal. If you don't want to clip the image, put 0.
+**LeedsTor rot**
+	Here you can force the angle of the Leeds TOR phantom.
+**Show bounding box?**
+	If checked, a bounding box will be drawn around the phantom, and the image will be zoomed-in.
+**Invert image?**
+	Check this if you need to invert the image.
+**Use Pylinac?**
+	If checked, the analysis will give original Pylinac results. If unchecked, the analysis will be performed with Pylinac, however the results will be presented in a slightly different fashion (see further down for more explanation).
+
+How to use the module
+---------------------
+
+* Acquire your image in such a way that Pylinac will be able to analyze it.
+* To set a reference for comparison have your engineers optimize image quality, then acquire a good image that satisfies your clinical demands. This image can then be downloaded from Orthanc and stored into QAserver for future use.
+* Select the appropriate Phantom. If the reference image is available, it will show up in the dropdown menu (Imager). If not, then you can work without them. In this case uncheck *Analyze reference?*.
+
+Regions of interest (ROIs)
+--------------------------
+Pylinac will find several ROIs on each phantom. The following image shows ROIs for each phantom. Red circles mark those ROIs that are used for studying contrast (low frequency contrast resolution), blue circles are those ROIs that are used for studying MTF (high frequency contrast resolution) and yellow circles are the background ROIs.
+
+.. image:: _static/images/planar1.png
+	:align: center
+
+When *Use Pylinac?* is checked, both low contrast and high contrast ROIs will be colored blue or red depending on whether they pass the threshold tolerance. If *Use Pylinac?* is unchecked, low contrast ROIs will always be colored red, and high contrast ROIs will always be colored blue (no passing tolerance is applied in this case). Background ROIs are always colored yellow.
+
+We denote low contrast, high contrast, and background ROIs with
+
+.. math::
+   L, H, B_{L}, B_{H}
+
+Where *L* stands for low frequency ROI, *H* for high frequency ROI and *B* is the background.
+
+The QC3 phantom has 5 high frequency ROIs, 5 low frequency ROIs, and one background ROI:
+
+.. math::
+   H_0, H_1, H_2, H_3, H_4\\
+   L_0, L_1, L_2, L_3, L_4\\
+   B
+
+The LeedsTOR phantom has 9 high frequency ROIs with 2 corresponding background ROIs, and 18 low frequency ROIs with corresponding 18 background ROIs.
+
+.. math::
+   H_0, H_1, \ldots, H_8\\
+   L_0, L_1, \ldots, L_{17}\\
+   B_{H1}, B_{H2}\\
+   B_{L0}, B_{L1}, \ldots, B_{L17}
+
+The Las Vegas phantom has 20 low frequency ROIs and 4 background ROIs.
+
+.. math::
+   L_0, L_1, \ldots, L_{19}\\
+   B_{L0}, B_{L1}, B_{L2}, B_{L3}
+
+Once ROIs are defined, pixel values within can be extracted from the image. Random noise is not calculated according to [2], instead the standard deviation of pixel values within low contrast or background ROIs is used.
+
+
+QC3 Analysis
+-------------
+
+*Use Pylinac?* checked
+........................
+
+.. image:: _static/images/qc3-2.png
+	:align: center
+
+**Low-frequency contrast** for each *L* is calculated as the low-frequency constant, which is the product of contrast and the diameter of the ROI.
+
+.. math::
+   \textrm{contrast constant}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B)}{\mathrm{median}\,(L_i)+\mathrm{median}\,(B)}\times \textrm{diameter}\,(L_i)
+
+The green line on the low-frequency plot represents the *low_threshold* defined in the configuration file. If the contrast constant is above the green line, the ROI is considered "visible".
+
+**Contrast-to-noise ratio** is defined as
+
+.. math::
+   \textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B)}{\mathrm{std}\,(L_i)}
+
+**Relative modulation transfer function** is calculated as
+
+.. math::
+   \textrm{rMTF}\,(H_i) = \left.\frac{\mathrm{max}\,(H_i)-\mathrm{min}\,(H_i)}{\mathrm{max}\,(H_i)+\mathrm{min}\,(H_i)} \middle/ \frac{\mathrm{max}\,(H_0)-\mathrm{min}\,(H_0)}{\mathrm{max}\,(H_0)+\mathrm{min}\,(H_0)}\right.
+
+Note that it is normalized to 1 for the first high-frequency region. The green line on the plot represents the high_threshold defined in the configuration file. If the points are above the green line, then the lines in the corresponding region can be resolved.
+
+**Relative lppmm** are calculated for 30%, 40%, 50% and 80% rMTF. The result is not in units of lppmm.
+
+**Median contrast** is calculated as the median of contrast values for all low-frequency regions. Note that this is not the median of contrast constants.
+
+**Median CNR** is calculated as the median of all CNR values.
+
+
+*Use Pylinac?* unchecked
+........................
+
+.. image:: _static/images/qc3-3.png
+	:align: center
+
+The analysis is similar, however these definitions are in use.
+
+**Low-frequency contrast**:
+
+.. math::
+   \textrm{contrast}\,(L_i) = 100\times\frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B)}{\mathrm{median}\,(B)}
+
+**Relative modulation transfer function**:
+
+.. math::
+   \textrm{rMTF}\,(H_i) = \left.\sqrt{(\mathrm{std}(H_i))^2-(\mathrm{std}(L_0))^2}\middle/ \sqrt{(\mathrm{std}(H_0))^2-(\mathrm{std}(L_0))^2}\right.
+
+**lppmm** is returned in real units based on the calibration of line pairs in the configuration file.
+
+**Noise** is the average value of standard deviations for all low-frequency regions and the background region:
+
+.. math::
+   \textrm{noise} = \frac{1}{6}\left(\sum_{i=0}^{i=4}\mathrm{std}\,(L_i) + \mathrm{std}\,(B)\right)
+
+**Contrast-to-noise ratio** is calculated like this:
+
+.. math::
+   \textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B)}{\textrm{noise}}
+  
+**CNR** is the CNR of the first low-frequency region.
+
+Leeds TOR Analysis
+-------------------
+*Use Pylinac?* checked
+........................
+
+.. image:: _static/images/lt-1.png
+	:align: center
+
+Pylinac uses a different background for each low-frequency ROI.
+
+**Low-frequency contrast** is again the product of **contrast** and the ROI diameter:
+
+.. math::
+   \textrm{contrast constant}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B_{Li})}{\mathrm{median}\,(L_i)+\mathrm{median}\,(B_{Li})}\times \textrm{diameter}\,(L_i)
+
+The green line on the low-frequency plot represents the low_threshold defined in the configuration file. If contrast-constant is above the green line, the ROI is considered "visible".
+
+**Contrast-to-noise ratio** is defined as
+
+.. math::
+   \textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B_{Li})}{\mathrm{std}\,(L_i)}
+
+**Relative modulation transfer function** is calculated like this:
+
+.. math::
+   \textrm{rMTF}\,(H_i) = \left.\frac{\mathrm{max}\,(H_i)-\mathrm{min}\,(H_i)}{\mathrm{max}\,(H_i)+\mathrm{min}\,(H_i)} \middle/ \frac{\mathrm{max}\,(B_{H0})-\mathrm{min}\,(B_{H1})}{\mathrm{max}\,(B_{H0})+\mathrm{min}\,(B_{H1})}\right.
+
+The function is normalized to 1 at the two background ROIs, if one is to take these two ROIs to form a starting line-pair region. Note that beause of this the plot is shifted to the right by one region. The green line on the plot represents the high_threshold defined in the configuration file. If the points are above the green line, then the lines in the corresponding region can be resolved.
+
+**Relative lppmm** are calculated for 30%, 40%, 50% and 80% rMTF. The result is not in units of lppmm.
+
+**Median contrast** is calculated as the median of contrast values for all low-frequency regions. Note that this is not the median of contrast-constants.
+
+**Median CNR** is calculated as the median of all CNR values.
+
+
+*Use Pylinac?* unchecked
+........................
+
+.. image:: _static/images/lt-2.png
+	:align: center
+
+**Low-frequency contrast**:
+
+.. math::
+   \textrm{contrast}\,(L_i) = 100\times\frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B_{Li})}{\mathrm{median}\,(B_{Li})}
+
+**Relative modulation transfer function**:
+
+.. math::
+   \textrm{rMTF}\,(H_i) = \left.\sqrt{(\mathrm{std}(H_i))^2-(\mathrm{std}((B_{H0}))^2}\middle/ \sqrt{(\mathrm{std}(H_0))^2-(\mathrm{std}(B_{H0}))^2}\right.
+
+rMTF is normalized to 1 at the max value, usually at H0.
+
+**lppmm** is returned in real units based on the calibration of line pairs in the configuration file.
+
+**Noise** is the average value of standard deviations for all low-frequency background regions:
+
+.. math::
+   \textrm{noise} = \frac{1}{18}\sum_{i=0}^{i=17}\mathrm{std}\,(B_{Li})
+
+**Contrast-to-noise ratio** is calculated like this:
+
+.. math::
+   \textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B_{Li})}{\textrm{noise}}
+
+**CNR** is the CNR of the first low-frequency region.
+
+Las Vegas analysis
+-------------------
+The Las Vegas phantom has only low-frequency regions.
+
+*Use Pylinac?* checked
+........................
+
+**Low-fequency constant** is the product of contrast and the diameter of the ROI:
+
+.. math::
+   \textrm{contrast constant}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{average}\,(B)}{\mathrm{median}\,(L_i)+\mathrm{average}\,(B)}\times \textrm{diameter}\,(L_i)
+
+Where the average background is
+
+.. math::
+   \textrm{average}\,(B)=\frac{1}{4}\sum_{i=0}^{i=3}\textrm{median}\,(B_{Li})
+
+The green line on the low-frequency plot represents the low_threshold defined in the configuration file. If contrast constant is above the green line, the ROI is considered "visible".
+
+**Contrast-to-noise ratio** is defined as
+
+.. math::
+   \textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{average}\,(B)}{\mathrm{std}\,(L_i)}
+
+**Median contrast** is calculated as the median of contrast values for all low-frequency regions. Note that this is not the median of contrast constants.
+
+**Median CNR** is calculated as the median of all CNR values.
+
+*Use Pylinac?* unchecked
+.........................
+
+**Low-frequency contrast**:
+
+.. math::
+   \textrm{contrast}\,(L_i) = 100\times\frac{\mathrm{median}\,(L_i)-\mathrm{average}\,(B)}{\mathrm{average}\,(B)}
+
+**Noise** is the average of standard deviations for all low-frequency background regions:
+
+.. math::
+   \textrm{noise} = \frac{1}{4}\sum_{i=0}^{i=3}\mathrm{std}\,(B_{Li})
+
+**Contrast-to-noise ratio** is calculated like this:
+
+.. math::
+   \textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{average}\,(B)}{\textrm{noise}}
+
+**CNR** is the CNR of the fourth low-frequency region.
+
+
+Literature
+-----------
+.. [1] Ronald T. Droege, *A practical method to routinely monitor resolution in digital images*, Medical Physics 10, 337 (1983)
+.. [2] R. Rajapakshe, K. Luchka, and S. Shalev, *A quality control test for electronic portal imaging devices*, Medical Physics 23, 1237 (1996)

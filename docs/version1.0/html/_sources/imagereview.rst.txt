@@ -1,0 +1,17 @@
+.. index: 
+
+Image review
+=============
+This is a complementary module that can be used to extract image pixel data.  It is not part of Pylinac.
+
+Chose the image you wish to inspect and click Display. In the resulting diagram you can:
+
+* use the crosshair to observe profiles,
+* draw a rectangle with the select box to get pixel info,
+* change the gray-scale display by moving slider level.
+
+If needed, you can invert the image or convert HU back to pixel data.
+
+.. image:: _static/images/imgreview.png
+	:align: center
+

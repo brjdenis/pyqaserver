@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Configuration &#8212; QAserver 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Winston Lutz module" href="winstonlutz.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>QAserver can be configured by changing <code class="docutils literal notranslate"><span class="pre">config.ini</span></code>.</p>
+<p>After you change the configuration file, you must restart the server.</p>
+<div class="section" id="winston-lutz">
+<h2>Winston-Lutz<a class="headerlink" href="#winston-lutz" title="Permalink to this headline">¶</a></h2>
+<p>When you click Analyze, QAserver will fetch dicom files from Orthanc and temporarily store them into the <em>temp_dcm_archive</em> folder. Then Pylinac will analyze them. When the results are ready, temporary files will be deleted. If there was an error, files will remain in the temp folder.</p>
+<dl class="simple">
+<dt><strong>PASS_RATE</strong></dt><dd><p>The radius (in mm) of the red circle in the “scatter diagram” section. At the same time the “failed” tolerance level.</p>
+</dd>
+<dt><strong>SUCCESS_RATE</strong></dt><dd><p>The radius (in mm) of the green circle in the “scatter diagram” section. But also the “passed” tolerance level.</p>
+</dd>
+<dt><strong>APPLY_TOLERANCE_TO_COLL_ASYM</strong></dt><dd><p>Chose whether the tolerance level will be applied to each analyzed image or to the section “Effect of collimator rotation”. Possible values are True and False.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="starshot">
+<h2>Starshot<a class="headerlink" href="#starshot" title="Permalink to this headline">¶</a></h2>
+<p>The module works similarly to the Winston-Lutz module. If you are using tiff images, they will be stored into <em>temp_nondicom_archive</em> folder. The PDF report is stored in <em>temp_pdf_reports</em> folder.</p>
+<dl class="simple">
+<dt><strong>TOLERANCE</strong></dt><dd><p>The tolerance for circle diameter (in mm).</p>
+</dd>
+<dt><strong>GENERATE_PDF_REPORT</strong></dt><dd><p>Chose whether to generate a pdf report. Possible values are True or False.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="picket-fence">
+<h2>Picket Fence<a class="headerlink" href="#picket-fence" title="Permalink to this headline">¶</a></h2>
+<p>The module works similarly to the Winston-Lutz module. The PDF report is stored in <em>temp_pdf_reports</em> folder.</p>
+<dl>
+<dt><strong>TOLERANCE</strong></dt><dd><p>The tolerance for the test in mm.</p>
+</dd>
+<dt><strong>USE_ORIGINAL_PYLINAC</strong></dt><dd><p>Chose whether normal Pylinac should be used for analysis or a modified picketfence.py module. The modified code gives you the option of using Elekta MLCs. Possible values are True and False.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you enable this feature, then a specially modified Pylinac module will be used for analysis. This may give unexpected results.</p>
+</div>
+</dd>
+<dt><strong>GENERATE_PDF_REPORT</strong></dt><dd><p>Chose whether to generate a pdf report. Possible values are True and False.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="planar-imaging">
+<h2>Planar Imaging<a class="headerlink" href="#planar-imaging" title="Permalink to this headline">¶</a></h2>
+<p>The module works similarly to the Winston-Lutz module. The PDF report is stored in <em>temp_pdf_reports</em> folder.</p>
+<dl>
+<dt><strong>LOW_THRESHOLD</strong></dt><dd><p>The threshold for low contrast evaluation. See Pylinac for further details.</p>
+</dd>
+<dt><strong>HIGH_THRESHOLD</strong></dt><dd><p>The threshold for high contrast evaluation. See Pylinac for further details.</p>
+</dd>
+<dt><strong>QC3_MACHINES</strong></dt><dd><p>A list of reference images: subfolders that contain the reference images for each machine. The folders must be in the <strong>reference_images/planar_imaging/QC3</strong> folder. Example: say you have two machines, Linac1 and Linac2. Create two subfolders Linac1 and Linac2 and to each folder add a reference image called <strong>First.dcm</strong>.</p>
+<dl class="simple">
+<dt>Putting it in full form:</dt><dd><ul class="simple">
+<li><p>reference_images/planar_imaging/QC3/Linac1/First.dcm</p></li>
+<li><p>reference_images/planar_imaging/QC3/Linac2/First.dcm</p></li>
+</ul>
+</dd>
+</dl>
+<p>These reference images must have exactly this name and extension. Once you run the test, QAserver will analyze the current image as well as the reference image.</p>
+</dd>
+<dt><strong>LEEDSTOR_MACHINES</strong></dt><dd><p>Exactly the same as in QC3_MACHINES, except that you must add the reference images to the folder <strong>reference_images/planar_imaging/LeedsTOR</strong>.</p>
+</dd>
+<dt><strong>LASVEGAS_MACHINES</strong></dt><dd><p>Exactly the same as in QC3_MACHINES, except that you must add the reference images to the folder <strong>reference_images/planar_imaging/LasVegas</strong>.</p>
+</dd>
+<dt><strong>LPPMM_QC3</strong></dt><dd><p>A list of line pairs per mm for the QC3 phantom. You can read the values from your certificate. The list can contain only 5 elements in increasing order.</p>
+</dd>
+<dt><strong>LPPMM_LEEDSTOR</strong></dt><dd><p>A list of line pairs per mm for the LeedsTOR phantom. You can read the values from your certificate. The list can contain only 9 elements in increasing order.</p>
+</dd>
+<dt><strong>GENERATE_PDF_REPORT</strong></dt><dd><p>Chose whether to generate a pdf report. Possible values are True and False.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="catphan">
+<h2>Catphan<a class="headerlink" href="#catphan" title="Permalink to this headline">¶</a></h2>
+<p>After you click Analyze, the whole series is transferred from Orthanc to a temp folder. After the analysis is over, the folder is deleted.</p>
+<dl class="simple">
+<dt><strong>503_MACHINES</strong></dt><dd><dl class="simple">
+<dt>A list of reference images. In fact, this is a list of subfolders that contain the reference images for each imager. The subfolders must be in the <strong>reference_images/ct/Catphan503</strong> folder. Example: say you have two linacs with XVI. For each linac you would create three subfolders because you have three independent FOV (a sort of “imagers”). Into each subfolder copy reference CBCT scans that you acquired when the conditions were optimal. You can get reference scans if you send them to Orthanc and then download them as dicom files. Putting it together:</dt><dd><ul class="simple">
+<li><p>reference_images/ct/Catphan503/Linac1_SFOV</p></li>
+<li><p>reference_images/ct/Catphan503/Linac1_MFOV</p></li>
+<li><p>reference_images/ct/Catphan503/Linac1_LFOV</p></li>
+<li><p>reference_images/ct/Catphan503/Linac2_SFOV</p></li>
+<li><p>reference_images/ct/Catphan503/Linac2_MFOV</p></li>
+<li><p>reference_images/ct/Catphan503/Linac2_LFOV</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><strong>504_MACHINES</strong></dt><dd><p>Exactly the same as 503_MACHINES with one difference: add subfolders to <strong>reference_images/ct/Catphan504</strong>.</p>
+</dd>
+<dt><strong>600_MACHINES</strong></dt><dd><p>Exactly the same as 503_MACHINES with one difference: add subfolders to <strong>reference_images/ct/Catphan600</strong>.</p>
+</dd>
+<dt><strong>604_MACHINES</strong></dt><dd><p>Exactly the same as 503_MACHINES with one difference: add subfolders to <strong>reference_images/ct/Catphan604</strong>.</p>
+</dd>
+<dt><strong>TOLERANCE_HU</strong></dt><dd><p>The tolerance for Hounsfield units and the uniformity module.</p>
+</dd>
+<dt><strong>TOLERANCE_LCV</strong></dt><dd><p>The tolerance for low contrast visibility. Note that two definitions exist in QAserver. Using either of them can be controlled with USE_LCV2TOL.</p>
+</dd>
+<dt><strong>TOLERANCE_SCALING</strong></dt><dd><p>The tolerance for geometric scaling in mm.</p>
+</dd>
+<dt><strong>TOLERANCE_THICKNESS</strong></dt><dd><p>The tolerance for the difference between nominal and actual slice thickness in mm.</p>
+</dd>
+<dt><strong>TOLERANCE_LOWCONTRAST</strong></dt><dd><p>The tolerance level for low contrast visibility. This is the number of ROIs that must be seen on the CTP515 module for the test to pass.</p>
+</dd>
+<dt><strong>THRESHOLD_CNR</strong></dt><dd><p>The threshold for the low contrast ROI of the CTP515 module to be seen. It is measured in the same units as the CNR constant.</p>
+</dd>
+<dt><strong>TOLERANCE_MTF</strong></dt><dd><p>The tolerance for the difference between reference and current 50% rMTF.</p>
+</dd>
+<dt><strong>TOLERANCE_UNIFORMITYIDX</strong></dt><dd><p>The tolerance for the uniformity index. Note that two definitions exist in QAserver. Using either of them can be controlled with USE_UNIFORMITYIDX2.</p>
+</dd>
+<dt><strong>USE_LCV2TOL</strong></dt><dd><p>If set to True, the tolerance will be applied to LCV, otherwise to LCV2.</p>
+</dd>
+<dt><strong>USE_UNIFORMITYIDX2</strong></dt><dd><p>If set to True, the tolerance will be applied to Uniformity index, otherwise to Uniformity index 2.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="dynalog">
+<h2>Dynalog<a class="headerlink" href="#dynalog" title="Permalink to this headline">¶</a></h2>
+<p>Before you can use the module, you must run the analyze_dynalog.py module to fill the dynalog database with records. The <code class="docutils literal notranslate"><span class="pre">config.ini</span></code> file is read by analyze_dynalogs.py, so no special edition of the latter should be necessary. The dynalog module can be configured to send emails after the analysis has been completed, but to begin you can turn this off by setting SEND_EMAIL to False.</p>
+<p>Configure the module first, then run the <strong>analyze_dynalogs.py</strong> module from the command prompt by typing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">analyze_dynalogs</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Once you get familiar with this, you can schedule the module to start every day with Task Scheduler.</p>
+<p>When run, the analyze_dynalogs.py module will read dynalogs from listed repositories (DYNALOG_REPOSITORIES).  Dynalogs in the designated folders will be analyzed. There will be a short log about the analysis in \dynalog_database\log.txt. The results of the analysis will be entered into a special sqlite database (\dynalog_database\dynalog_database.db). When you search the records within the web interface, you are scrolling across this database. If a dynalog was analyzed successfully, it will be added to a zip archive located in \dynalog_database\ARCHIVE. The name of the archive is normally “YYYY_MM.zip”. Each month a new archive will be created, so you do not have too large files. The zip archive and the sqlite database are linked.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not edit the zip archive or the sqlite database manually unless you really have to. Also, do not run the analysis at midnight.</p>
+</div>
+<p>When the analyze_dynalogs.py module analyzes dynalogs, it gives a special label to each record depending on the name of the repository from where the dynalog was taken. That is how you can separate dynalogs for different linacs. Labels are defined with REPOSITORIES_LABELS.</p>
+<p>If there was an error while analyzing dynalogs, the problematic dynalog will be copied to the <em>dynalogs_with_errors</em> folder.</p>
+<p>When you use the web interface to analyze one particular record, the corresponding dynalog is extracted from the zip archive and analyzed again with settings that you can define in the interface.</p>
+<dl>
+<dt><strong>TOLERANCE_DTA</strong></dt><dd><p>The (gamma) distance-to-agreement tolerance for automatic analysis. In mm.</p>
+</dd>
+<dt><strong>TOLERANCE_DD</strong></dt><dd><p>The (gamma) dose difference tolerance for automatic analysis. In %.</p>
+</dd>
+<dt><strong>THRESHOLD</strong></dt><dd><p>The dose threshold for gamma analysis. In %.</p>
+</dd>
+<dt><strong>RESOLUTION</strong></dt><dd><p>Resolution for gamma calculation in mm.</p>
+</dd>
+<dt><strong>DYNALOG_REPOSITORIES</strong></dt><dd><p>A list of paths where dynalogs are located. Normally each linac (or MLC controller) stores dynalogs in a particular network folder. You can ask your engineers to set this up. Enter the full path of the folder. For many repositories make a list:</p>
+<blockquote>
+<div><p>DYNALOG_REPOSITORIES = \network_path1\linac1\dynalogs, \network_path2\linac2\dynalogs</p>
+</div></blockquote>
+<p>Of course the paths need not be network paths. If you wish to experiment, you can just use local folders with dynalogs.</p>
+</dd>
+<dt><strong>REPOSITORIES_LABELS</strong></dt><dd><p>A list of names (labels) for each entry to DYNALOG_REPOSITORIES. Keep the same order as DYNALOG_REPOSITORIES.</p>
+</dd>
+<dt><strong>SEND_EMAIL</strong></dt><dd><p>If set to True, after the analysis is over, QAserver will send a short summary of the results via email.</p>
+</dd>
+<dt><strong>SMTP_SERVER</strong></dt><dd><p>The SMTP server address. For example: smtp.gmail.com.</p>
+</dd>
+<dt><strong>SMTP_PORT</strong></dt><dd><p>The SMTP port. For example: 587.</p>
+</dd>
+<dt><strong>SEND_FROM_USER</strong></dt><dd><p>Your email account for sending messages.</p>
+</dd>
+<dt><strong>SEND_FROM_PASSWORD</strong></dt><dd><p>The password that you are using to access the account. Sorry, it is not encrypted.</p>
+</dd>
+<dt><strong>SEND_TO</strong></dt><dd><p>A list of receivers. For example: <a class="reference external" href="mailto:person1&#37;&#52;&#48;gmail&#46;com">person1<span>&#64;</span>gmail<span>&#46;</span>com</a>, <a class="reference external" href="mailto:person2&#37;&#52;&#48;gmail&#46;com">person2<span>&#64;</span>gmail<span>&#46;</span>com</a>, etc.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="vmat">
+<h2>VMAT<a class="headerlink" href="#vmat" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>TOLERANCE</strong></dt><dd><p>The tolerance for the test. See Pylinac for further info.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="keeping-it-clean">
+<h2>Keeping it clean<a class="headerlink" href="#keeping-it-clean" title="Permalink to this headline">¶</a></h2>
+<p>From time to time check the folders for remaining files. In particular: temp_dcm_archive, temp_dynalog_folder, temp_nondicom_archive and temp_pdf_reports. The last one may be full of old pdf reports.</p>
+</div>
+<div class="section" id="sending-data-to-orthanc">
+<h2>Sending data to Orthanc<a class="headerlink" href="#sending-data-to-orthanc" title="Permalink to this headline">¶</a></h2>
+<p>Imaging workstation can be configured to send images directly to Orthanc via dicom transfer. This is particularly easy to do on Elekta’s iView and XVI. If you do not feel competent to configure the export filters, ask your system administrator to do it.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">QAserver</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">CT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="installation.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="winstonlutz.html" title="next chapter">Winston Lutz module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Denis Brojan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/configuration.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

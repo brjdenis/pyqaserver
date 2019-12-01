@@ -1,0 +1,114 @@
+.. index: 
+
+About
+======
+QAserver connects Pylinac and Orthanc with a simplistic web interface. It was built to speed up the image analysis process with Pylinac, without having to switch computers or work manually with dicom files. The procedure is easy: acquire the image, send the image from the imaging computer directly to Orthanc, and then analyze it with Pylinac by using QAserver. Since all images are stored in Orthanc, you can re-analyze them anytime you want. You can do the analysis on any computer in your network.
+
+.. image:: _static/images/overview.png
+	:align: center
+
+Not all Pylinac's capabilities are implemented. Trajectory logs cannot be analyzed, the calibration module is missing, and there are some missing features in other modules. See the user guide.
+
+QAserver contains little original code, just enough to connect Pylinac and Orthanc. Some dependencies are included in the distribution of QAserver, other dependencies must be installed separately. I tried to list included dependencies along with corresponding licenses. You can read about it in the bottom table.
+
+You can contribute to this project with suggestions or bug reports: 
+
+
+.. warning::
+	QAserver may have serious errors. Always run the analysis with pure Pylinac to see what the result should be. For my part of the code, this license applies: :doc:`license`.
+
+
+.. list-table::
+	:widths: 25 25 25 25
+	:header-rows: 1
+	:align: center
+
+	* - Software
+	  - Version
+	  - Used for
+	  - Licence
+
+	* - Resttoolbox_
+	  - /
+	  - Communication with Orthanc
+	  - GPLv3
+
+	* - Bokeh_
+	  - 1.3.4
+	  - JS files for HTML
+	  - BSD 3-Clause
+
+	* - mpld3_
+	  - 0.3
+	  - d3 plotting
+	  - BSD 3-Clause
+
+	* - Bootstrap_
+	  - 3.4.1
+	  - Styles for HTML
+	  - MIT, (c)2019 Twitter
+
+	* - Bootstrap-datepicker_
+	  - 1.4.1
+	  - Datepicker for HTML
+	  - Apache License 2.0
+
+	* - Bootstrap-select_
+	  - 1.13.9
+	  - Select button sytle
+	  - MIT
+
+	* - Popper_
+	  - 2019
+	  - Tooltips, dropdowns...
+	  - MIT
+
+	* - jQuery_
+	  - 3.2.1
+	  - Javascript
+	  - MIT
+
+	* - Glyphicons_
+	  - Halflings
+	  - Icons
+	  - MIT
+
+	* - d3.v3.min.js_
+	  - mpld3
+	  - Plotting
+	  - BSD 3-clause
+
+	* - mpld3.v0.3.min.js_
+	  - mpld3 v0.3
+	  - Plotting
+	  - BSD 3-clause
+
+	* - Pylinac_
+	  - 2.2.6
+	  - Picket fence modification
+	  - MIT
+
+	* - math.js_
+	  - 6.2.2
+	  - Image Review calculation
+	  - Apache License 2.0
+
+A sense of how it works
+-----------------------
+
+Orthanc allows to query dicom files (images) via its RESTful interface. The RestToolBox.py module, created by the authors of Orthanc, is used (with some modification) to connect to the Orthanc database, to pick the right images, and then to transfer them to the QA computer. Once the files have been transferred to the computer where QAserver is running, they will be parsed to Pylinac for analysis. QAserver will collect the results of the analysis, delete the files locally and send the results back to the web app. And that is more or less it.
+
+
+.. _Bokeh: https://github.com/bokeh/bokeh
+.. _mpld3: https://mpld3.github.io/
+.. _Resttoolbox: https://github.com/jodogne/OrthancMirror
+.. _Bootstrap: https://getbootstrap.com/docs/3.4/getting-started/
+.. _Bootstrap-datepicker: https://github.com/eternicode/bootstrap-datepicker
+.. _Bootstrap-select: https://github.com/snapappointments/bootstrap-select/
+.. _Popper: https://github.com/snapappointments/bootstrap-select/
+.. _jQuery: https://github.com/jquery/jquery
+.. _Glyphicons: https://getbootstrap.com/docs/3.4/getting-started/
+.. _d3.v3.min.js: https://mpld3.github.io/install.html
+.. _mpld3.v0.3.min.js: https://github.com/mpld3/mpld3
+.. _Pylinac: https://github.com/jrkerns/pylinac
+.. _math.js: https://mathjs.org/

@@ -1,0 +1,33 @@
+.. index: 
+
+Flatness/Symmetry module
+==========================
+
+.. warning::
+
+   Flatness and symmetry measured with the portal imaging device is not the same as that measured in the water tank. Be sure you understand the results of this module.
+
+Settings
+--------
+
+**Analysis definition:**
+	Pick the definition that suits you. See Pylinac for further info.
+
+**Center:**
+	Here you can set the point where profiles will be extracted from the image. This point only defines the horizontal and vertical line for the profiles, it does not define the center of the profiles.
+	
+	If set to Automatic, Pylinac will do it on it's own. If set to Manual, you can enter coordinates of the pixel. If set to CAX, a special function will try to find the center of the field. CAX method may not work well on non-flattened profiles.
+	
+	If you wish to manually set the origin, then start with some guess, then on the plotted image use the mouse cursor to finely set the final point and enter it into the text box.
+
+**Invert image:**
+	Check this if you want to invert the image.
+
+
+Results
+--------
+
+.. image:: _static/images/flatsym.png
+	:align: center
+
+

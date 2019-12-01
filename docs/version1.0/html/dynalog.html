@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Dynalog module &#8212; QAserver 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Flatness/Symmetry module" href="flatsym.html" />
+    <link rel="prev" title="CT module" href="catphan.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dynalog-module">
+<h1>Dynalog module<a class="headerlink" href="#dynalog-module" title="Permalink to this headline">¶</a></h1>
+<p>This module is used to analyze Dynalogs. It is meant to be used for everyday tracking of MLC dynamics during treatment. To be able to use it, several steps must be followed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Trajectory log analysis is not available in this version of QAserver.</p>
+</div>
+<ul class="simple">
+<li><p>The module <strong>analyze_dynalogs.py</strong> must be used to fill the database with dynalogs. This module reads dynalogs from a dedicated folder (local or network), analyzes them and saves them into a special QAserver database so that they can be reviewed later.</p></li>
+<li><p>You should set you MLC controller to make a copy of each dynalog to a network folder so that you will be able to access it remotely. It is best to do the analysis in the evening so that you collect all dynalogs of the day.</p></li>
+<li><p>You can configure QAserver to send you an email containing a short summary of the analysis.</p></li>
+</ul>
+<p>Please read the configuration instruction carefully in order to set up the dynalog module.</p>
+<div class="section" id="how-to-start">
+<h2>How to start?<a class="headerlink" href="#how-to-start" title="Permalink to this headline">¶</a></h2>
+<p>Collect a couple of dynalogs and save them to a local folder. In <strong>config.ini</strong> set this path to <em>DYNALOG_REPOSITORIES</em>. Define a name for your repository, say <em>REPOSITORIES_LABELS = Linac1</em>. Set <em>SEND_EMAIL = False</em>. Then run the analyze_dynalogs.py module.</p>
+<p>After a successful run, you should have dynalogs in the database.</p>
+</div>
+<div class="section" id="how-to-get-data">
+<h2>How to get data?<a class="headerlink" href="#how-to-get-data" title="Permalink to this headline">¶</a></h2>
+<p><em>1. I want to get all patients/records for a particular date</em></p>
+<blockquote>
+<div><p>Click Filter patients by date and chose the date. <strong>Patient</strong> dropdown will be populated. In the <strong>Record</strong> dropdown you can then select the record you want.</p>
+</div></blockquote>
+<p><em>2. I want to get all the patients for a particular date and a particular folder (ie machine)</em></p>
+<blockquote>
+<div><p>In the <strong>select folder</strong> dropdown chose the appropriate folder and repeat 1.</p>
+</div></blockquote>
+<p><em>3. I want to get all the records for a particular patient</em></p>
+<blockquote>
+<div><p>Search the patient with the <strong>Filter patient list</strong>. You can filter the results with <strong>Filter patients by folder</strong>.</p>
+</div></blockquote>
+<p><em>4. I want to get all the patients from a particular folder (ie. machine)</em></p>
+<blockquote>
+<div><p>Clear the <strong>Filter patient list</strong>, select the appropriate <strong>Filter patients by folder</strong> and click Go!</p>
+</div></blockquote>
+<p><em>5. How to find out what records have been saved last?</em></p>
+<blockquote>
+<div><p>Click the <strong>Last upload</strong> button.</p>
+</div></blockquote>
+<p><em>6. How to get a summary of all the records for a particular date?</em></p>
+<blockquote>
+<div><p>Select a date and click the <strong>For selected date</strong> button.</p>
+</div></blockquote>
+<p><em>7. How to analyze one particular dynalog?</em></p>
+<blockquote>
+<div><p>Chose the record and select the desired field (<strong>Select field for analysis</strong>). Select the appropriate MLC type (<strong>Select MLC</strong>) and then click <strong>Analyze</strong>.</p>
+</div></blockquote>
+</div>
+<div class="section" id="record-data">
+<h2>Record data<a class="headerlink" href="#record-data" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Field</strong></dt><dd><p>The number of the field. If dynalog does not contain a record of the field id, the value will be “NA”.</p>
+</dd>
+<dt><strong>Gantry</strong></dt><dd><p>Gantry angle or arc starting angle.</p>
+</dd>
+<dt><strong>Time</strong></dt><dd><p>Time of treatment.</p>
+</dd>
+<dt><strong>Snaps</strong></dt><dd><p>Number of snapshots. Snapshots are 50 ms apart.</p>
+</dd>
+<dt><strong>Holds</strong></dt><dd><p>The number of times that the MLC controller demanded beam hold.</p>
+</dd>
+<dt><strong>Max RMS [mm]</strong></dt><dd><p>Maximum RMS over all snapshots and all leaves.</p>
+</dd>
+<dt><strong>Max RMS2 [mm]</strong></dt><dd><p>Similar to MAX RMS, except that only snapshots when beam was ON and there were no holdoffs are included in the calculation.</p>
+</dd>
+<dt><strong>Max DIFF [mm]</strong></dt><dd><p>Maximum difference between planned and measured leaf positions, calculated for all leaves and all snapshots.</p>
+</dd>
+<dt><strong>Max DIFF2 [mm]</strong></dt><dd><p>Similar to Max DIFF2, except that only those snapshots are included when beam was ON and there were no beam holdoffs.</p>
+</dd>
+<dt><strong>RMS avg [mm]</strong></dt><dd><p>Average RMS for moving leaves only (when beam was ON and there were no holdoffs). Leaf is moving if the standard deviation of its position over all snapshots is lower than 0.1 mm.</p>
+</dd>
+<dt><strong>gamma avg</strong></dt><dd><p>Average gamma.</p>
+</dd>
+<dt><strong>gamma&lt;1 [%]</strong></dt><dd><p>Percentage of points that have gamma smaller than 1.</p>
+</dd>
+<dt><strong>dd/dta/thresh/res</strong></dt><dd><p>Settings used for gamma calculation: dose difference, distance to agreement, threshold, resolution. See your configuration file.</p>
+</dd>
+<dt><strong>Folder</strong></dt><dd><p>Name or label of the folder from where dynalogs were taken. Normally this would be the name of your linac.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>QAserver returns Pylinac’s analysis with some additional features.</p>
+<div class="section" id="mlc">
+<h3>MLC<a class="headerlink" href="#mlc" title="Permalink to this headline">¶</a></h3>
+<p>Here you can observe planned and actual MLC movements. If you don’t see the animation, then there is a problem with your installation of Bokeh.</p>
+<p>The speed of the leaves is calculated as the first time difference of leaf position. It is severely prone to noise. In future release it will be calculated more robustly.</p>
+<p>Red bars correspond to bank A and blue bars correspond to bank B.</p>
+<p>Beam status has two signals: CONT/STOP and ON/OFF. The first one is the beam hold off, the second one is beam on or beam off.</p>
+<img alt="_images/dynalog1.png" class="align-center" src="_images/dynalog1.png" />
+</div>
+<div class="section" id="fluence">
+<h3>Fluence<a class="headerlink" href="#fluence" title="Permalink to this headline">¶</a></h3>
+<p>Actual and planned fluence maps are presented. Besides the gamma map a dose difference map is also shown.</p>
+<img alt="_images/dynalog2.png" class="align-center" src="_images/dynalog2.png" />
+</div>
+<div class="section" id="error-histogram">
+<h3>Error histogram<a class="headerlink" href="#error-histogram" title="Permalink to this headline">¶</a></h3>
+<p>Four histograms are shown: RMS and RMS2, MAX DIFF and MAX DIFF2.</p>
+<img alt="_images/dynalog3.png" class="align-center" src="_images/dynalog3.png" />
+</div>
+<div class="section" id="dose-rate">
+<h3>Dose rate<a class="headerlink" href="#dose-rate" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/dynalog4.png" class="align-center" src="_images/dynalog4.png" />
+<p>The first graph shows how beam status is changing over time and how meterset weight is adding up.</p>
+<p>The second plot is the gantry speed. Gantry speed is not calculated with first-order difference. Instead, gantry angle as a function of time (snapshot) is filtered with the savgol filter using every other point out of the whole snapshot collection. Then the ordinary first order difference is calculated using every third point of the filtered function. This plot is shown in dark blue color. Underneath you will see a faint blue plot, that is the first-order difference of gantry position. It should be extremely noisy.</p>
+<p>The dose rate graph is calculated similarly to gantry speed.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">QAserver</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">CT module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="catphan.html" title="previous chapter">CT module</a></li>
+      <li>Next: <a href="flatsym.html" title="next chapter">Flatness/Symmetry module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Denis Brojan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/dynalog.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
