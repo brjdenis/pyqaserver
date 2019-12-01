@@ -15,13 +15,13 @@ QAserver contains little original code, just enough to connect Pylinac and Ortha
 
 QAserver cannot be installed as a Python package. You must download the zip archive and follow installation instructions given below.
 
-* Version 1.0
+* [Version 1.0](/versions/qaserver1.0.zip)
 
 # Installation and user guide
 
 Installation instructions and a user guide are available at:
 
-* [Version 1.0](https://brjdenis.github.io/qaserver/docs/version1.0/html/) , [Version 1.0 PDF](/pdf/qaserver1.0.pdf)
+* [Version 1.0](https://brjdenis.github.io/qaserver/docs/version1.0/html/) , [PDF](/pdf/qaserver1.0.pdf)
 
 # Bugs and requests
 
