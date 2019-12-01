@@ -20,7 +20,7 @@ QAserver cannot be installed as a Python package. You must download the zip arch
 
 # Installation and user guide
 
-Installation instructions and a user guide are available at:
+Installation instructions and the user guide are available at:
 
 * [Version 1.0](https://brjdenis.github.io/qaserver/docs/version1.0/html/) , [PDF](/pdf/qaserver1.0.pdf)
 
