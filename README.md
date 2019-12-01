@@ -4,12 +4,13 @@ QAserver connects Pylinac and Orthanc with a simplistic web interface. It was bu
 
 ![image](image.png)
 
-It works on Windows 7 and 10.
+It works on Windows 7 and 10. Currently, it is compatible with Pylinac version 2.2.7 and Python 3.7.
 
 Not all Pylinac's capabilities are implemented. Trajectory logs cannot be analyzed, the calibration module is missing, and there are some missing features in other modules.
 
 QAserver contains little original code, just enough to connect Pylinac and Orthanc. Some dependencies are included in the distribution of QAserver, other dependencies must be installed separately.
 
+What is the point of this project? I don't know. I have too much time and not enough life.
 
 # Download
 
