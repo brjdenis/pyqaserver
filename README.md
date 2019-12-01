@@ -4,7 +4,7 @@ QAserver connects [Pylinac](https://github.com/jrkerns/pylinac) and [Orthanc](ht
 
 ![image](image.png)
 
-It works on Windows 7 and 10. Currently, it is compatible with Pylinac version 2.2.7 and Python 3.7.
+It works on Windows 7 and 10. Currently, it is compatible with Pylinac 2.2.7 and Python 3.7.
 
 Not all Pylinac's capabilities are implemented. Trajectory logs cannot be analyzed, the calibration module is missing, and there are some missing features in other modules. Basically, this are the modules you can use:
 
