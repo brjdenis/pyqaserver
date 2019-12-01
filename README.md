@@ -21,7 +21,7 @@ With an additional derivative module I call "Fieldsize".
 
 QAserver contains little original code, just enough to connect Pylinac and Orthanc. Some dependencies are included in the distribution of QAserver, other dependencies must be installed separately.
 
-What is the point of this project? I don't know. I have too much time and not enough life.
+What is the point of this project? Well, it started as an experiment. I wanted to do the Winston-Lutz test on an Elekta linac a couple of years ago, but didn't have the faintest idea how to do it. I stumbled upon Pylinac and learned a lot from it. So I put all the modules that I use into the web interface... I have too much time and not enough life.
 
 # Download
 
