@@ -6,7 +6,18 @@ QAserver connects [Pylinac](https://github.com/jrkerns/pylinac) and [Orthanc](ht
 
 It works on Windows 7 and 10. Currently, it is compatible with Pylinac version 2.2.7 and Python 3.7.
 
-Not all Pylinac's capabilities are implemented. Trajectory logs cannot be analyzed, the calibration module is missing, and there are some missing features in other modules.
+Not all Pylinac's capabilities are implemented. Trajectory logs cannot be analyzed, the calibration module is missing, and there are some missing features in other modules. Basically, this are the modules you can use:
+
+* Winston Lutz
+* Starshot
+* Picket fence
+* Planar imaging
+* CT
+* Dynalog
+* Flatness/Symmetry
+* VMAT
+
+With an additional derivative module I call "Fieldsize".
 
 QAserver contains little original code, just enough to connect Pylinac and Orthanc. Some dependencies are included in the distribution of QAserver, other dependencies must be installed separately.
 
