@@ -73,7 +73,7 @@ You can do the test like this:
 
 * Put the BB on the couch. Put HexaPod, if you have it, into drive and put the Reference frame on. Align the BB with the lasers. Make a CBCT scan of the BB. Create a special reconstruction preset for this. You can shrink the reconstruction window, and increase the resolution, but be careful because some combinations don't work. Change the reconstruction voxel size to, say, 0.5 mm or 1 mm. ReconstructionDataType should be set to float, and ProjectionDownSizeFactor should be set to 1. Then register the scan with the reference image that Elekta supplies. Try to be accurate. Make the shifts with HexaPOD (or you can use micrometer screws). Then acquire MV image of the BB for the WL test. After you are done acquiring 8 images, put gantry and collimator to 0 and acquire several images of the BB with the same field size as before, but at different couch angles - this will be a test of the couch rotation.
 
-![image](/files/bb2.png)
+	![image](/files/bb2.png)
 
 * Put the BB on the couch and acquire 8 MV image as explained. Calculate the shifts that minimize deviations. Make the shifts with the micrometer screws. Repeat the procedure until the shifts are as small as possible. Then make a cbct scan of the BB and register the scan with the reference image. The registration shifts will tell you the difference between the MV isocenter and the position of this isocenter as seen by XVI. If it is too large, a re-calibration of XVI will be necessary. I should warn you that Elekta's flexmap software calculates the longitudinal shifts differently than Pylinac, don't be surprised if you see a difference of 0.3 mm.
 
