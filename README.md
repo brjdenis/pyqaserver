@@ -61,6 +61,6 @@ What is the point of this project? Well, it started as an experiment. I wanted t
 
 ## Some notes on doing tests on Elekta linacs
 
-You can read about some tests you can do on Elekta linac with Pylinac here: 
+I put together some personal notes on doing tests on Elekta linacs with Pylinac and QAserver: 
 
-[Note on doing tests on Elekta linacs](https://brjdenis.github.io/qaserver/docs/qaserver-tips/html/)
+[Notes on doing tests on Elekta linacs](https://brjdenis.github.io/qaserver/docs/qaserver-tips/html/)
