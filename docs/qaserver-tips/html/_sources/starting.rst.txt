@@ -1,0 +1,71 @@
+.. index: 
+
+===============
+Getting started
+===============
+
+A practical person should know everything about the linac. So read all the documentation that you have! Then install Pylinac, Orthanc and QAserver. And then start doing experiments. To be able to send images to Orthanc for QAserver to read them and pass them to Pylinac, you first have to set the appropriate dicom export filters in XVI and iView.
+
+One of the things that you will also need is Elekta's iCOM CAT. This program comes with your linac, you can find it on the Sequencer. We will use this program to upload some quick beams into Service.
+
+Another thing that you will need are sheets of paper and a thin pencil. 
+
+***************************************
+Configuring iView and XVI workstations
+***************************************
+
+Configure both imaging workstations to be able to export images to Orthanc. You do this by modifying **sri.ini** and **mergecom.app**. 
+
+.. warning::
+	Before you edit **sri.ini** and **mergecom.app** make a safety copy of both files! If you do something wrong, your workstation may not work anymore.
+
+
+``sri.ini`` contains the list of export filters, and ``mergecom.app`` defines further details for each export filter. See QAserver `configuration <https://brjdenis.github.io/qaserver/docs/version1.0/html/configuration.html>`_ for more details (more accurately, Orthanc configuration). Add an additional export filter for Orthanc to ``mergecom.app``::
+
+	[QAserver]
+		PORT_NUMBER     = 104
+		HOST_NAME       = Put Orthanc IP here
+		SERVICE_LIST    = Storage_Only_Service_List
+
+
+Put in the port number of the Orthanc server, usually 104, but check the configuration of Orthanc to be sure. And type in the IP address of the orthanc server where it says ``HOST_NAME``.
+
+Add this export filter to ``sri.ini``::
+
+	[Dicom]
+	NumberOfExportServers=4
+	...
+	ExportServer3=MOSAIQ,IMPAC_DCM_SCP
+	ExportServer4=QAserver,QAserver
+	...
+
+Just define a new export filter, in my case ``ExportServer4``, and increase ``NumberOfExportServers`` by 1, if neccessary.
+
+These two files have a similar structure on both iView and XVI. Once you are done, restart the application, acquire an image, and try to send it to Orthanc. If you experience problems, it maybe that the NSS computer is blocking the transport. In this case talk to your service engineer.
+
+
+****************************************
+Using iCom CAT to send plans to Service
+****************************************
+
+Find the iCOM CAT program on your Scheduler. It is normally installed in the "Program Files" directory under "Elekta". If you cannot find it, have somebody install it on the Scheduler. Make sure Mosaiq is not running. The linac should be in Clinical mode with Receive External Prescription on. Open iCOM CAT and input the necessary settings. Type in the IP address of your linac. And ``Linac ID``, which is the serial number of the linac (last four digits). iCOM CAT should then connect with the linac.
+
+.. image:: _static/icom.png
+	:align: center
+	:scale: 50 %
+
+We will use iCOM CAT to send a couple of beams to service, two for the Winston-Lutz test, and one for Picket fence test. There is a zip archive of the beams at: `Example beams <https://github.com/brjdenis/qaserver/blob/master/files/icomcat.zip>`_
+
+Copy the beams to the Scheduler. Then:
+
+* Open the beam in iCOM CAT. 
+* Change the ``Machine`` value to match the serial number of your linac (last four digits).
+* Click ``Send Field``.
+* Once the beam has loaded on Integrity, click ``Copy to Service``. Or you could run the beam in Clinical mode by clicking ``Confirm Settings`` in iCOM CAT.
+
+
+
+
+
+
+
