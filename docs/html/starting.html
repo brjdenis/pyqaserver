@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Getting started &#8212; qaserver-tips 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/scrolls.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Winston-Lutz test" href="winstonlutz.html" />
+    <link rel="prev" title="Doing tests on Elekta linacs with QAserver" href="index.html" /> 
+  </head><body>
+    <div id="content">
+      <div class="header">
+        <h1 class="heading"><a href="index.html"
+          title="back to the documentation overview"><span>Getting started</span></a></h1>
+      </div>
+      <div class="relnav" role="navigation" aria-label="related navigation">
+        <a href="index.html">&laquo; Doing tests on Elekta linacs with QAserver</a> |
+        <a href="#">Getting started</a>
+        | <a href="winstonlutz.html">Winston-Lutz test &raquo;</a>
+      </div>
+      <div id="contentwrapper">
+        <div id="toc" role="navigation" aria-label="table of contents navigation">
+          <h3>Table of Contents</h3>
+          <ul>
+<li><a class="reference internal" href="#">Getting started</a><ul>
+<li><a class="reference internal" href="#configuring-iview-and-xvi-workstations">Configuring iView and XVI workstations</a></li>
+<li><a class="reference internal" href="#using-icom-cat-to-send-plans-to-service">Using iCom CAT to send plans to Service</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+        <div role="main">
+        
+  <div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>A practical person should know everything about the linac. So read all the documentation that you have! Then install Pylinac, Orthanc and QAserver. And then start doing experiments. To be able to send images to Orthanc for QAserver to read them and pass them to Pylinac, you first have to set the appropriate dicom export filters in XVI and iView.</p>
+<p>One of the things that you will also need is Elekta’s iCOM CAT. This program comes with your linac, you can find it on the Sequencer. We will use this program to upload some quick beams into Service.</p>
+<p>Another thing that you will need are sheets of paper and a thin pencil.</p>
+<div class="section" id="configuring-iview-and-xvi-workstations">
+<h2>Configuring iView and XVI workstations<a class="headerlink" href="#configuring-iview-and-xvi-workstations" title="Permalink to this headline">¶</a></h2>
+<p>Configure both imaging workstations to be able to export images to Orthanc. You do this by modifying <strong>sri.ini</strong> and <strong>mergecom.app</strong>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Before you edit <strong>sri.ini</strong> and <strong>mergecom.app</strong> make a safety copy of both files! If you do something wrong, your workstation may not work anymore.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">sri.ini</span></code> contains the list of export filters, and <code class="docutils literal notranslate"><span class="pre">mergecom.app</span></code> defines further details for each export filter. See QAserver <a class="reference external" href="https://brjdenis.github.io/qaserver/docs/version1.0/html/configuration.html">configuration</a> for more details (more accurately, Orthanc configuration). Add an additional export filter for Orthanc to <code class="docutils literal notranslate"><span class="pre">mergecom.app</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">QAserver</span><span class="p">]</span>
+        <span class="n">PORT_NUMBER</span>     <span class="o">=</span> <span class="mi">104</span>
+        <span class="n">HOST_NAME</span>       <span class="o">=</span> <span class="n">Put</span> <span class="n">Orthanc</span> <span class="n">IP</span> <span class="n">here</span>
+        <span class="n">SERVICE_LIST</span>    <span class="o">=</span> <span class="n">Storage_Only_Service_List</span>
+</pre></div>
+</div>
+<p>Put in the port number of the Orthanc server, usually 104, but check the configuration of Orthanc to be sure. And type in the IP address of the orthanc server where it says <code class="docutils literal notranslate"><span class="pre">HOST_NAME</span></code>.</p>
+<p>Add this export filter to <code class="docutils literal notranslate"><span class="pre">sri.ini</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Dicom</span><span class="p">]</span>
+<span class="n">NumberOfExportServers</span><span class="o">=</span><span class="mi">4</span>
+<span class="o">...</span>
+<span class="n">ExportServer3</span><span class="o">=</span><span class="n">MOSAIQ</span><span class="p">,</span><span class="n">IMPAC_DCM_SCP</span>
+<span class="n">ExportServer4</span><span class="o">=</span><span class="n">QAserver</span><span class="p">,</span><span class="n">QAserver</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Just define a new export filter, in my case <code class="docutils literal notranslate"><span class="pre">ExportServer4</span></code>, and increase <code class="docutils literal notranslate"><span class="pre">NumberOfExportServers</span></code> by 1, if neccessary.</p>
+<p>These two files have a similar structure on both iView and XVI. Once you are done, restart the application, acquire an image, and try to send it to Orthanc. If you experience problems, it maybe that the NSS computer is blocking the transport. In this case talk to your service engineer.</p>
+</div>
+<div class="section" id="using-icom-cat-to-send-plans-to-service">
+<h2>Using iCom CAT to send plans to Service<a class="headerlink" href="#using-icom-cat-to-send-plans-to-service" title="Permalink to this headline">¶</a></h2>
+<p>Find the iCOM CAT program on your Scheduler. It is normally installed in the “Program Files” directory under “Elekta”. If you cannot find it, have somebody install it on the Scheduler. Make sure Mosaiq is not running. The linac should be in Clinical mode with Receive External Prescription on. Open iCOM CAT and input the necessary settings. Type in the IP address of your linac. And <code class="docutils literal notranslate"><span class="pre">Linac</span> <span class="pre">ID</span></code>, which is the serial number of the linac (last four digits). iCOM CAT should then connect with the linac.</p>
+<a class="reference internal image-reference" href="_images/icom.png"><img alt="_images/icom.png" class="align-center" src="_images/icom.png" style="width: 681.0px; height: 372.0px;" /></a>
+<p>We will use iCOM CAT to send a couple of beams to service, two for the Winston-Lutz test, and one for Picket fence test. There is a zip archive of the beams at: <a class="reference external" href="https://github.com/brjdenis/qaserver/blob/master/files/icomcat.zip">Example beams</a></p>
+<p>Copy the beams to the Scheduler. Then:</p>
+<ul class="simple">
+<li><p>Open the beam in iCOM CAT.</p></li>
+<li><p>Change the <code class="docutils literal notranslate"><span class="pre">Machine</span></code> value to match the serial number of your linac (last four digits).</p></li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">Send</span> <span class="pre">Field</span></code>.</p></li>
+<li><p>Once the beam has loaded on Integrity, click <code class="docutils literal notranslate"><span class="pre">Copy</span> <span class="pre">to</span> <span class="pre">Service</span></code>. Or you could run the beam in Clinical mode by clicking <code class="docutils literal notranslate"><span class="pre">Confirm</span> <span class="pre">Settings</span></code> in iCOM CAT.</p></li>
+</ul>
+</div>
+</div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Denis Brojan.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.
+    </div>
+  </body>
+</html>
