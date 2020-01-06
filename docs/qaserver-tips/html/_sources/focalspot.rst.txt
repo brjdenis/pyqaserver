@@ -165,7 +165,7 @@ You can measure this with the Winston-Lutz module, or with the Field size module
 	:align: center
 	:scale: 100 %
 	
-	*Measurements of MLC and diaphragm asymmetry with a field size of 7 x 7. The asymmetry in this table is presented as one half of the distance between field centers at opposite collimator angles.*
+	*Measurements of MLC and diaphragm asymmetry with a field size of 7 x 7. The asymmetry in this table is presented as the distance between field centers at opposite collimator angles.*
 
 When this asymmetry (difference between centers) reaches 0.4 mm, you should report it to your service engineers. They should re-calibrate Agility, and also run the *Leaf bank height and lateral setup* workflow. Agility normally has asymmetry bellow 0.2 mm. It is a fantastic collimator!
 
