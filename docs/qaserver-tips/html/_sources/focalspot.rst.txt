@@ -159,18 +159,17 @@ My summary of what to watch for when engineers calibrate Agility would be this:
 Collimator asymmetry
 #########################
 
-This is the easiest thing to test. You can measure this with the Winston-Lutz module, or with the Field size module. Acquire two images of a field, say 7 x 7, at two opposite collimator angles 0/180. Measure the spacing between the centers of the fields. This is quickly achieved in the Field size module by setting the first image as Image 1 and the opposite coll angle image as Image 2, and using the "CAX" method for Set center. When divided by 2, it will give you the asymmetry of MLC/diaphragm positioning. I usually measure at collimator angle pairs 90/270 as well. The table below demonstrates 10 measurements in one session. MLC leaves have a small average asymmetry of about 0.13 mm. Diaphragms do not have a significant asymmetry.
+You can measure this with the Winston-Lutz module, or with the Field size module. Acquire two images of a field, say 7 x 7, at two opposite collimator angles 0/180. Measure the spacing between the centers of the fields. This is quickly achieved in the Field size module by setting the first image as Image 1 and the opposite coll angle image as Image 2, and using the "CAX" method for Set center. This will give you an estimate of the asymmetry of MLC/diaphragm positioning. I usually measure at collimator angle pairs 90/270 as well. The table below demonstrates 10 measurements in one session. MLC leaves have a small average asymmetry of about 0.26 mm. Diaphragms do not have a significant asymmetry.
 
 .. figure:: _static/collasym.png
 	:align: center
 	:scale: 100 %
 	
-	*Measurements of MLC and diaphragm asymmetry with a field size of 7 x 7. The asymmetry is defined as one half of the distance between field centers at opposite collimator angles.*
+	*Measurements of MLC and diaphragm asymmetry with a field size of 7 x 7. The asymmetry in this table is presented as one half of the distance between field centers at opposite collimator angles.*
 
-When the asymmetry reaches 0.2 mm, you should report this to your service engineers. They should re-calibrate Agility, and also run the *Leaf bank height and lateral setup* workflow. Agility normally has asymmetry bellow 0.2 mm. It is a fantastic collimator!
+When this asymmetry (difference between centers) reaches 0.4 mm, you should report it to your service engineers. They should re-calibrate Agility, and also run the *Leaf bank height and lateral setup* workflow. Agility normally has asymmetry bellow 0.2 mm. It is a fantastic collimator!
 
-
-
+Now, as a physicist I should complicate this a bit. To get a real grasp of what is wrong with the collimator, what is the error in positioning of each leaf bank and each diaphragm, one should do a more sophisticated measurement. If, for example, you rotate the collimator, and you get a 0.4 mm displacement between the centers, this does not mean that one bank is off by 0.2 mm, and the other by the same 0.2 mm. It could be 0.1 mm and 0.5 mm, or 0.1 mm and 0.3 mm. It depends on the direction of the error as well. Now I will leave it to you to make this measurement better. 
 
 
 
