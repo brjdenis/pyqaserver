@@ -19,7 +19,7 @@ Not all Pylinac's capabilities are implemented. Trajectory logs cannot be analyz
 * Flatness/Symmetry
 * VMAT
 
-With an additional derivative module I call "Fieldsize".
+With an additional derivative module I call "Fieldsize", that can be used to measure radiation to light field match, radiation field size, focal spot position etc. 
 
 QAserver contains little original code, just enough to connect Pylinac and Orthanc. Some dependencies are included in the distribution of QAserver, other dependencies must be installed separately. Orthanc is not included in the distribution of QAserver.
 
