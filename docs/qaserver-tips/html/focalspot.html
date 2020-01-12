@@ -63,7 +63,6 @@
 <a class="reference internal image-reference" href="_images/fieldsize2.png"><img alt="_images/fieldsize2.png" src="_images/fieldsize2.png" style="width: 363.20000000000005px; height: 347.20000000000005px;" /></a>
 </div>
 <p>As I have demonstrated in the Winston-Lutz section, it is possible to detect with the WL test whether the focal spot of the beam is not on the collimator axis of rotation. Measurements with two sets of images are needed: one with collimator angles 0/180, and another with collimator angles 90/270. In both cases the field must be shaped both with diaphragms and MLCs. If the measured longitudinal shifts of the BB differ, there is a GT deviation of the focal spot. A potential AB deviation can be seen from a single acquisition.</p>
-<p>But in practice one would like to have a simpler test to detect such an error.</p>
 <div class="section" id="mv-focal-spot-position-and-adjustment">
 <h2>6 MV focal spot position and adjustment<a class="headerlink" href="#mv-focal-spot-position-and-adjustment" title="Permalink to this headline">¶</a></h2>
 <p>Please read these two articles:</p>
@@ -71,9 +70,8 @@
 <li><p>Nyiri BJ, Smale JR, Gerig LH, <em>Two self-referencing methods for the measurement of beam spot position</em>, Med Phys. 2012 Dec; 39(12):7635-43 (<a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/23231311">https://www.ncbi.nlm.nih.gov/pubmed/23231311</a>)</p></li>
 <li><p>Chojnowski JM, Taylor LM, Sykes JR, Thwaites DI, <em>Beam focal spot position determination for an Elekta linac with the Agility® head; practical guide with a ready-to-go procedure</em>, J Appl Clin Med Phys. 2018 Jul;19(4):44-47 (<a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/29761625/">https://www.ncbi.nlm.nih.gov/pubmed/29761625/</a>)</p></li>
 </ul>
-<p>So, basically, if the focal spot is <strong>not</strong> on the collimator axis of rotation, you will get a wobbling CAX when the collimator is rotated. But <strong>not</strong> because of MLC or diaphragm asymmetry, but because diaphragms and MLCs are at different levels along the beam line. This is point nr 1.</p>
-<p>Point nr 2 is the fact that you do not have the time to measure the position of the focal spot for all beams so accurately. Therefore, invest a lot of time in adjusting 6 MV. This will be your reference. All other beams can then be “aligned” with 6 MV by doing measurements in the water phantom.</p>
-<p>Point nr 3, the hardest thing to detect and adjust is the GT deviation. If you miss by 0.1-0.3 mm at the isocenter, no matter. In the clinical setting you can compensate this with XVI’s flexmaps, so that at the end of the day you will not be missing small tumors.</p>
+<p>So, basically, if the focal spot is <strong>not</strong> on the collimator axis of rotation, you will get a wobbling CAX when the collimator is rotated. But <strong>not</strong> because of MLC or diaphragm asymmetry, but because diaphragms and MLCs are at different levels along the beam line.</p>
+<p>I always focus on 6 MV. This is the reference beam. All other beams should be aligned to it. The hardest thing to detect and adjust is the GT deviation. If you miss by 0.1-0.3 mm at the isocenter, no matter. In the clinical setting you can compensate this with XVI’s flexmaps, so that at the end of the day you will not be missing small tumors.</p>
 <p>Here is my measurement process with QAserver:</p>
 <ol class="arabic simple">
 <li><p>Set the optical crosshair to align with the collimator axis of rotation.</p></li>
@@ -84,6 +82,7 @@
 <div class="section" id="setting-the-optical-crosshair">
 <h3>1. Setting the optical crosshair<a class="headerlink" href="#setting-the-optical-crosshair" title="Permalink to this headline">¶</a></h3>
 <p>Put a piece of paper on the couch, make a very very very small mark on the paper. Align the mark with the optical crosshair center. Rotate the collimator. There should be <strong>absolutely no wobble</strong> of the optical crosshair when the collimator is rotated.  If there is even a small amount of wobble that is not caused by collimator eccentricity, have the crosshair adjusted.</p>
+<p>If you wish to measure the true deviation of the radiation field from the light field, you can place a metal marker on the epid. But, in this case the optical crosshair must be very accurate 60 cm under the isocenter.</p>
 </div>
 <div class="section" id="setting-elekta-s-agility-plate">
 <h3>2. Setting Elekta’s Agility plate<a class="headerlink" href="#setting-elekta-s-agility-plate" title="Permalink to this headline">¶</a></h3>
@@ -105,50 +104,70 @@
 <a class="reference internal image-reference" href="_images/77field.png"><img alt="_images/77field.png" src="_images/77field.png" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text"><em>An image of a 7 x 7 field. The field goes through the metal plate.</em></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
+<p>Repeat this many, many times. One single measurement will not suffice.</p>
 </div>
 <div class="section" id="analyzing-images">
 <h3>4. Analyzing images<a class="headerlink" href="#analyzing-images" title="Permalink to this headline">¶</a></h3>
-<p>Send the images to QAserver. Open the Field size module. Set the first image to the image of the plate, and for “set center” choose Plate. The second image should be one of the 7 x 7 field images. Run the analysis. For each 7 x 7 image collect the “Radiation center offset from mechanical center” results, denoted as <img class="math" src="_images/math/221ba904184fa1e85198efb1d8dfe7a3c35e6714.png" alt="\Delta X"/> and <img class="math" src="_images/math/26c7c8dcc7b3716edc21e9373d39b1cc04d56a99.png" alt="\Delta Y"/>.</p>
+<p>In article 2 you can read how to extract focal spot deviation from the measurements. The Field size module gives you the position of the field CAX at the isocenter with respect to the center of the plate (mechanical marker). We will use these measurements to calculate focal spot deviation. Image below shows Agility head geometry. A marker is positioned onto the collimator axis of rotation. Note that the deviating beam projects the marker on the epid away from the collimator axis of rotation. So if you would like to measure the true beam deviation from the collimator axis of rotation, you should put the marker on the epid.</p>
 <div class="figure align-center" id="id4">
-<a class="reference internal image-reference" href="_images/table1.png"><img alt="_images/table1.png" src="_images/table1.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text"><em>Two measurements for 6 MV.</em></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<a class="reference internal image-reference" href="_images/headgeometry.jpg"><img alt="_images/headgeometry.jpg" src="_images/headgeometry.jpg" style="width: 343.0px; height: 483.0px;" /></a>
+<p class="caption"><span class="caption-text"><em>Agility head geometry (see article 2).</em></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-<p>Calculate the center of the MLC shaped field and the center of the diaphragm shaped field:</p>
+<p>Two pairs of similar triangles give:</p>
 <div class="math">
-<p><img src="_images/math/ae5c63fe46356209befff3f22e73601a73826347.png" alt="\textrm{MLC center} = \left(\mathrm{MLC}_x, \mathrm{MLC}_y\right)=\left(\frac{\Delta x_0+\Delta x_{180}}{2},  \frac{\Delta y_{90}+\Delta y_{270}}{2} \right)\\
-\textrm{DIA center} = \left(\mathrm{DIA}_x, \mathrm{DIA}_y\right)=\left(\frac{\Delta x_{90}+\Delta x_{270}}{2},  \frac{\Delta y_{0}+\Delta y_{180}}{2} \right)"/></p>
-</div><p>And average isocenter deviations:</p>
+<p><img src="_images/math/c98182b6c46269f9c3dd217ba061c3446f5e0a95.png" alt="\frac{y_\mathrm{DIA}}{\Delta} = \frac{d_\mathrm{EPID}-d_\mathrm{DIA}}{d_\mathrm{DIA}}\\
+\frac{y_\mathrm{MLC}}{\Delta} = \frac{d_\mathrm{EPID}-d_\mathrm{MLC}}{d_\mathrm{MLC}}"/></p>
+</div><p>Where</p>
 <div class="math">
-<p><img src="_images/math/3357c91b5b8f2ff0cad1ff91ea701202f3f3e905.png" alt="\textrm{Iso. dev. X} = \left(\mathrm{MLC}_x + \mathrm{DIA}_x\right)/2\\
-\textrm{Iso. dev. Y} = \left(\mathrm{MLC}_y + \mathrm{DIA}_y\right)/2"/></p>
-</div><p>Now the resolution. If the two centers, <img class="math" src="_images/math/e59d08e27170a5b757857d778ea55b61c6c7d546.png" alt="\textrm{MLC center}"/> and <img class="math" src="_images/math/7a290103a8be489a3d3439d3d748983ba137e431.png" alt="\textrm{DIA center}"/> differ, then the focal spot is not on the collimator axis of rotation. From the above table it seems that the focal spot is displaced in both directions. The deviation of the average isocenter from the collimator axis of rotation is about 0.4 mm in the GT direction, which is quite a lot. Of course, many more repetition of this measurement are necessary to get a reliable results.</p>
+<p><img src="_images/math/60d7ebf34cd732cb71e27c7e09a7d6653482f25d.png" alt="d_\mathrm{IC}=100 \,\mathrm{cm}\\
+d_\mathrm{MLC}=35.5 \,\mathrm{cm}\\
+d_\mathrm{DIA}=47.1 \,\mathrm{cm}\\
+d_\mathrm{EPID}=160 \,\mathrm{cm}"/></p>
+</div><p>If we had the measurements at the EPID plane, the focal spot deviation would be</p>
+<div class="math">
+<p><img src="_images/math/6e3815cecacc17b9a3df359f2519af0de93e95c8.png" alt="\Delta = \frac{y_\mathrm{MLC}-y_\mathrm{DIA}}{d_\mathrm{EPID} \left(\frac{1}{d_\mathrm{MLC}} - \frac{1}{d_\mathrm{DIA}}\right)} = 0.908\left(y_\mathrm{MLC}-y_\mathrm{DIA}\right)"/></p>
+</div><p>But the Field size module will give you field CAX deviation at the isocentric plane (marker plane). Therefore, we must project the results to the isocentric plane. At the isocentric plane we denote the deviations with an apostrophe.</p>
+<div class="math">
+<p><img src="_images/math/5d0cfa66fb4f90f8c5210c54aad934e48e990777.png" alt="\Delta = \frac{y'_\mathrm{MLC}-y'_\mathrm{DIA}}{d_\mathrm{IC} \left(\frac{1}{d_\mathrm{MLC}} - \frac{1}{d_\mathrm{DIA}}\right)} = 1.453\left(y'_\mathrm{MLC}-y'_\mathrm{DIA}\right)"/></p>
+</div><p>So this is the focal spot deviation. Collecting <img class="math" src="_images/math/9e67594107936b826efc07c61ee44695907af575.png" alt="y'_\mathrm{MLC}"/> and <img class="math" src="_images/math/1f013c185aaf7b4c05b040df29e7e103759d28e1.png" alt="y'_\mathrm{DIA}"/> goes like this. Send the images to QAserver. Open the Field size module. Set the first image to the image of the plate, and for “set center” choose Plate. The second image should be one of the 7 x 7 field images. Run the analysis. For each 7 x 7 image collect the “Radiation center offset from mechanical center” results, denoted as <img class="math" src="_images/math/221ba904184fa1e85198efb1d8dfe7a3c35e6714.png" alt="\Delta X"/> and <img class="math" src="_images/math/26c7c8dcc7b3716edc21e9373d39b1cc04d56a99.png" alt="\Delta Y"/>.</p>
+<p>Calculate the center of the MLC shaped field and the center of the diaphragm shaped field (at isocentric plane):</p>
+<div class="math">
+<p><img src="_images/math/ae163faa02ad9cc532bb14cbaa380556d7c8b952.png" alt="y'_\mathrm{MLC} = \left(\mathrm{MLC}_x, \mathrm{MLC}_y\right)=\left(\frac{\Delta x_0+\Delta x_{180}}{2},  \frac{\Delta y_{90}+\Delta y_{270}}{2} \right)\\
+y'_\mathrm{DIA} = \left(\mathrm{DIA}_x, \mathrm{DIA}_y\right)=\left(\frac{\Delta x_{90}+\Delta x_{270}}{2},  \frac{\Delta y_{0}+\Delta y_{180}}{2} \right)"/></p>
+</div><p>Now, the average deviation of the beam, taking both MLC and DIA shaped fields into account, at the isocentric plane is approximately:</p>
+<div class="math">
+<p><img src="_images/math/0142de237ed3fca3ffa4f12f9ac99d0c90859346.png" alt="\textrm{Iso. dev.} = \frac{y'_\mathrm{MLC}+y'_\mathrm{DIA}}{2} = \frac{\Delta}{2}\left(\frac{d_\mathrm{IC}}{d_\mathrm{DIA}}+\frac{d_\mathrm{IC}}{d_\mathrm{MLC}}-2\right) = 1.47\Delta"/></p>
+</div><div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="_images/table1.png"><img alt="_images/table1.png" src="_images/table1.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text"><em>Two measurements for 6 MV.</em></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+<p>The table shows two measurements of focal spot position done in sequence. Because of some problems with MLC positioning that I had, the measurements differ significantly. Many more repetition of this measurement are necessary to get a reliable results in any case.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Doing one single measurement or two is not enough to definitively tell whether the focal spot is not on the collimator axis of rotation. It is  also prudent to establish the same result with the WL test before any adjustments are planned.</p>
 </div>
-<p>Iso. dev. X and Iso. dev. Y are highly susceptible to inaccuracies in plate position, crosshair position etc. But on the other hand, it will not be possible to calibrate Agility with Elekta’s procedures, if this deviation amounts to 0.5 mm when measured with Integrity workflows. So it’s good to measure this with QAserver from time to time just to be in touch with what is going on with the beam before somebody changes beam steering just because in a single measurement with Elekta’s calibration software there was a detected error. I haven’t been able to decipher how Elekta’s calibration software works, so I cannot give you any opinion here. Sometimes it gives me a similar result to my own, sometimes not. QAserver has its own problems as well.</p>
+<p>If the focal spot position deviation, when projected to the isocenter, deviates too much, it will not be possible to calibrate Agility. I like to measure this frequently just to see what is going on with the beam. Normally, there is no significant change over time. But if the Agility calibration workflow warns of a larger deviation, and if it is confirmed by your measurements, then your service engineers could use your data to more confidently adjust beam steering, if needed.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Before you collect measurements of the focal spot position that you would like to show to your service engineers, make sure the beam is optimized, especially Gun I Ctl. It can have an effect on focal spot position!</p>
+<p>Before you collect measurements of the focal spot position that you would like to show to your service engineers, make sure the beam is optimized, especially Gun I and 2T/2R.</p>
 </div>
 </div>
 <div class="section" id="the-effect-of-bending-fine-on-focal-spot-position">
 <h3>5. The effect of Bending fine on focal spot position<a class="headerlink" href="#the-effect-of-bending-fine-on-focal-spot-position" title="Permalink to this headline">¶</a></h3>
-<p>In the above case it turned out, when I repeated the measurements over several months, and analyzed the WL results as well, that the largest deviation was in the GT direction. The magnitude of this deviation was rounded to 0.3 mm. This can be remedied with Bending fine adjustment. Compare the above table with the following one. Both tables contain measurement performed with the same plate position in the time spacing of several minutes (just for demonstration). Bending fine was increased by 100 mA.</p>
-<div class="figure align-center" id="id5">
+<p>In the above case it turned out, when I repeated the measurements over several months, and analyzed the WL results as well, that the largest deviation was in the GT direction. The magnitude of this deviation was rounded to 0.3 mm. This can be remedied with Bending fine adjustment. Bending fine moves the beam in the GT direction without introducing a significant tilt to the beam. Compare the above table with the following one. Both tables contain measurement performed with the same plate position in the time spacing of several minutes (just for demonstration). Bending fine was increased by 100 mA between the pairs of measurements.</p>
+<div class="figure align-center" id="id6">
 <a class="reference internal image-reference" href="_images/table2.png"><img alt="_images/table2.png" src="_images/table2.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text"><em>Two measurements for 6 MV with increased Bending fine (100 mA). The plate is in the same position as for the measurements in the previous table. Note how the isocenter deviation came down, as well as the</em> <img class="math" src="_images/math/e59d08e27170a5b757857d778ea55b61c6c7d546.png" alt="\textrm{MLC center}"/> <em>and</em> <img class="math" src="_images/math/7a290103a8be489a3d3439d3d748983ba137e431.png" alt="\textrm{DIA center}"/> <em>difference.</em></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><em>Two measurements for 6 MV. Both with increased Bending fine (100 mA). The plate is in the same position as for the measurements in the previous table. Note how the deviations came down.</em></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
-<p>Note how <img class="math" src="_images/math/e59d08e27170a5b757857d778ea55b61c6c7d546.png" alt="\textrm{MLC center}"/> and <img class="math" src="_images/math/7a290103a8be489a3d3439d3d748983ba137e431.png" alt="\textrm{DIA center}"/> get closer to each other, and the isocenter deviation also decreases.
-Bending fine changes focal spot position in the GT direction, but in contrast to 2R (or 1T/1R) does not change the tilt of the beam. Note also that it had an effect on AB deviations as well. In this test, 2R/2T  were not adjusted for better symmetry after the change in Bending fine. I leave it to experienced engineers to set everything correctly.</p>
+<p>A 100 mA increase in Bending fine pushes the beam by about 0.2-0.3 mm towards T. In this test, 2R/2T  were not adjusted for better symmetry after the change in Bending fine. I leave it to experienced engineers to set everything correctly.</p>
 </div>
 </div>
 <div class="section" id="multiple-radiation-isocenters">
 <h2>Multiple radiation isocenters<a class="headerlink" href="#multiple-radiation-isocenters" title="Permalink to this headline">¶</a></h2>
 <p>Each energy has its own “isocenter”, that is to say, each energy has an independent focal spot position. One should therefore do the same test for other energies. For example, for 6 MV, 10 MV and 15 MV, on a good day I would get this:</p>
-<div class="figure align-center" id="id6">
+<div class="figure align-center" id="id7">
 <a class="reference internal image-reference" href="_images/multiic.png"><img alt="_images/multiic.png" src="_images/multiic.png" style="width: 322.0px; height: 171.0px;" /></a>
-<p class="caption"><span class="caption-text"><em>Isocenter deviations for 6 MV, 10 MV and 15 MV. The reference is the collimator axis of rotation (optical crosshair).</em></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><em>Isocenter deviations for 6 MV, 10 MV and 15 MV. The reference is the collimator axis of rotation (optical crosshair).</em></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
 <p>The above results clearly show that 10 MV does not align well with 6 MV. What is the consequence of this? Luckily, 6 MV has no significant lateral deviation. This means that a good flexmap calibration will teach XVI to position the tumor into the center of this beam, which is displaced by 0.24 mm towards G. Treating with this beam will be accurate. But, with the 10 MV beam we will miss the tumor by 0.5 mm longitudinally. Three options remain. One, leave it like it is. Two, push 10 MV closer to 6 MV. Three, fix all beams to be closer to 6 MV, and make 6 MV closer to the collimator axis of rotation. In such a situation I would probably choose option 2.</p>
 </div>
@@ -168,13 +187,13 @@ Bending fine changes focal spot position in the GT direction, but in contrast to
 </div>
 <div class="section" id="collimator-asymmetry">
 <h3>Collimator asymmetry<a class="headerlink" href="#collimator-asymmetry" title="Permalink to this headline">¶</a></h3>
-<p>You can measure this with the Winston-Lutz module, or with the Field size module. Acquire two images of a field, say 7 x 7, at two opposite collimator angles 0/180. Measure the spacing between the centers of the fields. This is quickly achieved in the Field size module by setting the first image as Image 1 and the opposite coll angle image as Image 2, and using the “CAX” method for Set center. This will give you an estimate of the asymmetry of MLC/diaphragm positioning. I usually measure at collimator angle pairs 90/270 as well. The table below demonstrates 10 measurements in one session. MLC leaves have a small average asymmetry of about 0.26 mm. Diaphragms do not have a significant asymmetry.</p>
-<div class="figure align-center" id="id7">
+<p>You can measure this with the Winston-Lutz module, or with the Field size module. Acquire two images of a field, say 7 x 7, at two opposite collimator angles 0/180. Measure the spacing between the centers of the fields. This is quickly achieved in the Field size module by setting the first image as Image 1 and the opposite coll angle image as Image 2, and using the “CAX” method for Set center. This will give you an estimate of the asymmetry of MLC/diaphragm positioning. I usually measure at collimator angle pairs 90/270 as well. The table below demonstrates 10 measurements in one session. MLC leaves have a small average asymmetry of about 0.5 mm. Diaphragms do not have a significant asymmetry.</p>
+<div class="figure align-center" id="id8">
 <a class="reference internal image-reference" href="_images/collasym.png"><img alt="_images/collasym.png" src="_images/collasym.png" style="width: 440.0px; height: 496.0px;" /></a>
-<p class="caption"><span class="caption-text"><em>Measurements of MLC and diaphragm asymmetry with a field size of 7 x 7. The asymmetry in this table is presented as the distance between field centers at opposite collimator angles.</em></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><em>Measurements of MLC and diaphragm asymmetry with a field size of 7 x 7. The asymmetry in this table is presented as the distance between field centers at opposite collimator angles.</em></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
-<p>When this asymmetry (difference between centers) reaches 0.4 mm, you should report it to your service engineers. They should re-calibrate Agility, and also run the <em>Leaf bank height and lateral setup</em> workflow. Agility normally has asymmetry bellow 0.2 mm. It is a fantastic collimator!</p>
-<p>Now, as a physicist I should complicate this a bit. To get a real grasp of what is wrong with the collimator, what is the error in positioning of each leaf bank and each diaphragm, one should do a more sophisticated measurement. If, for example, you rotate the collimator, and you get a 0.4 mm displacement between the centers, this does not mean that one bank is off by 0.2 mm, and the other by the same 0.2 mm. It could be 0.1 mm and 0.5 mm, or 0.1 mm and 0.3 mm. It depends on the direction of the error as well. Now I will leave it to you to make this measurement better.</p>
+<p>When this asymmetry (difference between centers) reaches 0.4 mm, you should report it to your service engineers. They should re-calibrate Agility, and also run the <em>Leaf bank height and lateral setup</em> workflow. Agility normally has asymmetry of about 0.2 mm. It is a fantastic collimator!</p>
+<p>Now, as a physicist I should complicate this a bit. To get a real grasp of what is wrong with the collimator, what is the error in positioning of each leaf bank and each diaphragm, one should do a more sophisticated measurement. If, for example, you rotate the collimator, and you get a 0.4 mm displacement between the centers, this does not mean that one bank is off by 0.2 mm, and the other by the same 0.2 mm. It could be 0.1 mm and 0.5 mm, or 0.1 mm and 0.3 mm. It depends on the direction of the error.</p>
 </div>
 </div>
 </div>
@@ -186,7 +205,7 @@ Bending fine changes focal spot position in the GT direction, but in contrast to
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Denis Brojan.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
     </div>
   </body>
 </html>
