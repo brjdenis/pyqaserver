@@ -42,13 +42,13 @@ Here is a list of some of the software used (common packages like scipy, numpy e
 
 QAserver cannot be installed as a Python package. You must download the zip archive and follow installation instructions (follow link below).
 
-* [Version 1.0](/versions/qaserver1.0.zip)
+* [Version 1.0](/versions/pyqaserver1.0.zip)
 
 ## Installation and user guide
 
 Installation instructions and the user guide are available at:
 
-* [Version 1.0](https://brjdenis.github.io/qaserver/docs/version1.0/html/) , [PDF](/pdf/qaserver1.0.pdf)
+* [Version 1.0](https://brjdenis.github.io/pyqaserver/docs/version1.0/html/) , [PDF](/pdf/pyqaserver1.0.pdf)
 
 ## Bugs and requests
 
@@ -63,4 +63,4 @@ What is the point of this project? Well, it started as an experiment. I wanted t
 
 I put together some personal notes on doing tests on Elekta linacs with Pylinac and QAserver: 
 
-[Notes on doing tests on Elekta linacs](https://brjdenis.github.io/qaserver/docs/qaserver-tips/html/)
+[Notes on doing tests on Elekta linacs](https://brjdenis.github.io/pyqaserver/docs/qaserver-tips/html/)
