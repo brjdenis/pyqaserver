@@ -1,12 +1,14 @@
-# QAserver
+# pyQAserver
 
-QAserver connects [Pylinac](https://github.com/jrkerns/pylinac) and [Orthanc](https://github.com/jodogne/Orthanc) with a simplistic web interface. It was built to speed up the image analysis process with Pylinac, without having to switch computers or work manually with dicom files. The procedure is easy: acquire the image, send the image from the imaging computer directly to Orthanc, and then analyze it with Pylinac by using QAserver. Since all images are stored in Orthanc, you can re-analyze them anytime you want. You can do the analysis on any computer in your network.
+Pyqaserver connects [Pylinac](https://github.com/jrkerns/pylinac) and [Orthanc](https://github.com/jodogne/Orthanc) with a simplistic web interface. It was built to speed up the image analysis process with Pylinac, without having to switch computers or work manually with dicom files. The procedure is easy: acquire the image, send the image from the imaging computer directly to Orthanc, and then analyze it with Pylinac by using pyqaserver. Since all images are stored in Orthanc, you can re-analyze them anytime you want. You can do the analysis on any computer in your network.
+
+Pyqaserver also contains a small database where you can store and review your measurements.
 
 ![image](files/image.png)
 
 ## Compatibility and dependency
 
-It works on Windows 7 and 10. Currently, it is compatible with Pylinac 2.2.7 and Python 3.7. Because of the way QAserver is constructed, it is highly likely that it will not work with newer versions of Pylinac.
+It works on Windows 7 and 10. It should work on Linux as well. Currently, it is compatible with Pylinac 2.3.2 and Python 3.8. Because of the way pyqaserver is constructed, it is highly likely that it will not work with newer versions of Pylinac.
 
 Not all Pylinac's capabilities are implemented. Trajectory logs cannot be analyzed, the calibration module is missing, and there are some missing features in other modules. Basically, this are the modules you can use:
 
@@ -19,9 +21,9 @@ Not all Pylinac's capabilities are implemented. Trajectory logs cannot be analyz
 * Flatness/Symmetry
 * VMAT
 
-With an additional derivative module I call "Fieldsize", that can be used to measure radiation to light field match, radiation field size, focal spot position etc. 
+With an additional derivative modules I call "Fieldsize" and "Fieldrot", that can be used to measure radiation to light field match, radiation field size, focal spot position, absolute collimator angle calibration etc. 
 
-QAserver contains little original code, just enough to connect Pylinac and Orthanc. Some dependencies are included in the distribution of QAserver, other dependencies must be installed separately. Orthanc is not included in the distribution of QAserver.
+Pyqaserver contains little original code, just enough to connect Pylinac and Orthanc. The code is hideously written! But I will improve it. Some dependencies are included in the distribution of pyqaserver, other dependencies must be installed separately. Orthanc is not included in the distribution of pyqaserver.
 
 Here is a list of some of the software used (common packages like scipy, numpy etc. are not listed):
 
@@ -36,13 +38,33 @@ Here is a list of some of the software used (common packages like scipy, numpy e
 * [Bootstrap-datepicker](https://bootstrap-datepicker.readthedocs.io/en/latest/)
 * [Popper](https://popper.js.org/)
 * [math.js](https://mathjs.org/)
+* [minimumboundingbox.py](https://bitbucket.org/william_rusnack/minimumboundingbox/src/master/)
+* [plotly.js](https://plotly.com/javascript/getting-started/)
+* [tabulator.js](http://tabulator.info/)
 
 
 ## Download
 
-QAserver cannot be installed as a Python package. You must download the zip archive and follow installation instructions (follow link below).
+Pyqaserver can be installed as a Python package starting with version 2.0.0. 
 
-* [Version 1.0](/versions/pyqaserver1.0.zip)
+~~~
+pip install pyqaserver
+~~~
+
+After that you can run it with this:
+
+~~~
+pyqaserver IP_ADDRESS:PORT PATH_TO_DATABASE_FOLDER
+~~~
+
+For example, if you wish to run it as localhost:
+
+~~~
+pyqaserver 1270.0.1.:8080 PATH_TO_DATABASE_FOLDER
+~~~
+
+The PATH_TO_DATABASE_FOLDER must the full absolute path to an empty directory where pyqaserver will install a small database. Anytime you restart the server, point to the same directory.
+
 
 ## Installation and user guide
 
