@@ -45,7 +45,7 @@ Here is a list of some of the software used (common packages like scipy, numpy e
 
 ## Download
 
-Pyqaserver can be installed as a Python package starting with version 2.0.0. 
+Pyqaserver can be installed as a Python package starting with version 2.0.0.  See https://pyqaserver.readthedocs.io/en/latest/
 
 ~~~
 pip install pyqaserver
