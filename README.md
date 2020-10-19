@@ -70,6 +70,10 @@ The PATH_TO_DATABASE_FOLDER must the full absolute path to an empty directory wh
 
 Installation instructions and the user guide are available at:
 
+* [Latest](https://pyqaserver.readthedocs.io/en/latest/)
+
+Older versions:
+
 * [Version 1.0](https://brjdenis.github.io/pyqaserver/docs/version1.0/html/) , [PDF](/pdf/pyqaserver1.0.pdf)
 
 ## Bugs and requests
