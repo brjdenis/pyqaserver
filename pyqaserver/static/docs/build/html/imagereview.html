@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Image review &mdash; pyqaserver 2.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="Dynalog module" href="dynalog.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pyqaserver
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and running</a></li>
+<li class="toctree-l1"><a class="reference internal" href="administration.html">Administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldrot.html">Field rotation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">Catphan module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html#included-software">Included software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyqaserver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Image review</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/imagereview.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="image-review">
+<h1>Image review<a class="headerlink" href="#image-review" title="Permalink to this headline">¶</a></h1>
+<p>This is a complementary module that can be used to extract image pixel data.  It is not part of Pylinac.</p>
+<p>Chose the image you wish to inspect and click Display. In the resulting diagram you can:</p>
+<ul class="simple">
+<li><p>use the crosshair to observe profiles,</p></li>
+<li><p>draw a rectangle with the select box to get pixel statistics,</p></li>
+<li><p>change the gray-scale display by moving slider level,</p></li>
+<li><p>calculate pixel value histogram.</p></li>
+</ul>
+<p>If needed, you can invert the image or convert HU back to pixel data.</p>
+<img alt="_images/imgreview.png" class="align-center" src="_images/imgreview.png" />
+<img alt="_images/imgreview2.png" class="align-center" src="_images/imgreview2.png" />
+<p>The histogram will have 2^n bins, where n is the BitsStored dicom tag. If this tag does not have a value, 16 bits will be assumed.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dynalog.html" class="btn btn-neutral float-left" title="Dynalog module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, Denis Brojan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

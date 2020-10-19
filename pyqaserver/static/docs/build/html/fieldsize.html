@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Field size module &mdash; pyqaserver 2.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Field rotation module" href="fieldrot.html" />
+    <link rel="prev" title="VMAT module" href="vmat.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pyqaserver
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and running</a></li>
+<li class="toctree-l1"><a class="reference internal" href="administration.html">Administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Field size module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-use-the-module">How to use the module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-cax">Using <em>CAX</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-bb">Using <em>BB</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-plate">Using <em>Plate</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-manual">Using <em>Manual</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-opposing-coll-angle">Using <em>Opposing coll angle</em></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#results">Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-note-on-colors">A note on colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-you-should-know">What you should know</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fieldrot.html">Field rotation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">Catphan module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html#included-software">Included software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyqaserver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Field size module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/fieldsize.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="field-size-module">
+<h1>Field size module<a class="headerlink" href="#field-size-module" title="Permalink to this headline">¶</a></h1>
+<p>This module can be used to measure the coincidence of mechanical and radiation isocenters, as well as to measure the positions of MLC leaves and jaws.</p>
+<img alt="_images/fieldsize0.png" class="align-center" src="_images/fieldsize0.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The module is not part of Pylinac, but it uses Pylinac’s methods. It has a deficiency: the lateral positions of MLC edges are not accurate because non-radiation (mechanical) edges are assumed.</p>
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Image 1</strong></dt><dd><p>The image that determines the location of the mechanical isocenter. The image should contain one of the following: a square field, the BB, Elekta plate.</p>
+</dd>
+<dt><strong>Image 2</strong></dt><dd><p>The image you wish to analyze.</p>
+</dd>
+<dt><strong>MLC type</strong></dt><dd><p>Pick the right MLC leaves. This option defines the lateral spread of MLC sampling points. Note that the lateral spread uses physical dimensions of leaves, not radiation dimensions.</p>
+</dd>
+<dt><strong>MLC direction</strong></dt><dd><p>Leaves can be in the left-right or up-down direction.</p>
+</dd>
+<dt><strong>Center</strong></dt><dd><p>The method to define the mechanical center. It is applied to the first image.</p>
+</dd>
+<dt><strong>Clip box</strong></dt><dd><p>The size of the central portion of the image beyond which pixel values will be set to background signal. If you don’t want to clip the image, put 0.</p>
+</dd>
+<dt><strong>MLC points</strong></dt><dd><p>The number of sampling points for each MLC leaf. Minimum values is 1.</p>
+</dd>
+<dt><strong>Jaw points</strong></dt><dd><p>The number of points to sample jaws. Points are evenly spread.</p>
+</dd>
+<dt><strong>mmpd</strong></dt><dd><p>Millimeter per dot. Only works if <em>Plate</em> is not chosen for <em>Set center</em>. If you wish Pylinac to determine the mmpd from dicom tags, leave the value at 0.</p>
+</dd>
+<dt><strong>CAX point</strong></dt><dd><p>If <em>Manual</em> is chosen for <em>Set center</em>, this options allows to define the position of the mechanical center in pixels. The origin is in the bottom left corner of the image.</p>
+</dd>
+<dt><strong>Invert image?</strong></dt><dd><p>Check this if you want to invert the image. This option should not be necessary because Pylinac will check for proper inversion.</p>
+</dd>
+<dt><strong>High contrast (kV) images?</strong></dt><dd><p>Check this if you want to force the BB finding algorithm to assume that the image is of high contrast. Like a kV image. It should be possible to measure kV fields with this module.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="how-to-use-the-module">
+<h2>How to use the module<a class="headerlink" href="#how-to-use-the-module" title="Permalink to this headline">¶</a></h2>
+<p>The module needs two images. The first image is used to determine the location of the mechanical isocenter. Since we will not move the EPID while measuring, the position of the mechanical isocenter as seen by the EPID will not change, hence the pixel position of the isocenter can be transferred from the first image to the second. The second image is a field of arbitrary size, it does not have to be square. Both images must belong to the same series. Try to have the field central on the EPID as well as at the right angle. Presence of couch in the beam should not cause problems.</p>
+<p>The first image can be:</p>
+<ul class="simple">
+<li><p>A simple square field without any markers. In this case we will tell the software that we will use the field CAX as the mechanical isocenter.</p></li>
+<li><p>An image of Elekta’s Agility calibration plate accurately aligned to the optical crosshair.</p></li>
+<li><p>An image of the BB aligned with the mechanical isocenter.</p></li>
+<li><p>Any image of a metal marker that shows the location of the mechanical isocenter. The location of the marker can be determined manually with the mouse pointer and then entered into the software for recalculation. You may leave the marker in place when acquiring subsequent images.</p></li>
+<li><p>Opposing coll angle field. This is just a quick way of measuring collimator asymmetry by having the first and second image the same field with opposing collimator angles.</p></li>
+</ul>
+<p>When acquiring images, make sure that the field is at least 1 cm away from the edges of the image.</p>
+<div class="section" id="using-cax">
+<h3>Using <em>CAX</em><a class="headerlink" href="#using-cax" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Acquire an image of a simple square field, say 10 cm x 10 cm that you know is well centered around the mechanical isocenter.</p></li>
+<li><p>Acquire an image of a field you would like to measure, say 5 cm x 5 cm.</p></li>
+<li><p>Set first image as Image 1, and second image as Image 2. For <em>Set center</em> use <strong>CAX</strong>. If you wish to use your own pixel size, you can enter it into mmpd. Also, set your MLC orientation.</p></li>
+</ol>
+<p>The CAX point will be transferred from the first image to the second as the “mechanical isocenter”.</p>
+<blockquote>
+<div><img alt="_images/fieldsize_cax.png" class="align-center" src="_images/fieldsize_cax.png" />
+</div></blockquote>
+</div>
+<div class="section" id="using-bb">
+<h3>Using <em>BB</em><a class="headerlink" href="#using-bb" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Acquire an image of the BB. The BB should be well aligned to the mechanical isocenter (optical crosshair). You can use any field size.</p></li>
+<li><p>Acquire an image of a field you would like to measure, say 5 cm x 5 cm. The presence of BB in the image should not influence the analysis much, unless the BB is on a thick holder.</p></li>
+<li><p>Set the first image as Image 1, and the second image as Image 2. For <em>Set center</em> use <strong>BB</strong>. If you wish to use your own pixel size, you can enter it into mmpd. Also, set your MLC orientation.</p></li>
+</ol>
+<p>The center of the BB will be transferred from the first image to the second as the “mechanical isocenter”.</p>
+<blockquote>
+<div><img alt="_images/fieldsize_bb.png" class="align-center" src="_images/fieldsize_bb.png" />
+</div></blockquote>
+</div>
+<div class="section" id="using-plate">
+<h3>Using <em>Plate</em><a class="headerlink" href="#using-plate" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>Acquire an image of Elekta’s plate. Accurately align the plate with the optical crosshair. Make sure that the optical crosshair is almost perfectly centered. After the plate is set, use a field size of 24 cm x 24 cm and 10-20 MU to make the image.</p>
+<blockquote>
+<div><img alt="_images/ElektaPlate.png" class="align-center" src="_images/ElektaPlate.png" />
+</div></blockquote>
+</li>
+<li><p>Acquire an image of a field you would like to measure, say 5 cm x 5 cm. It is possible to measure this field without removing the plate, but for larger fields it is recommended to remove the plate.</p></li>
+<li><p>Set the first image as Image 1, and the second image as Image 2. For <em>Set center</em> use <strong>Plate</strong>. Set your MLC orientation.</p></li>
+</ol>
+<p>The image of the plate will be analyzed and the center of it will be transferred to the second image as the “mechanical isocenter”. Also, from the size of the cut-outs in the plate, mmpd will be determined and used instead of SID.</p>
+</div>
+<div class="section" id="using-manual">
+<h3>Using <em>Manual</em><a class="headerlink" href="#using-manual" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>Put a small metal marker on the optical crosshair. Acquire an image of it.</p></li>
+<li><p>You can leave the marker on and just acquire more interesting images of various fields.</p></li>
+<li><p>Set the first image as Image 1, and the second/third… image as Image 2. For <em>Set center</em> use <strong>Manual</strong>. Leave the <em>CAX point</em> as it is (510). Click Analyze.</p></li>
+<li><p>Find the marker on the image and zoom in. With the mouse pointer go to the center of the marker and read the horizontal and vertical pixel position (shown in red square below). Enter the values into <em>CAX point</em>. Click Analyze once more.</p>
+<blockquote>
+<div><img alt="_images/fieldsize2.png" class="align-center" src="_images/fieldsize2.png" />
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="using-opposing-coll-angle">
+<h3>Using <em>Opposing coll angle</em><a class="headerlink" href="#using-opposing-coll-angle" title="Permalink to this headline">¶</a></h3>
+<p>Similar to CAX, except that the first and second image contain the same field but with opposing collimator angles. The CAX of the first field will be taken as the mechanical isocenter.</p>
+</div>
+</div>
+<div class="section" id="results">
+<h2>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
+<p>To determine leaf and jaw positions the image is sampled horizontally and vertically with multiple profiles. If MLC orientation is set to “X”, then horizontal profiles will be clustered for each leaf, and vertical profiles will be evenly spread to find jaw edges. Lateral leaf dimensions are predefined. Say, for example, Elekta_160 is chosen for MLC type. Then the leaf edges are distributed in the pattern: 0, -+5 mm, -+10 mm, -+15 mm, -20 mm … -+200 mm.
+The number of profiles that are used to get the position of one single leaf is set with <em>MLC points</em>. If 3, then each leaf will be sampled with 3 profile lines. The final result for each leaf position is an average over the points that were defined for leaf sampling.</p>
+<p>In the direction perpendicular to leaves profiles are extracted equidistantly. Their number is set with the parameter “Jaw points”.</p>
+<p>The profile edge is determined with the 50 % penumbra point. The average size of the field is calculated as the average over all points excepts the first and the last jaw point, and the first and the last leaf which may be a bit off.</p>
+<img alt="_images/fieldsize3.png" class="align-center" src="_images/fieldsize3.png" />
+<p>Field rotation can only be calculated for large fields with small collimator rotation. You can use it to check your collimator angle calibration if you trust the EPID orientation. Or vice versa. It is calculated simply from the slope of four lines fitted to the edges of the field.</p>
+<img alt="_images/fieldsize4.png" class="align-center" src="_images/fieldsize4.png" />
+<p>Radiation center offset from mechanical center is the difference in position between the mechanical center defined by the first image and the CAX from the second image. It is defined at the isocentric plane.</p>
+<img alt="_images/fieldsize5.png" class="align-center" src="_images/fieldsize5.png" />
+<p>If you are using the plate to determine the mechanical isocenter, note the following. The plate has four windows cut out. Each window is well centered with respect to the markings on the plate, and has a width of 2 cm. This allows to accurately find the central point as well as pixel size at the isocenter.</p>
+<img alt="_images/fieldsize6.png" class="align-center" src="_images/fieldsize6.png" />
+<p>Yellow dots on the picture of the plate show where the windows are sampled for horizontal/vertical inner penumbra points.</p>
+<p>Expected field width and the tolerance are defined in administration. Three field sizes can be predefined.</p>
+</div>
+<div class="section" id="a-note-on-colors">
+<h2>A note on colors<a class="headerlink" href="#a-note-on-colors" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Violet cross and line: the center of field CAX and the 50-% isodose line.</p></li>
+<li><p>Blue cross: the mechanical center.</p></li>
+<li><p>Blue and red dots: MLC positions.</p></li>
+<li><p>Green and yellow dots: penumbra points where jaws are sampled.</p></li>
+<li><p>Red contour around BB: the region within which the BB is sought.</p></li>
+</ul>
+</div>
+<div class="section" id="what-you-should-know">
+<h2>What you should know<a class="headerlink" href="#what-you-should-know" title="Permalink to this headline">¶</a></h2>
+<p>So far I have not had the time to find a better way to define the latter spread of sampling points for MLC leaves. You will notice, if you shape an irregular field, which you can also analyze btw, that the script tends to miss the leaves as you move out from the isocenter. This will be fixed in future versions.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Also note that leaf and jaw positions are determined by simple penumbra point searching. Other software may give you a different result.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fieldrot.html" class="btn btn-neutral float-right" title="Field rotation module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="vmat.html" class="btn btn-neutral float-left" title="VMAT module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, Denis Brojan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

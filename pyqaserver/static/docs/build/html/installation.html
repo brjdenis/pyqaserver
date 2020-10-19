@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation and running &mdash; pyqaserver 2.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Administration" href="administration.html" />
+    <link rel="prev" title="About" href="about.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pyqaserver
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation and running</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-pyqaserver">Installing pyqaserver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-pyqaserver">Running pyqaserver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-orthanc">Setting up Orthanc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sending-data-to-orthanc">Sending data to Orthanc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#starting-the-servers-as-windows-tasks">Starting the servers as Windows Tasks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="administration.html">Administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldrot.html">Field rotation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">Catphan module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html#included-software">Included software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyqaserver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Installation and running</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation-and-running">
+<h1>Installation and running<a class="headerlink" href="#installation-and-running" title="Permalink to this headline">¶</a></h1>
+<p>Pyqaserver and dependencies can be installed via pip. Orthanc must be downloaded and installed separately.</p>
+<p>Pyqaserver should be run on a computer that is connected to your hospital local network. There are no special requirements, a normal desktop computer should be sufficient. Have at least 2 GB or RAM and a decent CPU. It works on Windows, it should work on Linux as well.</p>
+<blockquote>
+<div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not make pyqaserver available to the public domain. Pyqaserver does not implement ANY safety features, so by making pyqaserver public you are at risk of exposing your data.</p>
+</div>
+</div></blockquote>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>Pyqaserver is sensitive to the version of dependencies. For pyqaserver 2.0.0 these must be respected:</p>
+<table class="colwidths-given docutils align-center">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Python</p></td>
+<td><p>&gt;= 3.7</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pylinac</p></td>
+<td><p>2.3.2</p></td>
+</tr>
+<tr class="row-even"><td><p>bokeh</p></td>
+<td><p>2.2.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>httplib2</p></td>
+<td><p>0.18.1</p></td>
+</tr>
+</tbody>
+</table>
+<p>Certain dependencies were adjusted to work with pyqaserver. These are packaged with pyqaserver. They include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Pylinac’s flatness/symmetry module (version 2.3.1)</p></li>
+<li><p>A modified version of pylinac’s picket fence module</p></li>
+<li><p>Pylinac’s planar imaging module (version 2.3.2) with some modifications</p></li>
+<li><p><a class="reference external" href="https://github.com/mpld3/mpld3">mpld3</a> (version 0.3) with some modifications</p></li>
+<li><p><a class="reference external" href="https://github.com/BebeSparkelSparkel/MinimumBoundingBox">minimumboundingbox.py</a> module</p></li>
+<li><p>Development version of <a class="reference external" href="https://github.com/bottlepy/bottle">bottlepy</a> (version 0.3)</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="installing-pyqaserver">
+<h2>Installing pyqaserver<a class="headerlink" href="#installing-pyqaserver" title="Permalink to this headline">¶</a></h2>
+<p>If you don’t have a Python environment, download the latest <a class="reference external" href="https://www.anaconda.com/products/individual">Anaconda</a>. The version used in this user manual is Anaconda3 2020.07.
+When you install Anaconda, choose to add Anaconda to your PATH environment variable.</p>
+<p>Open Anaconda prompt and use pip to install pyqaserver:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pyqaserver</span></code></p>
+<p>All should go well if you installed Anaconda afresh.</p>
+</div>
+<div class="section" id="running-pyqaserver">
+<h2>Running pyqaserver<a class="headerlink" href="#running-pyqaserver" title="Permalink to this headline">¶</a></h2>
+<p>Prepare a special directory on your local hard drive where the whole pyqaserver database will be stationed. The directory should be empty, pyqaserver will populate it with data.</p>
+<dl class="simple">
+<dt>Pyqaserver accepts two arguments:</dt><dd><ul class="simple">
+<li><p>IP addres + PORT</p></li>
+<li><p>path to database directory</p></li>
+</ul>
+</dd>
+</dl>
+<p>To start it as localhost:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pyqaserver</span> <span class="pre">127.0.0.1:8080</span> <span class="pre">path_to_database_folder</span></code></p>
+<img alt="_images/cmd.png" class="align-center" src="_images/cmd.png" />
+<p>Open a web browser and go to the site that is being served: <a class="reference external" href="http://127.0.0.1:8080">http://127.0.0.1:8080</a>.</p>
+<p>You can stop the server by pressing CTRL+C. If you restart it again, you will notice that the files inside the database directory will not change. The server will use existing database.</p>
+<p>If you want to make the site available to other computers in the network, instead of localhost use your computer’s IP address. For PORT use 80 so that people won’t have to type in the port, only the IP address.</p>
+</div>
+<div class="section" id="setting-up-orthanc">
+<h2>Setting up Orthanc<a class="headerlink" href="#setting-up-orthanc" title="Permalink to this headline">¶</a></h2>
+<p>Download Orthanc from their <a class="reference external" href="https://www.orthanc-server.com/">webpage</a>, and install it. You can even install it on a different computer.</p>
+<p>The folder should contain a special JSON configuration file. If the file is not already present, you can generate it by running this in Windows Command Prompt (after opening CMD go to the Orthanc folder):</p>
+<p><code class="docutils literal notranslate"><span class="pre">orthanc</span> <span class="pre">--config=Configuration.json</span></code></p>
+<p>Open the file in a text editor like Notepad++ (be careful, sometimes there is a problem with the encoding, and changing the file will make it unreadable by Orthanc).</p>
+<p>First, set the HTTP port for REST services and GUI.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;HttpServerEnabled&quot;</span> <span class="pre">:</span> <span class="pre">true</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;HttpPort&quot;</span> <span class="pre">:</span> <span class="pre">8042</span></code></p>
+<p>Next, set the dicom port to either 4242 or 104. Port 104 is usually used for dicom transport, but 4242 will also work. This port is where imaging workstations have to send images to, so use this port to set up your imaging computers or treatment information systems.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;DicomServerEnabled&quot;</span> <span class="pre">:</span> <span class="pre">true</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;DicomPort&quot;</span> <span class="pre">:</span> <span class="pre">104</span></code></p>
+<p>Change the UnknownSopClassAccepted to true:</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;UnknownSopClassAccepted&quot;</span> <span class="pre">:</span> <span class="pre">true</span></code></p>
+<p>Set RemoteAccessAllowed to true:</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;RemoteAccessAllowed&quot;</span> <span class="pre">:</span> <span class="pre">true</span></code></p>
+<p>Set AuthenticationEnabled to true:</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;AuthenticationEnabled&quot;</span> <span class="pre">:</span> <span class="pre">true</span></code></p>
+<p>Define credentials for accessing the server:</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;RegisteredUsers&quot;</span> <span class="pre">:</span> <span class="pre">{</span> <span class="pre">&quot;orthancuser&quot;</span> <span class="pre">:</span> <span class="pre">&quot;orthancpass&quot;</span> <span class="pre">},</span></code></p>
+<p>Delete “//” in front of the line to uncomment it. Choose appropriate username and password of the orthanc user. In pyqaserver administration you will set these credentials, so that pyqaserver will be able to communicate with Orthanc.</p>
+<p>Save the configuration file and run the Orthanc server:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Orthanc</span> <span class="pre">configuration.json</span></code></p>
+<p>If everything is OK, you should be able to access the GUI of the server at</p>
+<p><a class="reference external" href="http://127.0.0.1:8042">http://127.0.0.1:8042</a>.</p>
+<p>If you want to stop the server, press CTRL + C.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is a good idea to check that Windows Firewall is not blocking Python.exe or Orthanc.exe, in case you have problems.</p>
+</div>
+</div>
+<div class="section" id="sending-data-to-orthanc">
+<h2>Sending data to Orthanc<a class="headerlink" href="#sending-data-to-orthanc" title="Permalink to this headline">¶</a></h2>
+<p>Imaging workstation can be configured to send images directly to Orthanc via dicom transfer. This is particularly easy to do on Elekta’s iView and XVI. If you do not feel competent to configure the export filters, ask your system administrator to do it.
+For Varian machines you will have to export images from Aria.</p>
+</div>
+<div class="section" id="starting-the-servers-as-windows-tasks">
+<h2>Starting the servers as Windows Tasks<a class="headerlink" href="#starting-the-servers-as-windows-tasks" title="Permalink to this headline">¶</a></h2>
+<p>Having two Prompts/Terminals open all the time may not be the optimal solution. You could create two Windows Tasks to be run anytime the computer is powered on. Open Windows Task Scheduler. Click on Create Basic Task. For pyqaserver input the arguments according to this example:</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Program/Script:</span> <span class="pre">cmd.exe</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Arguments:</span> <span class="pre">/C</span> <span class="pre">pyqaserver</span> <span class="pre">127.0.0.1:8080</span> <span class="pre">path_to_database</span></code></div>
+</div>
+<p>Or another example would be using pyqaserver’s script file located in the Anaconda directory:</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Program/Script:</span> <span class="pre">C:\Users\yourusername\anaconda3\Scripts\pyqaserver.exe</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Arguments:</span> <span class="pre">127.0.0.1:8080</span> <span class="pre">path_to_database</span></code></div>
+</div>
+<p>Images below will help you set up the action for both tasks. Make sure you select “Run whether user is logged on or not”, and “Run with highest privileges”.</p>
+<img alt="_images/task4.png" src="_images/task4.png" />
+<img alt="_images/task7.png" src="_images/task7.png" />
+<p>This will only work if you are using the base environment and if you added Anaconda to your system PATH.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="administration.html" class="btn btn-neutral float-right" title="Administration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="about.html" class="btn btn-neutral float-left" title="About" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, Denis Brojan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

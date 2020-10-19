@@ -1,0 +1,22 @@
+body {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  background-color: #f5f5f5;
+}
+
+tr:first-child {
+  font-weight: bold;
+}
+.table td {
+    text-align: center;   
+ }
+.nav-tabs{
+    margin-bottom: 10px;
+
+}
+
+.table.table-borderless td,
+.table.table-borderless th {
+    border: none;
+}

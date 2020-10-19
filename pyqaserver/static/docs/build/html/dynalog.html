@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Dynalog module &mdash; pyqaserver 2.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Image review" href="imagereview.html" />
+    <link rel="prev" title="Catphan module" href="catphan.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pyqaserver
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and running</a></li>
+<li class="toctree-l1"><a class="reference internal" href="administration.html">Administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldrot.html">Field rotation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">Catphan module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dynalog module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-options">Other options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-get-data">How to get data?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#record-data">Record data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mlc">MLC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fluence">Fluence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#error-histogram">Error histogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dose-rate">Dose rate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#histograms-between-dates">Histograms between dates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html#included-software">Included software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyqaserver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Dynalog module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dynalog.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dynalog-module">
+<h1>Dynalog module<a class="headerlink" href="#dynalog-module" title="Permalink to this headline">¶</a></h1>
+<p>This module is used to analyze dynalogs. It is meant to be used for everyday tracking of MLC dynamics during treatment. Please read the configuration instruction carefully in order to set up the dynalog module.</p>
+<p>When pyqaserver is started, it will either connect to the dynalog database or create one. The database cannot be filled with data manually. A special post request must be sent to pyqaserver to read dynalogs from the repository, and store them into the database. All this must be set up beforehand.</p>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>Filter by date 1</strong></dt><dd><p>If only Date 1 is defined, then all IDs of patients that were treated on that day will be collected.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Filter by date 2</strong></dt><dd><p>Only works with those searches (see below) that require a time interval.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Records</strong></dt><dd><p>Selecting date 1 displays all the records that belong to that particular patient on that date.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Select field for analysis</strong></dt><dd><p>Here you can select the field for analysis. Beam ids are ordered in the same way as in the records display.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Select MLC</strong></dt><dd><p>You can choose between normal 120 MLC or HD 120 MLC.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Gamma analysis settings</strong></dt><dd><p>Here you can define the gamma analysis parameters.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Analyze</strong></dt><dd><p>By clicking this button, pyqaserver will extract the selected dynalog from the zip archive and re-analyze it with new gamma settings.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="other-options">
+<h2>Other options<a class="headerlink" href="#other-options" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>Get all patients!</strong></dt><dd><p>If you click this button, the full list of patients that are in the database will be displayed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Filter patients - Select folder</strong></dt><dd><p>Select the linac (repository folder) to filter the patient list. Click Go!, and only these patients will be listed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Filter patients - Filter patient list</strong></dt><dd><p>Type in the id of the patient, and click Go!. Only records for this patient will be fetched. At the same time the “select folder” filter will be applied.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Last upload</strong></dt><dd><p>A quick review of last uploaded and analyzed dynalogs. “Select folder” filter can be used to show recent uploads for a certain linac.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Between dates</strong></dt><dd><p>Similar to “Last upload”, except that analysis results are displayed for those dynalogs that were uploaded between the two defined dates (“Date 1” and “Date 2”). “Select folder” filter can be used to show uploads for a certain linac only.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>For selected patient</strong></dt><dd><p>Pick a patient from the patient list. Clicking this button will show some results for all treatment fractions.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Get upload dates</strong></dt><dd><p>Get dates for all upload events.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>MAX DIFF2 [cm]</strong></dt><dd><p>This will collect all the records within the defined date interval that had the MAX DIFF2 greater than the value you type in. “Select folder” filter can be used to show uploads for a certain linac only.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Histograms between dates</strong></dt><dd><p>Once the date interval is defined (here the interval can actually be empty, ie. all records will be included, or only one side of the interval can be defined), you can click this button to get the distribution of errors across all records. Each bar represents the number of dynalogs that had the error within the bin.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Histogram - probability density?</strong></dt><dd><p>If this is checked, the histogram will be normalized so that the integral is 1. Red bars, if they exist, are the outliers, that is, all dynalogs that had errors greater than the limit are counted here. Normally, this limit is 0.5 cm.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Histogram - logarithmic scale?</strong></dt><dd><p>If this is checked, histograms will be displayed in logarithmic scale.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="how-to-get-data">
+<h2>How to get data?<a class="headerlink" href="#how-to-get-data" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>I want to get all patients/records for a particular date</p>
+<blockquote>
+<div><p>Click <strong>Filter by date 1</strong> and choose the date. <strong>Patient</strong> dropdown will be populated. In the <strong>Record</strong> dropdown you can then select the record you want.</p>
+</div></blockquote>
+</li>
+<li><p>I want to get all the patients for a particular date and a particular folder (ie. machine)</p>
+<blockquote>
+<div><p>In the <strong>select folder</strong> dropdown choose the appropriate folder and repeat 1.</p>
+</div></blockquote>
+</li>
+<li><p>I want to get all the records for a particular patient</p>
+<blockquote>
+<div><p>Search the patient with the <strong>Filter patient list</strong>. You can filter the results with <strong>Filter patients by folder</strong>.</p>
+</div></blockquote>
+</li>
+<li><p>I want to get all the patients from a particular folder (ie. machine)</p>
+<blockquote>
+<div><p>Clear the <strong>Filter patient list</strong>, select the appropriate <strong>Filter patients by folder</strong> and click Go!</p>
+</div></blockquote>
+</li>
+<li><p>How to find out what records have been saved last?</p>
+<blockquote>
+<div><p>Click the <strong>Last upload</strong> button. You can filter the records by machine as well.</p>
+</div></blockquote>
+</li>
+<li><p>How to get a summary of all the records for a particular date or between dates?</p>
+<blockquote>
+<div><p>Select dates 1 and 2, and then click the <strong>Between dates</strong> button. You can filter the patients by machine as well.</p>
+</div></blockquote>
+</li>
+<li><p>How to analyze one particular dynalog?</p>
+<blockquote>
+<div><p>Choose the record and select the desired field (<strong>Select field for analysis</strong>). Select the appropriate MLC type (<strong>Select MLC</strong>) and then click <strong>Analyze</strong>.</p>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="record-data">
+<h2>Record data<a class="headerlink" href="#record-data" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Field</strong></dt><dd><p>The number of the field. If dynalog does not contain a record of the field id, the value will be “NA”.</p>
+</dd>
+<dt><strong>Gantry</strong></dt><dd><p>Gantry angle or arc starting angle.</p>
+</dd>
+<dt><strong>Time</strong></dt><dd><p>Time of treatment.</p>
+</dd>
+<dt><strong>Snaps</strong></dt><dd><p>Number of snapshots. Snapshots are 50 ms apart.</p>
+</dd>
+<dt><strong>Holds</strong></dt><dd><p>The number of times that the MLC controller demanded beam hold.</p>
+</dd>
+<dt><strong>Max RMS [mm]</strong></dt><dd><p>Maximum RMS over all snapshots and all leaves.</p>
+</dd>
+<dt><strong>Max RMS2 [mm]</strong></dt><dd><p>Similar to MAX RMS, except that only snapshots when beam was ON and there were no holdoffs are included in the calculation.</p>
+</dd>
+<dt><strong>Max DIFF [mm]</strong></dt><dd><p>Maximum difference between planned and measured leaf positions, calculated for all leaves and all snapshots.</p>
+</dd>
+<dt><strong>Max DIFF2 [mm]</strong></dt><dd><p>Similar to Max DIFF2, except that only those snapshots are included when beam was ON and there were no beam holdoffs. This value should always be reasonable (2 mm for example), otherwise you have a big problem!</p>
+</dd>
+<dt><strong>RMS avg [mm]</strong></dt><dd><p>Average RMS for moving leaves only (when beam was ON and there were no holdoffs). Leaf is moving if the standard deviation of its position over all snapshots is lower than 0.1 mm.</p>
+</dd>
+<dt><strong>gamma avg</strong></dt><dd><p>Average gamma.</p>
+</dd>
+<dt><strong>gamma&lt;1 [%]</strong></dt><dd><p>Percentage of points that have gamma smaller than 1.</p>
+</dd>
+<dt><strong>dd/dta/thresh/res</strong></dt><dd><p>Settings used for gamma calculation: dose difference, distance to agreement, threshold, resolution. See administration.</p>
+</dd>
+<dt><strong>Folder</strong></dt><dd><p>Name or label of the folder from where dynalogs were taken. Normally this would be the name of your linac.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>Pyqaserver returns Pylinac’s analysis with some additional info.</p>
+<div class="section" id="mlc">
+<h3>MLC<a class="headerlink" href="#mlc" title="Permalink to this headline">¶</a></h3>
+<p>Here you can observe planned and actual MLC movements. If you don’t see the animation, then there is a problem with your installation of Bokeh. Click on the slider and then use arrow keys (left-right) to move the slider with small increments.</p>
+<p>The speed of the leaves is calculated as the first time difference of leaf position. It is severely prone to noise. In future release it will be calculated more robustly.</p>
+<p>Red bars correspond to bank A and blue bars correspond to bank B.</p>
+<p>Beam status has two signals: CONT/STOP and ON/OFF. The first one is the beam hold off, the second one is beam on or beam off.</p>
+<img alt="_images/dynalog1.png" class="align-center" src="_images/dynalog1.png" />
+</div>
+<div class="section" id="fluence">
+<h3>Fluence<a class="headerlink" href="#fluence" title="Permalink to this headline">¶</a></h3>
+<p>Actual and planned fluence maps are presented. Besides the gamma map a dose difference map is also shown. Gamma and dose difference histograms may show red bars. Those red bars collect all the outliers: greater than 10 % dose difference or gamma greater than 1.</p>
+<img alt="_images/dynalog2.png" class="align-center" src="_images/dynalog2.png" />
+</div>
+<div class="section" id="error-histogram">
+<h3>Error histogram<a class="headerlink" href="#error-histogram" title="Permalink to this headline">¶</a></h3>
+<p>Four histograms are shown: RMS and RMS2, MAX DIFF and MAX DIFF2.</p>
+<img alt="_images/dynalog3.png" class="align-center" src="_images/dynalog3.png" />
+</div>
+<div class="section" id="dose-rate">
+<h3>Dose rate<a class="headerlink" href="#dose-rate" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/dynalog4.png" class="align-center" src="_images/dynalog4.png" />
+<p>The first graph shows how the beam status is changing over time and how the meterset weight is adding up.</p>
+<p>The second plot is the gantry speed. Gantry speed is not calculated with first-order differences. Instead, gantry angle as a function of time (snapshot) is filtered with the savgol filter using every other point out of the whole snapshot collection. Then the ordinary first order difference is calculated using every third point of the filtered function. This plot is shown in dark blue color. Underneath you will see a faint blue plot, that is the first-order difference of gantry position. It should be extremely noisy.</p>
+<p>The dose rate graph is calculated similarly to gantry speed.</p>
+</div>
+<div class="section" id="histograms-between-dates">
+<h3>Histograms between dates<a class="headerlink" href="#histograms-between-dates" title="Permalink to this headline">¶</a></h3>
+<p>Here is an example of a distribution of MAX DIFF2 values over a period of one month for VMAT/Arc plans. One can see that most dynalogs had MAX DIFF2 smaller than 0.3 cm, one dynalog was recorded with a value between 0.3 and 0.32 cm, and more than 10 dynalogs had errors greater than 0.5 cm. The latter is important, it may show that your MLC system has problems with sticking/stalling leaves. In this case, review the dynalogs and look for treatment interruptions, ie. static leaves.</p>
+<img alt="_images/dynalog_histograms.png" class="align-center" src="_images/dynalog_histograms.png" />
+<p>Here is the same distribution for IMRT plans with few control points, and a tolerance for leaf positioning of 2 mm. You can see how the MAX DIFF2 histogram cuts off at 0.2 cm, but the MAX DIFF has a wider distribution of errors. This is perfectly normal. The first histogram only count errors when beam was actually ON and no HOLD OFF was demanded, while the second histogram counts all the errors over all snapshots. This means that the linac is interrupting the beam to have the leaf position within the 0.2 cm tolerance, but while the beam is off the difference between actual and planned leaf positions can be larger.</p>
+<img alt="_images/dynalog_histograms2.png" class="align-center" src="_images/dynalog_histograms2.png" />
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="imagereview.html" class="btn btn-neutral float-right" title="Image review" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="catphan.html" class="btn btn-neutral float-left" title="Catphan module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, Denis Brojan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

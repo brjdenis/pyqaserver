@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Field rotation module &mdash; pyqaserver 2.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Flatness/Symmetry module" href="flatsym.html" />
+    <link rel="prev" title="Field size module" href="fieldsize.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pyqaserver
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and running</a></li>
+<li class="toctree-l1"><a class="reference internal" href="administration.html">Administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Field rotation module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#collimator-absolute">Collimator absolute</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#analysis">Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-results-are-calculated">How results are calculated</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#collimator-relative">Collimator relative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#couch-relative">Couch relative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kv-epid-rotation">kV EPID rotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-note-on-saving-measurements">A note on saving measurements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">Catphan module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html#included-software">Included software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyqaserver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Field rotation module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/fieldrot.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="field-rotation-module">
+<h1>Field rotation module<a class="headerlink" href="#field-rotation-module" title="Permalink to this headline">¶</a></h1>
+<p>This module can be used to measure how accurately the collimator angle is calibrated, or how accurately the treatment couch rotates from one angle to another. It can also be used to test that the EPID is not rotated with respect to the gantry axis of rotation.</p>
+<p>You can perform three types of measurements (see Options below):</p>
+<ul class="simple">
+<li><p>The accuracy of collimator angle calibration at cardinal positions. This is done independently from external references such as the optical field.</p></li>
+<li><p>The accuracy of relative collimator movement, say from angle 0 to any specific angle.</p></li>
+<li><p>The accuracy of relative couch rotation.</p></li>
+</ul>
+<p>You can choose between these three options by selecting appropriate <strong>Image type</strong>. Measuring the absolute collimator angle and couch rotation requires the use of <strong>two</strong> ballbearing phantoms. Similar to that used for the Winston-Lutz test.</p>
+<p>Accurate collimator calibration and accurate couch rotation are vital for non-central stereotactic treatments. With this module you can use the EPID to replace manual measurements.</p>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<p><strong>Image type</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Collimator absolute</strong> is used to measure the accuracy of collimator angles at -180, -90, 0, 90,     and 180 degrees. Two images of the BBs must be acquired with a narrow field at two opposite gantry angles.</p></li>
+<li><p><strong>Collimator relative</strong> is used to measure the accuracy of collimator rotation from one angle to another. In this case, no BB should be inside the narrow field, and all measurements must be performed at the same gantry angle.</p></li>
+<li><p><strong>Couch relative</strong> is used to measure the accuracy of couch rotation from one angle to another. Two BBs should be located within a large field, and all measurements are performed at the same gantry angle.</p></li>
+</ul>
+</div></blockquote>
+<dl>
+<dt><strong>Sampling direction</strong></dt><dd><p>Here you can set the direction along which the software will search for (long) field edges. If, for example, you are testing collimator angles 0 or 180, you should choose up-down direction. This option is applicable only for <em>Collimator absolute</em> and <em>Collimator relative</em>.</p>
+<img alt="_images/fieldrot_direction.png" class="align-center" src="_images/fieldrot_direction.png" />
+</dd>
+<dt><strong>Clip box</strong></dt><dd><p>The size of the central portion of the image beyond which pixel values will be set to background signal. If you don’t want to clip the image, put 0. This option is useful if you have unwanted exterior parts of the field that you would like to cut out of the image.</p>
+</dd>
+<dt><strong>Sampling lines</strong></dt><dd><p>The number of sampling lines that the software will use to detect field edges. Lines are equidistant. Each line follows the pixel column or pixel row. The actual number of lines may be smaller than defined: the final line may be omitted because it falls outside the specified margin.</p>
+</dd>
+<dt><strong>Margin</strong></dt><dd><p>How many pixels lines will be skipped from each side of the field edge when sampling. This is needed to prevent sampling edges too close to the lateral border of the field, or to prevent sampling field edges that are too close to the BBs.</p>
+<img alt="_images/fieldrot_sampling.png" class="align-center" src="_images/fieldrot_sampling.png" />
+</dd>
+<dt><strong>Median filter</strong></dt><dd><p>Sometimes the algorithm may fail when searching for the BBs. In this case, try to filter the image and re-analyze. More on:  <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.median_filter.html">scipy_median_filter</a> .</p>
+</dd>
+<dt><strong>Invert image?</strong></dt><dd><p>Check this if you want to invert the image. This option should not be necessary because Pylinac will check for proper inversion.</p>
+</dd>
+<dt><strong>Choose colormap</strong></dt><dd><p>Here you can pick the colormap for field display.</p>
+</dd>
+<dt><strong>High contrast (kV) images?</strong></dt><dd><p>This option can be used to detect the BB within a kV field.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="collimator-absolute">
+<h2>Collimator absolute<a class="headerlink" href="#collimator-absolute" title="Permalink to this headline">¶</a></h2>
+<p>MLC leaves are chosen as the mechanical reference when defining the angle of the collimator, not jaws or external collimator landmarks. Collimator angle is best defined with respect to the gantry axis of rotation. That is, at collimator angles -180, 180, and 0, the sides of the MLC leaves should be exactly perpendicular to the gantry axis of rotation, and parallel at angles -90 and 90.</p>
+<p>Usually 0 degrees is the main angle that needs to be accurately defined. Other angles are then obtained as relative rotations from 0. To measure the accuracy of angle 0 prepare a rectangular field shaped with MLC leaves as shown below. The field size should be approximately 15 cm x 3 cm. On Elekta Agility linacs there is no diaphragm in the X direction. In this case you must push the unwanted MLC opening as far away from the field as possible. Y diaphragms should be open just enough to expose the sides of the MLC leaves.</p>
+<img alt="_images/fieldrot0.png" class="align-center" src="_images/fieldrot0.png" />
+<p>The procedure is as follows:</p>
+<ol class="arabic simple">
+<li><p>Place two ballbearing phantoms on the couch inside the field. The BBs should be at a distance approximately 11 cm from each other. It does not matter how accurately the BBs are positioned inside the field. The BBs should be vertically at the isocenter.</p></li>
+<li><p>Acquire two images of the BBs with the narrow field, one from gantry 0 and another at 180. Do not move the collimator or change the field!</p></li>
+<li><p>Analyze the images. Detect the angles of field edges and the angle of the line between BBs. Determine the error in collimator calibration.</p></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Always check that the BB centers have been detect properly. Zoom in on the image and make sure the red cross is within the sphere. The algorithm for finding the BBs may fail if the BBs are too close to the edge of the field, or if there is significant asymmetry of the beam.</p>
+</div>
+<div class="section" id="analysis">
+<h3>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h3>
+<p>In the mechanical version of this test one puts a sheet of graph paper over the couch end, aligning the lines on the paper with the crosshair at collimator angle 0. Then one rotates the gantry to 180 degrees. If the crosshair projected from bellow onto the sheet changes in angle with respect to the lines on the graph paper, the collimator is not properly calibrated.</p>
+<p>In our version we use two metal spheres instead of the graph paper to serve as a reference direction in 3D space. And instead of the optical crosshair to measure the collimator angle error we use a rectangular field with MLC defined edges captured on  the EPID.</p>
+<p>Figure below shows an example. Image 1 was taken at gantry 0, and image 2 at gantry 180. Vertical coordinates on both images correspond to the LONG spatial coordinate. However,  horizontal coordinates are not equal to LAT spatial coordinates. In fact, when going from gantry 0 to gantry 180, they change sign. The effect of this is that we must, when doing the analysis of image 2, always invert the horizontal coordinates (read the image from right to left) so that we can get the angle of the field with respect to the BBs in spatial coordinates properly.</p>
+<p>The field does not rotate when the gantry is rotated. That is because the EPID moves with the gantry. The line between the BBs, however, does.</p>
+<img alt="_images/fieldrot2.png" class="align-center" src="_images/fieldrot2.png" />
+<p>The analysis goes like this:</p>
+<ol class="arabic simple">
+<li><p>A simple algorithm finds the corners of the field. These corners are starting points for sampling field edges.</p></li>
+<li><p>Depending on the sampling direction, corresponding field edges are sampled to find 50 % penumbra points. The two edges are always independently calculated, and are marked blue and yellow. Ideally, there should be no angular deviation between them since MLC leaves are strictly parallel. However, sometimes this is not the case and may indicate a mechanical problem.</p></li>
+<li><p>Penumbra points are grouped per field edge and a line is fitted to them. The slope of the line gives the angle of the field edge <strong>with respect to the image</strong>.</p></li>
+<li><p>The two BBs are found in a similar way as in the WL test. The centers of the BBs are connected with a line. The angle of this line is measured with respect to the image. Because the BBs are stationary, this line is the reference on both images. This makes the test insensitive to EPID movement, but we must take into account that the image at gantry 180 has inverted horizontal coordinates.</p></li>
+</ol>
+</div>
+<div class="section" id="how-results-are-calculated">
+<h3>How results are calculated<a class="headerlink" href="#how-results-are-calculated" title="Permalink to this headline">¶</a></h3>
+<p>The results are contained in the following table:</p>
+<img alt="_images/fieldrot1.png" class="align-center" src="_images/fieldrot1.png" />
+<p>If the angle of the BB line is around 0, the <strong>collimator angle error</strong> is calculated as:</p>
+<div class="math">
+<p><img src="_images/math/5268c2214af3bb946e251dae2ec5398bbf1bd483.png" alt="\text{Blue edge coll. angle error} = \left[\left(B_2-BB_2\right)+\left(B_1-BB_1\right)\right]/2\\
+\text{Yellow edge coll. angle error} = \left[\left(Y_2-BB_2\right)+\left(Y_1-BB_1\right)\right]/2"/></p>
+</div><p>Where <img class="math" src="_images/math/ab6ce861ef243609243d7aee17111f7512655a06.png" alt="B_1, B_2, Y_1, Y_2"/> are the angles of blue and yellow edges of the field for images 1 and 2, and <img class="math" src="_images/math/43bc08d75a3ecca69e53ba5a2bc34045613e5e65.png" alt="BB_1, BB_2"/> are the angles of the BBs.</p>
+<p>If the angle of the BB line is around 90 degrees, the same formulation for collimator angle error is used as above. However, if any angle has a negative sign, like -89 degrees, the angle is beforehand converted onto the interval [0, 180] degrees. That is, -89 degrees transforms into +91 degrees.</p>
+<p>Another result is displayed in the table, namely the EPID angle error. This is the rotation of the EPID around its center. It can be calculated from the previous data like so:</p>
+<div class="math">
+<p><img src="_images/math/c959d516e0a425af6778ce77c45403d0f1dcbac4.png" alt="\text{EPID angle error blue} = B1-\text{Blue edge coll. angle error} - \Delta \\
+\text{EPID angle error yellow} = Y1-\text{Yellow edge coll. angle error} - \Delta"/></p>
+</div><p>Where <img class="math" src="_images/math/6450616b75212cb568e905db49efd0c3dd584648.png" alt="\Delta"/> is 0 if the long field edge is horizontal, or 90 if the long field edge is vertical. An alternative to this formulation would be to calculate the difference in BB angles directly.</p>
+<p>It is important that the sampling margin is chosen in such a way that the lines fitted to penumbra points match all the points with sufficient accuracy. The example bellow shows a good result. Each cross marks the difference between the measured penumbra point and the fitted line in pixels.</p>
+<img alt="_images/fieldrot3.png" class="align-center" src="_images/fieldrot3.png" />
+<p>The last plot (bellow) demonstrates how the optical field crosswires would show up on graph paper for gantry angles 0 and 180 if you performed the manual measurement. Note that the horizontal axis is the LAT spatial direction. Each field edge, as well as the BB line is plotted. Ideally, all field lines should match. But, because the angle 0 is not truly zero when one turns the gantry to 180 degrees, the field changes angle with respect to the graph paper.</p>
+<img alt="_images/fieldrot4.png" class="align-center" src="_images/fieldrot4.png" />
+</div>
+</div>
+<div class="section" id="collimator-relative">
+<h2>Collimator relative<a class="headerlink" href="#collimator-relative" title="Permalink to this headline">¶</a></h2>
+<p>Now that you have established what the true angle is when the collimator indicator shows 0, you can measure other angles as well.</p>
+<p>Remove the BBs from the couch. Set gantry to 0 and do not move it. For the first image set collimator angle to 0. For the second image pick whatever angle you wish. Select appropriate sampling direction so that the long field edge will be sampled. Switch image type to <strong>Collimator relative</strong>. Below is an example.</p>
+<img alt="_images/fieldrot5.png" class="align-center" src="_images/fieldrot5.png" />
+<p>The collimator rotation is now equal to the difference in measured angles:</p>
+<div class="math">
+<p><img src="_images/math/a94534dc7b46545773ae80b90405cb377be77a66.png" alt="\text{Blue edge difference} = B_2-B_1\\
+\text{Yellow edge difference} = Y_2-Y_1"/></p>
+</div><p>Note that angles are defined between -90 and 90 degrees with respect to the horizontal.</p>
+</div>
+<div class="section" id="couch-relative">
+<h2>Couch relative<a class="headerlink" href="#couch-relative" title="Permalink to this headline">¶</a></h2>
+<p>Put the two BBs back on the couch. Set gantry to 0 and do not move it. Prepare an open field of sufficient size so that when you rotate the couch the BBs will remain within the field. Start with couch 0 as image 1. For image 2 rotate the couch to the desired angle. See below.</p>
+<img alt="_images/fieldrot6.png" class="align-center" src="_images/fieldrot6.png" />
+<p>The rotation of the couch is calculated as:</p>
+<div class="math">
+<p><img src="_images/math/9847acbefc07a6220af7893d11403a8f8e7040c9.png" alt="\text{difference} = BB_2-BB_1"/></p>
+</div><p>Note that angles are defined between -90 and 90 degrees with respect to the horizontal.</p>
+</div>
+<div class="section" id="kv-epid-rotation">
+<h2>kV EPID rotation<a class="headerlink" href="#kv-epid-rotation" title="Permalink to this headline">¶</a></h2>
+<p>For CBCT scans it is vital that the EPID does not exhibit significant rotation (twist) around its center. Otherwise 3D images will be distorted.</p>
+<p>You can test the rotation of the kV detector with the <em>Collimator absolute</em> measurement. Use a smaller kV collimator so that you get a fixed square field on the imager. Check the <em>High contrast (kV) images?</em> option. Put two BBs on the couch and acquire two images, one at gantry 90 and the other at 270. Do the analysis. Note that the results pertain only to the situation when the detector plate is parallel to the ground.</p>
+<p>Below is an example measurement on XVI with a 15x15 cassette.</p>
+<img alt="_images/fieldrot_kv.png" class="align-center" src="_images/fieldrot_kv.png" />
+</div>
+<div class="section" id="a-note-on-saving-measurements">
+<h2>A note on saving measurements<a class="headerlink" href="#a-note-on-saving-measurements" title="Permalink to this headline">¶</a></h2>
+<p>When saving measurements select the nominal angle of the collimator/couch that you are testing. Then manually type in the measured angle. This angle is not displayed in the results section, you have to determine it by hand. An example: the nominal angle you were testing is 0, and the results sections says the collimator error is -0.5 degrees. Your true 0 angle is therefore -0.5 degrees. The software will then apply the tolerance on the difference between the nominal and the true angle.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="flatsym.html" class="btn btn-neutral float-right" title="Flatness/Symmetry module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fieldsize.html" class="btn btn-neutral float-left" title="Field size module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, Denis Brojan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

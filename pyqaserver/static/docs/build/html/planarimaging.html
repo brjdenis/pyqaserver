@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Planar imaging module &mdash; pyqaserver 2.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Catphan module" href="catphan.html" />
+    <link rel="prev" title="Flatness/Symmetry module" href="flatsym.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pyqaserver
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and running</a></li>
+<li class="toctree-l1"><a class="reference internal" href="administration.html">Administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldrot.html">Field rotation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Planar imaging module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-use-the-module">How to use the module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#regions-of-interest-rois">Regions of interest (ROIs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-note-on-colors">A note on colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-things-are-calculated">How things are calculated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-qc3-analysis">Example QC3 Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-leeds-tor-analysis">Example Leeds TOR Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#literature">Literature</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">Catphan module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html#included-software">Included software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyqaserver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Planar imaging module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/planarimaging.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="planar-imaging-module">
+<h1>Planar imaging module<a class="headerlink" href="#planar-imaging-module" title="Permalink to this headline">¶</a></h1>
+<p>This module is used to test the constancy of two-dimensional MV or kV image. All five phantoms recognized by Pylinac can be used:</p>
+<ul class="simple">
+<li><p>Standard Imaging QC3</p></li>
+<li><p>Leeds TOR 18</p></li>
+<li><p>Las Vegas</p></li>
+<li><p>DoselabMC2MV</p></li>
+<li><p>DoselabMC2kV</p></li>
+</ul>
+<p>In order to be able to compare image quantifiers with the baseline, you have the option of saving a reference image into the server database. This image can then be analyzed at the same time as the currently acquired image.</p>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Image</strong></dt><dd><p>The acquired image. If <em>Analyze reference?</em> is unchecked, only this image will be analyzed.</p>
+</dd>
+<dt><strong>Phantom</strong></dt><dd><p>A list of available phantoms recognized by Pylinac. Always pick the correct phantom.</p>
+</dd>
+<dt><strong>Machine/Beam</strong></dt><dd><p>Pick the right machine and beam if you want to use a reference image or save the final measurements to the database.</p>
+</dd>
+<dt><strong>Imager</strong></dt><dd><p>Here you can select the reference image of the phantom for a particular machine (imager). See Administration section for more details about how to add reference images to the server. If you don’t have a reference image prepared, then skip this setting, and untick the <em>Analyze reference?</em> checkbox.</p>
+</dd>
+<dt><strong>Clip box</strong></dt><dd><p>Here you can enter the size of the central portion of the image beyond which pixel values will be set to background signal. If you don’t want to clip the image, put 0.</p>
+</dd>
+<dt><strong>Force angle</strong></dt><dd><p>Here you can force the angle of the phantom. This is useful when you see that Pylinac has wrongly detected the angle.</p>
+</dd>
+<dt><strong>Show bounding box?</strong></dt><dd><p>If checked, a bounding box will be drawn around the phantom, and the image will be zoomed-in.</p>
+</dd>
+<dt><strong>Invert image?</strong></dt><dd><p>Check this if you need to invert the image.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="how-to-use-the-module">
+<h2>How to use the module<a class="headerlink" href="#how-to-use-the-module" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Acquire your image in such a way that Pylinac will be able to analyze it.</p></li>
+<li><p>To set a reference for comparison have your engineers optimize image quality, then acquire a good image that satisfies your clinical demands. This image can then be downloaded from Orthanc and stored into the server database for future use.</p></li>
+<li><p>Select the appropriate Phantom. If the reference image is available, it will show up in the dropdown menu (machine/beam). If not, then you can work without them. In this case uncheck <em>Analyze reference?</em>.</p></li>
+</ul>
+</div>
+<div class="section" id="regions-of-interest-rois">
+<h2>Regions of interest (ROIs)<a class="headerlink" href="#regions-of-interest-rois" title="Permalink to this headline">¶</a></h2>
+<p>Pylinac will find several ROIs on each phantom. The following image shows ROIs for the five phantoms. Red circles mark those ROIs that are used for studying contrast (low frequency contrast resolution), blue circles are those ROIs that are used for studying MTF (high frequency contrast resolution) and yellow circles are the background ROIs. Color coding on this image is valid only for this demonstration.</p>
+<img alt="_images/planar1.png" class="align-center" src="_images/planar1.png" />
+<p>We denote low contrast, high contrast, and background ROIs with</p>
+<div class="math">
+<p><img src="_images/math/65a805fdb8d27d7f8e00ca1d2573a3740c86e7f0.png" alt="L, H, B_{L}"/></p>
+</div><p>Where <em>L</em> stands for low frequency ROI, <em>H</em> for high frequency ROI and <em>B</em> is the background.</p>
+<p>The QC3 phantom has 5 high frequency ROIs, 5 low frequency ROIs, and one background ROI:</p>
+<div class="math">
+<p><img src="_images/math/de37e8577c5aa1b9e1638ab1d86ad387434b3961.png" alt="H_0, H_1, H_2, H_3, H_4\\
+L_0, L_1, L_2, L_3, L_4\\
+B"/></p>
+</div><p>The LeedsTOR phantom has 9 high frequency ROIs, and 18 low frequency ROIs with corresponding 4 background ROIs.</p>
+<div class="math">
+<p><img src="_images/math/63356e83e1e0427cf365d8c3de523570f375fa34.png" alt="H_0, H_1, \ldots, H_8\\
+L_0, L_1, \ldots, L_{17}\\
+B_{L0}, B_{L1}, B_{L2}, B_{L3}"/></p>
+</div><p>The Las Vegas phantom has 20 low frequency ROIs and 4 background ROIs.</p>
+<div class="math">
+<p><img src="_images/math/6ddfa0803f5f50dde0087644ffc06bded616d010.png" alt="L_0, L_1, \ldots, L_{19}\\
+B_{L0}, B_{L1}, B_{L2}, B_{L3}"/></p>
+</div><p>The DoselabMC2MV and DoselabMC2kV phantoms have 4 low frequency ROIs, 4 high frequency ROIs and one background ROI:</p>
+<div class="math">
+<p><img src="_images/math/014e87ddbe88a14dff8e3d3ec1897bc6f52959e4.png" alt="H_0, H_1, H_2, H_3\\
+L_0, L_1, L_2, L_{3}\\
+B"/></p>
+</div><p>Once ROIs are defined, pixel values within can be extracted from the image. Random noise is not calculated according to [2], instead the standard deviation of pixel values within low contrast or background ROIs is used.</p>
+</div>
+<div class="section" id="a-note-on-colors">
+<h2>A note on colors<a class="headerlink" href="#a-note-on-colors" title="Permalink to this headline">¶</a></h2>
+<p>All background ROIs will be colored yellow. All low frequency and high frequency ROIs that have passed the tolerance will be colored blue. Any ROI that does not pass the tolerance will be colored red.</p>
+</div>
+<div class="section" id="how-things-are-calculated">
+<h2>How things are calculated<a class="headerlink" href="#how-things-are-calculated" title="Permalink to this headline">¶</a></h2>
+<p>Read <a class="footnote-reference brackets" href="#id3" id="id1">1</a> and <a class="footnote-reference brackets" href="#id4" id="id2">2</a> so that you will be able to understand the analysis. Where there are more than one background ROIs, they are average into one value like this:</p>
+<div class="math">
+<p><img src="_images/math/2d111b62adf7295a1015d5f14e6eb6c26fa987d7.png" alt="\textrm{average}(B) = \frac{1}{N_B}\sum_{i=0}^{i=N_B-1} \textrm{median}(B_{Li})"/></p>
+</div><p>Where <img class="math" src="_images/math/6abd2885bf4e03708600b194eabc6cd7de1ed3e5.png" alt="N_B"/> is the number of background ROIs.</p>
+<p><strong>Low-frequency contrast</strong> for each <em>L</em> is calculated like this:</p>
+<div class="math">
+<p><img src="_images/math/4e472485f23fe93535dcd6eae13a6becc7496d08.png" alt="\textrm{contrast}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B)}{\mathrm{median}\,(L_i)+\mathrm{median}\,(B)}"/></p>
+</div><p>The green line on the low-frequency plot represents the <em>low_threshold</em> defined in administration. If the contrast is above the green line, the ROI has passed the test.</p>
+<p><strong>Contrast-to-noise ratio</strong> is defined as</p>
+<div class="math">
+<p><img src="_images/math/b86fac9d0428ec71fba5f3190be550cb97ef476f.png" alt="\textrm{CNR}\,(L_i) = \frac{\mathrm{median}\,(L_i)-\mathrm{median}\,(B)}{\mathrm{std}\,(L_i)}"/></p>
+</div><p><strong>Relative modulation transfer function</strong> is calculated as</p>
+<div class="math">
+<p><img src="_images/math/e1c7f31203e02afdb442a882c446b1f33bd277ea.png" alt="\textrm{rMTF}\,(H_i) = \left.\frac{\mathrm{max}\,(H_i)-\mathrm{min}\,(H_i)}{\mathrm{max}\,(H_i)+\mathrm{min}\,(H_i)} \middle/ \frac{\mathrm{max}\,(H_0)-\mathrm{min}\,(H_0)}{\mathrm{max}\,(H_0)+\mathrm{min}\,(H_0)}\right."/></p>
+</div><p>Note that it is normalized to 1 for the first high-frequency region. The green line on the plot represents the <em>high_threshold</em> defined in administration. If the points are above the green line, then the lines in the corresponding region can be resolved. If the high-frequency regions are not positioned correctly, the plot of the rMTF will have spikes.</p>
+<p><strong>f30, f40, f50 and f80</strong> are line pairs per millimeter calculated for 30%, 40%, 50% and 80% rMTF.</p>
+<p><strong>Median contrast</strong> is calculated as the median of contrast values for all low-frequency regions.</p>
+<p><strong>Median CNR</strong> is calculated as the median of all CNR values.</p>
+</div>
+<div class="section" id="example-qc3-analysis">
+<h2>Example QC3 Analysis<a class="headerlink" href="#example-qc3-analysis" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/qc3-2.png" class="align-center" src="_images/qc3-2.png" />
+</div>
+<div class="section" id="example-leeds-tor-analysis">
+<h2>Example Leeds TOR Analysis<a class="headerlink" href="#example-leeds-tor-analysis" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/lt-1.png" class="align-center" src="_images/lt-1.png" />
+</div>
+<div class="section" id="literature">
+<h2>Literature<a class="headerlink" href="#literature" title="Permalink to this headline">¶</a></h2>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Ronald T. Droege, <em>A practical method to routinely monitor resolution in digital images</em>, Medical Physics 10, 337 (1983)</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><ol class="upperalpha simple" start="18">
+<li><p>Rajapakshe, K. Luchka, and S. Shalev, <em>A quality control test for electronic portal imaging devices</em>, Medical Physics 23, 1237 (1996)</p></li>
+</ol>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="catphan.html" class="btn btn-neutral float-right" title="Catphan module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="flatsym.html" class="btn btn-neutral float-left" title="Flatness/Symmetry module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, Denis Brojan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

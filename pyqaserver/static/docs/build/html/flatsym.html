@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Flatness/Symmetry module &mdash; pyqaserver 2.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Planar imaging module" href="planarimaging.html" />
+    <link rel="prev" title="Field rotation module" href="fieldrot.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pyqaserver
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and running</a></li>
+<li class="toctree-l1"><a class="reference internal" href="administration.html">Administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldrot.html">Field rotation module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Flatness/Symmetry module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#settings">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#results">Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">Catphan module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html#included-software">Included software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyqaserver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Flatness/Symmetry module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/flatsym.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="flatness-symmetry-module">
+<h1>Flatness/Symmetry module<a class="headerlink" href="#flatness-symmetry-module" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Flatness and symmetry measured with the portal imaging device are not the same as that measured in the water tank. Be sure you understand the results of this module.</p>
+</div>
+<div class="section" id="settings">
+<h2>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><strong>Analysis definition:</strong></dt><dd><p>Pick the definition that suits you. See Pylinac for more info. Only one definition can be used for both symmetry and flatness.</p>
+<p><strong>Varian</strong>-type definitions are:</p>
+<div class="math">
+<p><img src="_images/math/d8bda2e3503949a4cf0bc37fbbdd6f3dec72bc18.png" alt="\mathrm{symmetry}&amp;= 100\times \max_{x}\left|\frac{D(x)-D(d-x)}{D_\mathrm{CAX}}\right|\\
+\mathrm{flatness}&amp;= 100\times \frac{D_\mathrm{max}-D_\mathrm{min}}{D_\mathrm{max}+D_\mathrm{min}}"/></p>
+</div><p><strong>Elekta</strong>-type definitions are:</p>
+<div class="math">
+<p><img src="_images/math/35ee0bcf61a3d610130fc8183b39323ec57cae72.png" alt="\mathrm{symmetry}&amp;= 100\times \max_{x}\left[\max\left\{\left|\frac{D(x)}{D(d-x)}\right|, \left|\frac{D(d-x)}{D(x)}\right|\right\}\right]\\
+\mathrm{flatness}&amp;= 100\times \frac{D_\mathrm{max}}{D_\mathrm{min}}"/></p>
+</div><p>Where <em>x</em> runs from 0 on the left side of the profile to <em>d</em> on the right side of the profile. <em>d</em> is the 80 % FWHM portion of the full profile. <img class="math" src="_images/math/cfa7ad30969269deffafac692765089f75924465.png" alt="D_\mathrm{max}"/>, <img class="math" src="_images/math/15d0075ca952e9d065099dc306864f8f7a9951f3.png" alt="D_\mathrm{min}"/> and <img class="math" src="_images/math/e75b753c8798af3571546eedfd68b4d7c033b93e.png" alt="D_\mathrm{CAX}"/> are the maximum, minimum and central profile values within the 80 % FWHM portion of the field.</p>
+</dd>
+<dt><strong>Center:</strong></dt><dd><p>Here you can set the point where profiles will be extracted from the image. This point only defines the horizontal and vertical lines for the profiles, it does not define the center of the profiles.</p>
+<p>If set to Automatic, Pylinac will do it on its own. If set to Manual, you can enter coordinates of the pixel. If set to CAX, a special function will try to find the center of the field. CAX method may not work well on non-flattened profiles.</p>
+<p>If you wish to manually set the origin, then start with some guess, then on the plotted image use the mouse cursor to finely set the final point and enter it into the text box. Then re-analyze.</p>
+</dd>
+<dt><strong>Invert image:</strong></dt><dd><p>Check this if you want to invert the image.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="results">
+<h2>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/flatsym.png" class="align-center" src="_images/flatsym.png" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="planarimaging.html" class="btn btn-neutral float-right" title="Planar imaging module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fieldrot.html" class="btn btn-neutral float-left" title="Field rotation module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, Denis Brojan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

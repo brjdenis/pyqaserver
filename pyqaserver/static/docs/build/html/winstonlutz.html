@@ -1,0 +1,539 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Winston Lutz module &mdash; pyqaserver 2.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Starshot module" href="starshot.html" />
+    <link rel="prev" title="Trends" href="trends.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pyqaserver
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and running</a></li>
+<li class="toctree-l1"><a class="reference internal" href="administration.html">Administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trends</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Winston Lutz module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-pylinac-way">The Pylinac way</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-alternative-way">The alternative way</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#things-you-should-know">Things you should know</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interpreting-results">Interpreting results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-1">Example 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-2">Example 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-3">Example 3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldrot.html">Field rotation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">Catphan module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html#included-software">Included software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyqaserver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Winston Lutz module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/winstonlutz.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="winston-lutz-module">
+<h1>Winston Lutz module<a class="headerlink" href="#winston-lutz-module" title="Permalink to this headline">¶</a></h1>
+<p>The module can be used in two ways, the Pylinac way or the alternative way:</p>
+<ul class="simple">
+<li><p>Make any sort of WL measurement with arbitrary gantry, collimator and couch angle, and let Pylinac do the full analysis. If angles are not available as dicom tags, you can pass them in separately.</p></li>
+<li><p>Follow the instructions below to acquire sets of images with predefined angles. Pylinac will analyze each image, but the end result will be constructed for the purpose of the test. Use this if you wish to measure: the kV-MV isocenter distance, lateral beam deviation, collimator asymmetry and the position of couch axis with respect to the linac isocenter.</p></li>
+</ul>
+<p>Works on both Varian and Elekta machines. Examples of use are at the bottom of the page.</p>
+<div class="section" id="the-pylinac-way">
+<h2>The Pylinac way<a class="headerlink" href="#the-pylinac-way" title="Permalink to this headline">¶</a></h2>
+<p>Collect your images. Tick the <em>Use Pylinac?</em> checkbox. If you are doing the test on an Elekta machine, pass the angles in the <em>Angles for pylinac</em> table. This is equal to doing the analysis manually with Pylinac. You will also be able to download the Pylinac pdf report.</p>
+</div>
+<div class="section" id="the-alternative-way">
+<h2>The alternative way<a class="headerlink" href="#the-alternative-way" title="Permalink to this headline">¶</a></h2>
+<p>This way was adapted for Elekta machines, but it will work in general. Four test types are possible.</p>
+<blockquote>
+<div><ul>
+<li><p><strong>Default test with gantry and collimator rotation only.</strong></p>
+<blockquote>
+<div><p>The <em>Use Pylinac?</em> checkbox and the <em>Set test type?</em> checkbox should both be unticked. This will set the test type to “default”.
+In order for this to work a predefined minimal set of images must be acquired. The angles are (in exactly this sequence):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 8%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 8%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Gantry</p></td>
+<td><p>180</p></td>
+<td><p>180</p></td>
+<td><p>270</p></td>
+<td><p>270</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>90</p></td>
+<td><p>90</p></td>
+</tr>
+<tr class="row-even"><td><p>Collimator</p></td>
+<td><p>90</p></td>
+<td><p>270</p></td>
+<td><p>270</p></td>
+<td><p>90</p></td>
+<td><p>90</p></td>
+<td><p>270</p></td>
+<td><p>270</p></td>
+<td><p>90</p></td>
+</tr>
+</tbody>
+</table>
+<p>This set of images will determine the position of the MV isocenter without the influence of collimator asymmetry (miss-calibration of MLCs or jaws). Always acquire images in the right order, going from left (gantry 180 coll 90) to right (gantry 90 coll 90). Images will be ordered according to acquisition time. If you do not acquire the images in the right sequence, the results will be wrong. You may change the collimator angle, if you wish. For Elekta, for example, you could use 0/180 instead of 90/270.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using collimator angles 0/180 or 90/270 may give different results for the “BB shift”. This effect might be caused by the focal spot not aligned to the collimator axis of rotation. In essence: because the focal spot is not on the collimator axis of rotation, rotation of the collimator displaces the center of the beam because diaphragms and MLCs are on different levels along the beam line.</p>
+</div>
+<p>If you are using SRS cones, the appropriate sequence is:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Gantry</p></td>
+<td><p>180</p></td>
+<td><p>270</p></td>
+<td><p>0</p></td>
+<td><p>90</p></td>
+</tr>
+<tr class="row-even"><td><p>Collimator</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p><strong>Default test with added couch rotation.</strong></p>
+<blockquote>
+<div><p>Tick the <em>Set test type?</em> checkbox and for Test type select the <strong>Gnt/coll + couch rotation</strong> option. First, collect the minimal set of images. Then put gantry to 0 and collect additional images with couch rotation only. The first additional image must be acquired with the couch at the same position as it was before, ie. 0. This ninth image will serve to bring the established MV average isocenter (with respect to the BB) onto the EPID. You must acquire at least 8+3 images. A normal routine for the 10-th, 11-th etc. image:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Couch</p></td>
+<td><p>90</p></td>
+<td><p>60</p></td>
+<td><p>30</p></td>
+<td><p>0</p></td>
+<td><p>-30</p></td>
+<td><p>-60</p></td>
+<td><p>-90</p></td>
+</tr>
+</tbody>
+</table>
+<p>The order is not important, but it is best to keep to it.</p>
+<p>When analyzing the images, the software will try to fit a circle to the couch points. The center of the circle represents the couch axis. If the BB is too well aligned to the couch axis, you may not get a circle. In this case, make a very small intentional offset in the BB position and redo the test.</p>
+</div></blockquote>
+</li>
+<li><p><strong>Couch rotation only</strong></p>
+<blockquote>
+<div><p>Set the Test type to <strong>Couch only</strong>. Put gantry to 0 and acquire images of the BB at different couch angles. The analysis is similar to the one above, only that this time the MV isocenter is missing from the image, and the software will assume the CAX as the true isocenter.</p>
+</div></blockquote>
+</li>
+<li><p><strong>Collimator rotation only</strong></p>
+<blockquote>
+<div><p>Set the Test type to <strong>Collimator only</strong>. If your collimator has some asymmetry or a significant wobble, you can estimate the radius of this with this test. Put the BB inside the field and acquire many images at different collimator angles.</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Use pylinac?</strong> checked</dt><dd><p>Full scale Pylinac analysis is performed. Once you tick the checkbox, a new table will show up underneath (<em>Angles for pylinac</em>). There you can enter angles for each image. If you are doing the analysis on a Varian linac, do not enter any values because Pylinac will read the angles from dicom tags. If, on the other hand, you are doing this test on an Elekta linac, then you <em>must</em> enter in angles, because dicom tags are not present. You may image the BB with any gantry/collimator/couch configuration, as long as Pylinac will be able to analyze it.</p>
+</dd>
+<dt><strong>Use pylinac?</strong> unchecked</dt><dd><p>Now the software will assume a specific test type. See above for a complete definition. No dicom tags will be read, nor is it necessary to define specific angles. In this situation Pylinac will analyze each image, but the end results will be calculated independently of Pylinac.</p>
+</dd>
+<dt><strong>Show EPID2CAX on scatter plot?</strong></dt><dd><p>When checked, the scatter diagram will show EPID center points with respect to the field CAX. Note that the center of the scatter diagram will have a twofold meaning: BB for CAX points and CAX for EPID points.</p>
+</dd>
+<dt><strong>Zoom in on field?</strong></dt><dd><p>If checked, the image display will zoom-in on the field.</p>
+</dd>
+<dt><strong>Clip box</strong></dt><dd><p>Sometimes images have unwanted artifacts at the edges that could disturb the calculation of field CAX. Here you can enter the size of the central portion of the image beyond which pixel values will be set to background signal. If you don’t want to clip the image, put 0.</p>
+</dd>
+<dt><strong>Axis initial guess</strong></dt><dd><p>When a non-default Test type is defined, the software fits a circle to certain measured points. It may happen that the optimization procedure will not find the correct minimum. In this case you can give a better starting value for the center of the circle to the optimizer. Upper value is <em>x</em> coordinate of the center, and lower <em>y</em> coordinate of the center of the circle. Coordinates are defined in the scatter plot. Values 0, 0 will leave the starting value undefined.</p>
+</dd>
+<dt><strong>Deselecting images from the series</strong></dt><dd><p>When you select a series, you can remove an image from the list by unticking the checkbox next to its name. Deselected images will not be included in the analysis.</p>
+</dd>
+<dt><strong>Choose colormap</strong></dt><dd><p>See <a class="reference external" href="https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html">https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html</a>  for more details.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="things-you-should-know">
+<h2>Things you should know<a class="headerlink" href="#things-you-should-know" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>If <em>Use Pylinac?</em> is unchecked, the acquisition order is important:</p>
+<blockquote>
+<div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The server will assign gantry/collimator angles to images according to acquisition times. Before you use this software, make sure that it is reading acquisition times correctly. Also, observe the gantry/collimator order.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p>If <em>Use pylinac?</em> is unchecked and neither 4 nor 8 images are contained in the series, only image-wise analysis will be returned. More results can be obtained if you check <em>Use Pylinac?</em> and enter the appropriate angles in the table <em>Angles for pylinac</em>.</p></li>
+<li><p><em>Station</em> name is read from the first image of the series.</p></li>
+<li><p>If you enter non-integer angles for Pylinac, they will be rounded to integers when passed to Pylinac.</p></li>
+<li><p>Pylinac may clip all four edges from the image to be near background value (see Pylinac documentation).</p></li>
+<li><p>Using <em>clip box</em> does not change image dimensions, it only forces pixels to certain value.</p></li>
+<li><p>It may happen that the center of the BB will not be properly detected. This happens if the BB is close to the edges of the field, or if you are doing a non-central WL test. You can use the <em>prism</em> colormap to see if Pylinac has put the BB center into the center of mass of pixel values. You can improve BB detection by adding more MU and increasing field size.</p></li>
+<li><p>RT image description is gathered from the last instance of the series.</p></li>
+<li><p>If you wish to analyze images contained in multiple series, it is possible to tick several series at the same time. In this case all the images will be ordered according to acquisition time.</p></li>
+</ul>
+</div>
+<div class="section" id="interpreting-results">
+<h2>Interpreting results<a class="headerlink" href="#interpreting-results" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><strong>Images</strong></dt><dd><dl class="simple">
+<dt>dx, dy</dt><dd><p>Position of the center of the field with respect to the center of the BB.</p>
+</dd>
+<dt>Red cross</dt><dd><p>Center of the BB.</p>
+</dd>
+<dt>Blue cross</dt><dd><p>Center of the field.</p>
+</dd>
+<dt>Yellow dot</dt><dd><p>Center of the image (EPID).</p>
+</dd>
+<dt>Blue contour</dt><dd><p>50%-edge of the field.</p>
+</dd>
+</dl>
+<img alt="_images/winstonlutz1.png" class="align-center" src="_images/winstonlutz1.png" />
+</dd>
+<dt><strong>Image Analysis</strong></dt><dd><dl class="simple">
+<dt>CAX x, CAX y</dt><dd><p>Coordinates of the CAX with respect to the EPID center.</p>
+</dd>
+<dt>BB x, BB y</dt><dd><p>Coordinates of the center of the BB with respect to the EPID center.</p>
+</dd>
+<dt><img class="math" src="_images/math/7376dce77fea6bf50597582377c18367dfe94d1b.png" alt="\Delta x, \Delta y"/></dt><dd><p>The difference between CAX and BB.</p>
+</dd>
+<dt>R</dt><dd><p>The length of the vector from BB to CAX.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p><strong>Moving the BB into the isocenter</strong></p>
+<blockquote>
+<div><p>If 8 images were acquired in the correct order:</p>
+<blockquote>
+<div><p><img class="math" src="_images/math/af8fd844dcaea17cd60cfba5981e85ea6f50303d.png" alt="\mathrm{LAT}=\left(-\Delta x_1-\Delta x_2+\Delta x_5+\Delta x_6\right)/4"/></p>
+<p><img class="math" src="_images/math/638cd607a91f8b6fa11bd854bf41d1284540b539.png" alt="\mathrm{LONG}=\left(\Delta y_1+\Delta y_2+\Delta y_3+\Delta y_4+\Delta y_5+\Delta y_6+\Delta y_7+\Delta y_8\right)/8"/></p>
+<p><img class="math" src="_images/math/e6adf1d7d9d651be34294c2b1bb93c709540ef1a.png" alt="\mathrm{VRT}=\left(\Delta x_3+\Delta x_4-\Delta x_7-\Delta x_8\right)/4"/></p>
+</div></blockquote>
+<p>If 4 images were acquired in the correct order:</p>
+<blockquote>
+<div><p><img class="math" src="_images/math/c3473393df664ec9fd14b6fc46bd6e7b54db508e.png" alt="\mathrm{LAT}=\left(-\Delta x_1+\Delta x_3\right)/2"/></p>
+<p><img class="math" src="_images/math/257ca8eff5a05a148d2b81f745972ebe4ed20faf.png" alt="\mathrm{LONG}=\left(\Delta y_1+\Delta y_2+\Delta y_3+\Delta y_4\right)/4"/></p>
+<p><img class="math" src="_images/math/5cbd0393355d1c58b1eeccfe9c9a46a150b6b88e.png" alt="\mathrm{VRT}=\left(\Delta x_2-\Delta x_4\right)/2"/></p>
+</div></blockquote>
+</div></blockquote>
+<p><strong>Beam deviation</strong></p>
+<blockquote>
+<div><p>It is possible to determine crossplane (A-B) deviation of the beam from the ideal position. Independently from the previous section we have by taking all images into account:</p>
+<blockquote>
+<div><p><img class="math" src="_images/math/7c1dfbed1bd0a56472238e44f584c4b5229870c7.png" alt="\mathrm{deviation}=\left(\Delta x_1+\Delta x_2+\Delta x_3+\Delta x_4+\Delta x_5+\Delta x_6+\Delta x_7+\Delta x_8\right)/8"/></p>
+<p><img class="math" src="_images/math/3316bc392ad8107b1e33b150737fd1f7e1ad9df2.png" alt="\mathrm{deviation}=\left(\Delta x_1+\Delta x_2+\Delta x_3+\Delta x_4\right)/4"/></p>
+</div></blockquote>
+<p>Or by just observing those at gantry 180/0 (those that have little effect of collimator sag):</p>
+<blockquote>
+<div><p><img class="math" src="_images/math/23debc5acba80b77444e73b0bc854c4d1a86cf22.png" alt="\mathrm{deviation}=\left(\Delta x_1+\Delta x_2+\Delta x_5+\Delta x_6\right)/4"/></p>
+<p><img class="math" src="_images/math/7da2b12e3a098df039d477d2aac2ec6c1190fb17.png" alt="\mathrm{deviation}=\left(\Delta x_1+\Delta x_3\right)/2"/></p>
+</div></blockquote>
+<p>This result is independent of the precision with which the BB is positioned into the isocenter.</p>
+</div></blockquote>
+<dl>
+<dt><strong>Collimator asymmetry</strong></dt><dd><p>It only works with 8 images. Say your collimator aperture is slightly asymmetrical. When you rotate the collimator, you will notice that the field CAX will move from one point to the other.  The server will give you a simple estimate of this displacement by averaging each image pairs (1,2), (3,4), (5,6), (7,8) and calculating the shift from this average for each image. The result is the magnitude of this asymmetry, it is not the absolute error for each side of the field.</p>
+</dd>
+<dt><strong>Estimated wobble</strong></dt><dd><dl>
+<dt>Collimator:</dt><dd><p><img class="math" src="_images/math/e23facd437958b958232c57ef0372aeb95aabc83.png" alt="\max_{\mathrm{i \in img}}\sqrt{(\pm\Delta x_i)^2+(\pm\Delta y_i)^2}"/>,</p>
+<p>where <img class="math" src="_images/math/be10a1fe0b94ca792b189a901206f939a70f91e5.png" alt="\pm\Delta x,y"/> are taken from the previous section (<em>Collimator asymmetry</em>).</p>
+</dd>
+<dt>Gantry:</dt><dd><p><img class="math" src="_images/math/9ff069d98ce0f645558157fac5945209654a1e4e.png" alt="\max_{\mathrm{i \in img}}\sqrt{(\Delta x_i-\overline{\Delta x})^2+(\Delta y_i-\overline{\Delta y})^2}"/></p>
+<p>where <img class="math" src="_images/math/be10a1fe0b94ca792b189a901206f939a70f91e5.png" alt="\pm\Delta x,y"/> are image-wise CAX-to-BB deviations.</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>EPID center</strong></dt><dd><p>Average -CAXx and -CAXy.</p>
+</dd>
+<dt><strong>Estimated BB wobble (couch rotation)</strong></dt><dd><p>When the right test type with couch rotation is chosen, this calculation will appear. This is the radius of the circle fitted to BB positions during couch rotation. Note that this radius depends on the relative position of the BB with respect to the couch axis of rotation. There is also some influence of the true couch axis wobble.</p>
+</dd>
+<dt><strong>Couch axis distance from average isocenter</strong></dt><dd><p>When you do the <em>Gnt/coll + couch rotation</em> test, the software will calculate the position of the couch axis of rotation with respect to the average MV isocenter of the linac. Ideally, they should match.</p>
+</dd>
+<dt><strong>Scatter diagram</strong></dt><dd><p>The BB is in the center of the diagram when only blue dots are shown. Blue dots represent field CAX. When <em>Show EPID2CAX on scatter plot?</em> is checked, additional yellow dots are displayed that represent the center of the EPID with respect to the field CAX, which is in the center of the diagram. The green circle corresponds to the normal tolerance, the red circle is the action tolerance. Both are defined in the configuration.</p>
+</dd>
+<dt><strong>Gantry 2D CAX projection</strong></dt><dd><p>The intersection of beam paths with the LAT-VRT plane (Winkler et al diagrams). Solid lines are beam paths at gantry angles 0 and 90. Dashed lines are beam paths at gantry angles 180 and 270. BB is in the center of the diagram. The cross represents the gantry axis of rotation.</p>
+</dd>
+<dt><strong>Couch diagram</strong></dt><dd><p>When the right test type is chosen, this diagram will appear. The diagram’s coordinate system is that of the EPID. The blue square is the average MV isocenter calculated from first 8 images. The first red dot is the reference image of the BB that is used to define the position of the average MV isocenter. Other red dots are BB positions projected onto the EPID at different couch angles. The cross is the center of the fitted circle which represents the couch axis of rotation. Small blue dots are CAX. They may change a bit because of errors in beam steering and MLC positioning between images, particularly on Elekta linacs.</p>
+</dd>
+<dt><strong>Status</strong></dt><dd><p>You can get either Passed, Borderline or Failed status. If you are using 4 or 8 images, then you have the option of applying the tolerance to any each image in the series, or to the section <em>Collimator asymmetry</em> where radius R is calculated by averaging over collimator pairs. See your configuration.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Yellow dots in the following examples show the EPID center with respect to the BB. This was later changed to show EPID center with respect to CAX.</p>
+<div class="section" id="example-1">
+<h3>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h3>
+<p>Task: find the average MV isocenter of the linac and test the position of the couch axis of rotation for radiosurgery. At the same time find the deviation of the kV imaging isocenter from the MV isocenter.</p>
+<p>Put the BB phantom on the table. Image the phantom with the kV system. You can use the MV imaging system if that is what you are using clinically. In any case, it is only important that you are imaging and aligning the BB inside the imaging application.  Use the robotic couch to make small adjustments of the BB position to get the BB exactly into the imaging isocenter. A reference image of the BB may be a simple CT scan with a treatment plan that has the isocenter exactly in the center of the BB. Or you can use an image of an artifical sphere (this is what Elekta is using during Flexmap calibration).</p>
+<p>Eight images are acquired in the usual sequence. After that five images are acquired to evaluate couch rotation. Here are the results:</p>
+<img alt="_images/winstonlutz2.png" class="align-center" src="_images/winstonlutz2.png" />
+<img alt="_images/winstonlutz3.png" class="align-center" src="_images/winstonlutz3.png" />
+<img alt="_images/winstonlutz4.png" class="align-center" src="_images/winstonlutz4.png" />
+<img alt="_images/winstonlutz5.png" class="align-center" src="_images/winstonlutz5.png" />
+<p>The results of the last analysis can be reviewed on the scatter diagram. You can see that the BB is not well aligned with the average MV isocenter. The longitudinal displacement is the most obvious. Since the BB is in the imaging isocenter, the MV isocenter is located from this point: 0.46 mm lateral, 0.74 longitudinal and 0.37 mm vertical. This is, at the same time, the deviation of the imaging isocenter from the MV isocenter.</p>
+<p>The second diagram neatly shows how far the couch axis is located with respect to the MV isocenter. This deviation is approximately 0.7 mm. On linacs like Elekta VersaHD this should be lower than 0.4 mm.</p>
+</div>
+<div class="section" id="example-2">
+<h3>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h3>
+<p>With the WL test you can determine if your beam has a lateral deviation. See an example scatter plot below. All blue CAX points are shifted to the right. This does not correspond to an error in the position of the BB, but to an error in the way the beam is targeting the BB. Indeed, the results show exactly this: the BB is perfectly aligned with the average MV isocenter, however there is a 0.5 mm lateral deviation of the beam.</p>
+<img alt="_images/winstonlutz7.png" class="align-center" src="_images/winstonlutz7.png" />
+<img alt="_images/winstonlutz71.png" class="align-center" src="_images/winstonlutz71.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Longitudinal deviations of the beam cannot be detected this way. Unless you take the 6 MV beam as the reference. Or, unless you do the test with more collimator angles. See example below.</p>
+</div>
+</div>
+<div class="section" id="example-3">
+<h3>Example 3<a class="headerlink" href="#example-3" title="Permalink to this headline">¶</a></h3>
+<p>Task: determine with the WL test if the beam focal spot is on the collimator axis of rotation.</p>
+<p>Shape the field with collimators that are located at different levels along the CAX. For example, two pairs of jaws, or MLCs and one pair of jaws. Position the BB into the average MV isocenter using the minimal set of images with collimator angles 0/180. Once the BB is in position repeat the test with a similar sequence, except that the collimator angles should be 90/270. Compare the results in “Moving the BB into the isocenter”. If they differ a lot, then it may be that the focal spot of your beam is not where it should be. Of course, there are other influences like jaw/MLC sag, but usually these are not so severe. To further test the focal spot position you can use the Field size module and follow <a class="footnote-reference brackets" href="#id3" id="id1">1</a> <a class="footnote-reference brackets" href="#id4" id="id2">2</a>.</p>
+<img alt="_images/winstonlutz8.png" class="align-center" src="_images/winstonlutz8.png" />
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Chojnowski JM, Taylor LM, Sykes JR, Thwaites DI, <em>Beam focal spot position determination for an Elekta linac with the Agility® head; practical guide with a ready-to-go procedure</em>, J Appl Clin Med Phys. 2018 Jul;19(4):44-47</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Jacek M. Chojnowski, Michael P. Barnes, Jonathan R. Sykes, David I. Thwaites, <em>Beam focal spot position: The forgotten linac QA parameter. An EPID‐based phantomless method for routine Stereotactic linac QA</em>, J Appl Clin Med Phys. 2017 Sep; 18(5): 178–183.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="starshot.html" class="btn btn-neutral float-right" title="Starshot module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="trends.html" class="btn btn-neutral float-left" title="Trends" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, Denis Brojan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

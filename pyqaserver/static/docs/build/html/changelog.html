@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Changelog &mdash; pyqaserver 2.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="License" href="license.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pyqaserver
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and running</a></li>
+<li class="toctree-l1"><a class="reference internal" href="administration.html">Administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="winstonlutz.html">Winston Lutz module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starshot.html">Starshot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="picketfence.html">Picket Fence module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmat.html">VMAT module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldsize.html">Field size module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldrot.html">Field rotation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flatsym.html">Flatness/Symmetry module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planarimaging.html">Planar imaging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catphan.html">Catphan module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynalog.html">Dynalog module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imagereview.html">Image review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html#included-software">Included software</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-2-0-0">Version 2.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-1">Version 1.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#winston-lutz">Winston Lutz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image-review">Image Review</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#planar-imaging">Planar imaging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#catphan">Catphan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dynalogs">Dynalogs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#picket-fence">Picket Fence</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#web-server">Web server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-0">Version 1.0</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyqaserver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Changelog</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/changelog.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-2-0-0">
+<h2>Version 2.0.0<a class="headerlink" href="#version-2-0-0" title="Permalink to this headline">¶</a></h2>
+<p>QAserver has been renamed to pyqaserver and is now part of PyPI.</p>
+</div>
+<div class="section" id="version-1-1">
+<h2>Version 1.1<a class="headerlink" href="#version-1-1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bug-fixes">
+<h3>Bug fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>(Winston Lutz) <a class="reference external" href="https://github.com/brjdenis/pyqaserver/issues/2">#2</a> With Use Pylinac? checked the clip box option did not work.</p></li>
+<li><p>(Winston Lutz) Non-integer angles for Pylinac are now rounded to integers.</p></li>
+<li><p>(General) <a class="reference external" href="https://github.com/brjdenis/pyqaserver/issues/3">#3</a> It was not possible to collect anonymized images from Orthanc because date/time were empty strings.</p></li>
+<li><p>(Catphan) <a class="reference external" href="https://github.com/brjdenis/pyqaserver/issues/6">#6</a> Fixed how LCV tolerance is applied.</p></li>
+<li><p>(Picket Fence) <a class="reference external" href="https://github.com/brjdenis/pyqaserver/issues/7">#7</a> Red cross is now showing Pylinac’s CAX, that is the center of the image shifted by the XRayImageReceptorTranslation.</p></li>
+</ul>
+</div>
+<div class="section" id="winston-lutz">
+<h3>Winston Lutz<a class="headerlink" href="#winston-lutz" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Added the option of selecting images within a series.</p></li>
+<li><p>Changed the colormap for image display so that the BB is more visible on low contrast images. Users can choose from several mpl colormaps.</p></li>
+<li><p>Added image numbers when <em>Use Pylinac?</em> is checked so that it is possible to follow Pylinac’s ordering.</p></li>
+<li><p>Changed how EPID dots are shown on the scatter plot. Now they are relative to the field CAX, instead of the BB.</p></li>
+<li><p>Users can now disable yellow dots on the scatter plot.</p></li>
+</ul>
+</div>
+<div class="section" id="image-review">
+<h3>Image Review<a class="headerlink" href="#image-review" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Added colormaps.</p></li>
+<li><p>Added a dot on the profiles that follow the crosshair. Also, crosshair position and pixel values are printed in a separate table.</p></li>
+<li><p>Changing window/level now also changes profile plot ranges.</p></li>
+<li><p>Added the option of calculating pixel value histograms.</p></li>
+<li><p>Added pixel value data for current mouse position.</p></li>
+</ul>
+</div>
+<div class="section" id="planar-imaging">
+<h3>Planar imaging<a class="headerlink" href="#planar-imaging" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Changed the colormap for image display so that the ROIs are more easily seen. Users can choose from several mpl colormaps.</p></li>
+</ul>
+</div>
+<div class="section" id="catphan">
+<h3>Catphan<a class="headerlink" href="#catphan" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="dynalogs">
+<h3>Dynalogs<a class="headerlink" href="#dynalogs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Location of the database folder can now be defined in the configuration file.</p></li>
+<li><p>Added several search options.</p></li>
+<li><p>Added histograms for error distributions.</p></li>
+<li><p>Prettytable module is no longer used to produce HTML strings, Pandas is used instead.</p></li>
+</ul>
+</div>
+<div class="section" id="picket-fence">
+<h3>Picket Fence<a class="headerlink" href="#picket-fence" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h4>Bug Fixes<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="web-server">
+<h3>Web server<a class="headerlink" href="#web-server" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Added image description. The text is copied from RTImageDescription Dicom tag from the last instance in the series.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="version-1-0">
+<h2>Version 1.0<a class="headerlink" href="#version-1-0" title="Permalink to this headline">¶</a></h2>
+<p>The initial release.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="license.html" class="btn btn-neutral float-left" title="License" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, Denis Brojan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
