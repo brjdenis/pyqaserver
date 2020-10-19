@@ -6,6 +6,8 @@ Pyqaserver also contains a small database where you can store and review your me
 
 ![image](files/image.png)
 
+![image](files/image2.png)
+
 ## Compatibility and dependency
 
 It works on Windows 7 and 10. It should work on Linux as well. Currently, it is compatible with Pylinac 2.3.2 and Python 3.8. Because of the way pyqaserver is constructed, it is highly likely that it will not work with newer versions of Pylinac.
