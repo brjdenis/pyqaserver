@@ -43,7 +43,7 @@ Here is a list of some of the software used (common packages like scipy, numpy e
 * [tabulator.js](http://tabulator.info/)
 
 
-## Download
+## Installation and running
 
 Pyqaserver can be installed as a Python package starting with version 2.0.0.  See https://pyqaserver.readthedocs.io/en/latest/
 
@@ -66,9 +66,9 @@ pyqaserver 127.0.0.1.:8080 PATH_TO_DATABASE_FOLDER
 The PATH_TO_DATABASE_FOLDER must the full absolute path to an empty directory where pyqaserver will install a small database. Anytime you restart the server, point to the same directory.
 
 
-## Installation and user guide
+## Documentation
 
-Installation instructions and the user guide are available at:
+Documentation is available here:
 
 * [Latest](https://pyqaserver.readthedocs.io/en/latest/)
 
