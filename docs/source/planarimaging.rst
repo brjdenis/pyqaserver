@@ -28,7 +28,7 @@ Options
 **Clip box**
 	Here you can enter the size of the central portion of the image beyond which pixel values will be set to background signal. If you don't want to clip the image, put 0.
 **Force angle**
-	Here you can force the angle of the phantom. This is useful when you see that Pylinac has wrongly detected the angle.
+	Here you can force the angle of the phantom. This is useful when you see that Pylinac has wrongly detected the angle. Angle 0 is not forced, it sets the angle to automatic. An angle of 45 degrees will rotate the phantom by 45 degrees in the clock-wise direction.
 **Show bounding box?**
 	If checked, a bounding box will be drawn around the phantom, and the image will be zoomed-in.
 **Invert image?**
