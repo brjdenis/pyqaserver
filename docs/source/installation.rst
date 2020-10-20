@@ -70,7 +70,7 @@ Open a web browser and go to the site that is being served: http://127.0.0.1:808
 
 You can stop the server by pressing CTRL+C. If you restart it again, you will notice that the files inside the database directory will not change. The server will use existing database.
 
-If you want to make the site available to other computers in the network, instead of localhost use your computer's IP address. For PORT use 80 so that people won't have to type in the port, only the IP address.
+Port definition is required, even if it is port 80. If you want to make the site available to other computers in the network, instead of localhost use your computer's IP address. For PORT use 80 so that people won't have to type in the port in the web browser, only the IP address.
 
 Setting up Orthanc
 -------------------
@@ -149,6 +149,7 @@ Images below will help you set up the action for both tasks. Make sure you selec
 
 .. image:: _static/images/task7.png
 
+Do not forget the port definition, even if it is 80.
 
 This will only work if you are using the base environment and if you added Anaconda to your system PATH.
 

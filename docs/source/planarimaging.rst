@@ -34,6 +34,13 @@ Options
 **Invert image?**
 	Check this if you need to invert the image.
 
+If no tolerance levels are defined in Administration, default values will be used:
+
++----------------+------+
+| Low threshold  | 0.05 |
++----------------+------+
+| High threshold | 0.1  |
++----------------+------+
 
 How to use the module
 ======================

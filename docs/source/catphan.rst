@@ -39,6 +39,28 @@ Each phantom model contains specific regions for studying different aspects of i
 .. note::
    The results of the analysis are gathered in tabs. Each module has its own tab. Next to the name of the module a **pass**/**fail** statement is given. A module gives general passing result if each submodule has passed the test. For example, the CTP404 module gives a passing result if the HU, LCV, slice thickness etc. have passed.
 
+If no tolerance levels are defined in Administration, default values will be used:
+
++-------------------+------+
+| HU tolerance      | 100  |
++-------------------+------+
+| LCV tolerance     | 2    |
++-------------------+------+
+| Scaling tolerance | 0.5  |
++-------------------+------+
+| Thickness tol.    | 0.25 |
++-------------------+------+
+| Low contrast tol. | 1    |
++-------------------+------+
+| CNR threshold     | 10   |
++-------------------+------+
+| MTF tolerance     | 10   |
++-------------------+------+
+| Uniformity tol.   | 3    |
++-------------------+------+
+
+
+
 CTP404
 ---------------
 

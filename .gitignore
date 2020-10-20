@@ -1,6 +1,7 @@
 # Folders to ignore
 stuff/*
 build/*
+docs/build/*
 dist/*
 **/pyqaserver.egg-info
 **/__pycache__
