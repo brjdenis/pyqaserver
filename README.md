@@ -2,7 +2,7 @@
 
 Pyqaserver connects [Pylinac](https://github.com/jrkerns/pylinac) and [Orthanc](https://github.com/jodogne/Orthanc) with a simplistic web interface. It was built to speed up the image analysis process with Pylinac, without having to switch computers or work manually with dicom files. The procedure is easy: acquire the image, send the image from the imaging computer directly to Orthanc, and then analyze it with Pylinac by using pyqaserver. Since all images are stored in Orthanc, you can re-analyze them anytime you want. You can do the analysis on any computer in your network.
 
-Pyqaserver also contains a small database where you can store and review your measurements.
+Pyqaserver also contains a small database where you can store and review your measurements. And some additional modules that are handy when checking post-maintenance consistency of the linac.
 
 ![image](files/image.png)
 
@@ -23,7 +23,12 @@ Not all Pylinac's capabilities are implemented. Trajectory logs cannot be analyz
 * Flatness/Symmetry
 * VMAT
 
-With an additional derivative modules I call "Fieldsize" and "Fieldrot", that can be used to measure radiation to light field match, radiation field size, focal spot position, absolute collimator angle calibration etc. 
+Additional modules are:
+
+* **Field size** for measuring field size, radiation to light field match and focal spot position.
+ 
+* **Field rotation** for measuring collimator angle calibration in absolute terms, couch rotation and EPID twist.
+ 
 
 Pyqaserver contains little original code, just enough to connect Pylinac and Orthanc. The code is hideously written! But I will improve it. Some dependencies are included in the distribution of pyqaserver, other dependencies must be installed separately. Orthanc is not included in the distribution of pyqaserver.
 
