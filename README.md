@@ -62,7 +62,7 @@ pyqaserver IP_ADDRESS:PORT PATH_TO_DATABASE_FOLDER
 For example, if you wish to run it as localhost:
 
 ~~~
-pyqaserver 127.0.0.1.:8080 PATH_TO_DATABASE_FOLDER
+pyqaserver 127.0.0.1:8080 PATH_TO_DATABASE_FOLDER
 ~~~
 
 The PATH_TO_DATABASE_FOLDER must the full absolute path to an empty directory where pyqaserver will install a small database. Anytime you restart the server, point to the same directory.
