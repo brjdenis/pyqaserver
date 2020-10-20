@@ -28,7 +28,7 @@ setup(
     packages=find_packages(),
     package_data={
         'pyqaserver': [
-            'static/*/*',
+            'static/*/*/*',
             'views/*',
             'python_packages/*'
         ],
