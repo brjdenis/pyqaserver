@@ -1,2 +1,5 @@
 include README.md
 include LICENSE
+recursive-include pyqaserver *
+global-exclude *.pyc
+global-exclude __pycache__

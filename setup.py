@@ -14,7 +14,7 @@ setup(
     install_requires=[
                     'scipy >= 1.0',
                     'numpy >= 1.14',
-                    'matplotlib == 3.3.1',
+                    'matplotlib >= 3.3.1',
                     'jinja2',
                     'pylinac == 2.3.2',
                     'httplib2 == 0.18.1',
@@ -30,7 +30,7 @@ setup(
         'pyqaserver': [
             'static/*/*/*',
             'views/*',
-            'python_packages/*'
+            'python_packages/*/*'
         ],
     },
     entry_points={
