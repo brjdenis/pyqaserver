@@ -229,12 +229,11 @@ def planar_imaging_helperf(args):
             roi.plot2axes(ax_ref, edgecolor=roi.plot_color)
             ax_ref.text(roi.center.x, roi.center.y, str(ind), horizontalalignment='center', verticalalignment='center')
         # plot the high-contrast ROIs
-        if phantom != "Las Vegas":
-            mtf_temp_ref = list(ref1.mtf.norm_mtfs.values())
-            for ind, roi in enumerate(ref1.high_contrast_rois):
-                color = 'b' if mtf_temp_ref[ind] > ref1._high_contrast_threshold else 'r'
-                roi.plot2axes(ax_ref, edgecolor=color)
-                ax_ref.text(roi.center.x, roi.center.y ,str(ind), horizontalalignment='center', verticalalignment='center')
+        mtf_temp_ref = list(ref1.mtf.norm_mtfs.values())
+        for ind, roi in enumerate(ref1.high_contrast_rois):
+            color = 'b' if mtf_temp_ref[ind] > ref1._high_contrast_threshold else 'r'
+            roi.plot2axes(ax_ref, edgecolor=color)
+            ax_ref.text(roi.center.x, roi.center.y ,str(ind), horizontalalignment='center', verticalalignment='center')
     else:
        ax_ref.text(0.5, 0.5 ,"Reference image not available", horizontalalignment='center', verticalalignment='center')
        
