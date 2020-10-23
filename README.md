@@ -78,7 +78,7 @@ The web page is available at http://127.0.0.1:8080 ...
 
 Documentation is available here:
 
-* [Latest](https://pyqaserver.readthedocs.io/en/latest/)
+* [https://pyqaserver.readthedocs.io/en/latest/](https://pyqaserver.readthedocs.io/en/latest/)
 
 Older versions:
 
