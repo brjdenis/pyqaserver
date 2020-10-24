@@ -3,7 +3,9 @@ stuff/*
 build/*
 docs/build/*
 dist/*
+.vscode/*
 **/pyqaserver.egg-info
 __pycache__/
 *.pyc
+
 #Files to ignore
