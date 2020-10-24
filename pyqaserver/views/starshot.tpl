@@ -58,7 +58,7 @@
 					enabledisable('Study', false);
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/searchStudies/" + str, true);
+			xmlhttp.open("POST", "/searchStudies/" + str, true);
 			xmlhttp.send();
 		}
 
@@ -80,7 +80,7 @@
 					enabledisable('Series', false);
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/searchSeries/" + str, true);
+			xmlhttp.open("POST", "/searchSeries/" + str, true);
 			xmlhttp.send();
 		}
 
@@ -105,7 +105,7 @@
 					document.getElementById("img_preview").alt = "";
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/getInstanceImage/" + image, true);
+			xmlhttp.open("POST", "/getInstanceImage/" + image, true);
 			xmlhttp.send();
 		}
 
@@ -125,7 +125,7 @@
 					imagedescription.innerHTML = "<small>"+this.responseText.replace(/(\r\n|\n|\r)/gm,"<br>")+"</small>";
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/getInstanceImageDescription/" + image, true);
+			xmlhttp.open("POST", "/getInstanceImageDescription/" + image, true);
 			xmlhttp.send();
 		}
 
@@ -172,7 +172,7 @@
 				}
 				
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/searchInstances/" + str, true);
+			xmlhttp.open("POST", "/searchInstances/" + str, true);
 			xmlhttp.send();
 			document.getElementById("info_link").href = "{{orthanc_url}}" + "/app/explorer.html#series?uuid=" + str;
 		}
@@ -213,7 +213,7 @@
 				enabledisable("Study", true);
 				enabledisable("Series", true);
 				enabledisable("Images", true);
-				document.getElementById("send_calc").action = "{{plweb_folder}}/starshot_calculate/dicom/" + image;
+				document.getElementById("send_calc").action = "/starshot_calculate/dicom/" + image;
 				document.getElementById("send_calc").submit();
 			}
 		}
@@ -247,7 +247,7 @@
 
 				document.getElementById("button_nondicom").disabled = true;
 				document.getElementById("mySpinner").style.display = "block";
-				document.getElementById("send_calc").action = "{{plweb_folder}}/starshot_calculate/nondicom/none";
+				document.getElementById("send_calc").action = "/starshot_calculate/nondicom/none";
 				document.getElementById("send_calc").submit();
 			}
 		}

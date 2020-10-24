@@ -22,8 +22,6 @@ CUR_DIR = os.path.realpath(os.path.dirname(__file__))
 CUR_DIR_STATIC = os.path.join(CUR_DIR, "static")
 CUR_DIR_STATIC_DOCS = os.path.join(CUR_DIR_STATIC, "docs")
 
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 @app_general.get('/<filename:re:.*\.(css)>')
 def stylesheets(filename):
     # Serve css files
@@ -69,7 +67,7 @@ def png(filename):
     # Serve png files
     return static_file(filename, root=CUR_DIR_STATIC)
 
-@app_general.route(PLWEB_FOLDER + '/searchStudies/<s>', method="POST")
+@app_general.route('/searchStudies/<s>', method="POST")
 def livesearch_study(s):
     if s != "FirstLineEmptyLineFromJavascriptPatient":
         # Function to get studies and return them to the interface
@@ -99,7 +97,7 @@ def livesearch_study(s):
         return json.dumps((["FirstLineEmptyLineFromJavascriptStudy"], ["-----------"]))
 
 
-@app_general.route(PLWEB_FOLDER + '/searchSeries/<s>', method="POST")
+@app_general.route('/searchSeries/<s>', method="POST")
 def livesearch_series(s):
     # Function to get series and return to the interface
     if s != "FirstLineEmptyLineFromJavascriptStudy":
@@ -134,7 +132,7 @@ def livesearch_series(s):
         return json.dumps((["FirstLineEmptyLineFromJavascriptSeries"], ["-----------"]))
 
 
-@app_general.route(PLWEB_FOLDER + '/searchInstances/<s:re:.+>', method="POST")
+@app_general.route('/searchInstances/<s:re:.+>', method="POST")
 def livesearch_instances(s):
 
     if "FirstLineEmptyLineFromJavascriptSeries" not in s:
@@ -196,7 +194,7 @@ def livesearch_instances(s):
                            "3": [], "4": [],
                            "5": "", "6": ""})
 
-@app_general.route(PLWEB_FOLDER + '/searchSeriesTags/<s>', method="POST")
+@app_general.route('/searchSeriesTags/<s>', method="POST")
 def livesearch_series_tags(s):
     '''Used to find some data for a large series with multiple instances'''
     if s!= "FirstLineEmptyLineFromJavascriptSeries":
@@ -240,13 +238,13 @@ def livesearch_series_tags(s):
         return json.dumps({"1": "", "2": "", "3": "", "4": "", "5": "",
                            "6": ""})
 
-@app_general.route(PLWEB_FOLDER + '/getInstanceImage/<s>', method="POST")
+@app_general.route('/getInstanceImage/<s>', method="POST")
 def getinstanceimage(s):
     # Function to get png image from the instance and return it to user
     image = RestToolbox.DoGet_image(config.ORTHANC_URL + "/instances/" + s + "/preview")
     return base64.b64encode(image)
 
-@app_general.route(PLWEB_FOLDER + '/getInstanceImageDescription/<s>', method="POST")
+@app_general.route('/getInstanceImageDescription/<s>', method="POST")
 def getinstanceimagedescription(s):
     # Function to get image description. Used only for some modules (StarShot etc)
     try:

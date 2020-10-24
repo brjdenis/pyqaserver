@@ -48,9 +48,6 @@ INSTITUTION = config.INSTITUTION
 D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 PI = np.pi
 
 #  Global filepaths for bokeh import
@@ -71,12 +68,12 @@ MLC_DYNALOG = {"Varian_120": [-200.0, -190.0, -180.0, -170.0, -160.0, -150.0, -1
 # Here starts the bottle server
 dyn_app = Bottle()
 
-@dyn_app.route(PLWEB_FOLDER + '/dynalog', method="POST")
+@dyn_app.route('/dynalog', method="POST")
 def dynalog():
     displayname = request.forms.hidden_displayname
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     
     config_ini = configparser.ConfigParser()
     config_ini.read(config.DYNALOG_CONFIG)
@@ -88,7 +85,6 @@ def dynalog():
     response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
     variables = {
                  "institution": INSTITUTION,
-                 "plweb_folder": PLWEB_FOLDER,
                  "DTA": DTA,
                  "DD": DD,
                  "resolution": resolution,
@@ -98,7 +94,7 @@ def dynalog():
                  }
     return template("dynalog", variables)
  
-@dyn_app.route(PLWEB_FOLDER + '/dynalogPatients/<s>', method="POST")
+@dyn_app.route('/dynalogPatients/<s>', method="POST")
 def dynalogPatients(s):
     # Function that sends patients for a parcticular date
     conn = sql.connect(config.DYNALOG_DATABASE)
@@ -134,7 +130,7 @@ def dynalogPatients(s):
     return json.dumps((data_label, data_values))
 
 
-@dyn_app.route(PLWEB_FOLDER + '/dynalogRecords', method="POST")
+@dyn_app.route('/dynalogRecords', method="POST")
 def dynalogRecords():
     # Function for sending records for dynalog module
     patient = request.forms.patient
@@ -153,7 +149,7 @@ def dynalogRecords():
     return json.dumps((data))
 
 
-@dyn_app.route(PLWEB_FOLDER + '/dynalogRecordData', method="POST")
+@dyn_app.route('/dynalogRecordData', method="POST")
 def dynalogRecordData():
     patient = request.forms.patient
     record = request.forms.record
@@ -183,7 +179,7 @@ def dynalogRecordData():
         k[11] = round(float(k[11]), 1)
     return json.dumps((data.tolist()))
 
-@dyn_app.route(PLWEB_FOLDER + '/dynalogGetReportDate', method="POST")
+@dyn_app.route('/dynalogGetReportDate', method="POST")
 def dynalogGetReportDate():
     date = request.forms.hidden_date
     date2 = request.forms.hidden_date2
@@ -215,7 +211,7 @@ def dynalogGetReportDate():
                 }
     return template("dynalog_report", variables)
 
-@dyn_app.route(PLWEB_FOLDER + '/dynalogGetBigError/<diff>', method="POST")
+@dyn_app.route('/dynalogGetBigError/<diff>', method="POST")
 def dynalogGetBigError(diff):
     diff = str(float(diff)/10.0)  # Convert to cm
     date = request.forms.hidden_date
@@ -245,14 +241,13 @@ def dynalogGetBigError(diff):
     return template("dynalog_report", variables)
 
 
-@dyn_app.route(PLWEB_FOLDER + '/dynalogGetReportPatient', method="POST")
+@dyn_app.route('/dynalogGetReportPatient', method="POST")
 def dynalogGetReportPatient():
     patient = request.forms.hidden_patient
     if patient != "-----------":
         patientID = patient
     else:
-        return template("error_template", {"error_message": "Patient ID not valid.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Patient ID not valid."})
 
     conn = sql.connect(config.DYNALOG_DATABASE)
     curs = conn.cursor()
@@ -389,7 +384,7 @@ def dynalogGetReportPatient():
                 }
     return template("dynalog_report_patient", variables)
 
-@dyn_app.route(PLWEB_FOLDER + '/dynalogGetReportUploads', method="POST")
+@dyn_app.route('/dynalogGetReportUploads', method="POST")
 def dynalogGetReportUploads():
     conn = sql.connect(config.DYNALOG_DATABASE)
     curs = conn.cursor()
@@ -403,11 +398,10 @@ def dynalogGetReportUploads():
     return template("dynalog_report_uploads", variables)
     
     
-@dyn_app.route(PLWEB_FOLDER + '/dynalog_analyze', method="POST")
+@dyn_app.route('/dynalog_analyze', method="POST")
 def dynalog_analyze():
     if request.forms.filename_calc=="":
-        return template("error_template", {"error_message": "Empty string.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Empty string."})
     ziparchive, filename = request.forms.filename_calc.split(",,,")
     mlc = request.forms.mlc
 
@@ -417,8 +411,7 @@ def dynalog_analyze():
             z.extract("A" + filename + ".dlg", path=temp_folder)
             z.extract("B" + filename + ".dlg", path=temp_folder)
     except:
-        return template("error_template", {"error_message": "Cannot extract dynalogs from zip archive.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot extract dynalogs from zip archive."})
     config_ini = configparser.ConfigParser()
     config_ini.read(config.DYNALOG_CONFIG)
     exclude_beam_off = True if config_ini["Dynalog"]["EXCLUDE_BEAM_OFF"]=="True" else False
@@ -426,8 +419,7 @@ def dynalog_analyze():
     try:
         log = general_functions.VarianDynalog(general_functions.get_dataset_from_dlg(os.path.join(temp_folder, "A" + filename + ".dlg"), exclude_beam_off=exclude_beam_off))
     except:
-        return template("error_template", {"error_message": "Cannot analyze dynalogs.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot analyze dynalogs."})
 
     time = os.path.basename(filename).split("_")[0]
     record = datetime.datetime.strptime(str(time), '%Y%m%d%H%M%S')
@@ -483,14 +475,12 @@ def dynalog_analyze():
     elif mlc == "Varian_120HD":
         MLC_width = MLC_DYNALOG["Varian_120HD"]
     else:
-        return template("error_template", {"error_message": "Cannot recognize MLC type.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot recognize MLC type."})
 
     MLC_width = np.asarray(MLC_width).reshape(-1, 1)/10.0  # DIvide by 10 because it is in mm.
 
     if 2*(MLC_width.shape[0]-1) != MLC_nr:
-        return template("error_template", {"error_message": "Inconsistent number of MLC leaves.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Inconsistent number of MLC leaves."})
 
     mlc_points = []
     mlc_points_plan = []
@@ -1137,7 +1127,7 @@ def dynalog_analyze():
     return template("dynalog_analysis", variables)
 
 
-@dyn_app.route(PLWEB_FOLDER + '/dynalogHistograms', method="POST")
+@dyn_app.route('/dynalogHistograms', method="POST")
 def dynalogHistograms():
     # Function that calculates histograms from a particular date onwards till date2.
     date = request.forms.hidden_date

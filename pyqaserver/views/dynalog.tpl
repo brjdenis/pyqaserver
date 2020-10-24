@@ -60,7 +60,7 @@
 						changeOptions("Patient", temp[0], temp[1]);
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/dynalogPatients/" + selected_dates, true);
+				xmlhttp.open("POST", "/dynalogPatients/" + selected_dates, true);
 				xmlhttp.send(formData);
 			}
 		
@@ -82,7 +82,7 @@
 						changeOptions("Records", temp, temp);
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/dynalogRecords", true);
+				xmlhttp.open("POST", "/dynalogRecords", true);
 				xmlhttp.send(formData);
 			}
 
@@ -133,7 +133,7 @@
 						changeOptions("view_record", view_records_nr, view_records_table);
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/dynalogRecordData", true);
+				xmlhttp.open("POST", "/dynalogRecordData", true);
 				xmlhttp.send(formData);
 			}
 
@@ -150,7 +150,7 @@
 						changeOptions("Patient", temp[0], temp[1]);
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/dynalogPatients/" + "getall", true);
+				xmlhttp.open("POST", "/dynalogPatients/" + "getall", true);
 				xmlhttp.send();
 				
 			}
@@ -177,7 +177,7 @@
 						changeOptions("Patient", temp[0], temp[1]);
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/dynalogPatients/" + "getfiltered", true);
+				xmlhttp.open("POST", "/dynalogPatients/" + "getfiltered", true);
 				xmlhttp.send(formData);
 			}
 
@@ -186,7 +186,7 @@
 				var folder = selected_folder.options[selected_folder.selectedIndex].value;
 				document.getElementById("hidden_folder").value = folder;
 				document.getElementById("hidden_date").value = "";
-				document.getElementById("get_report").action = "{{plweb_folder}}/dynalogGetReportDate";
+				document.getElementById("get_report").action = "/dynalogGetReportDate";
 				document.getElementById("get_report").submit();
 			}
 
@@ -201,7 +201,7 @@
 				document.getElementById("hidden_folder").value = folder;
 				document.getElementById("hidden_date").value = selected_date;
 				document.getElementById("hidden_date2").value = selected_date2;
-				document.getElementById("get_report").action = "{{plweb_folder}}/dynalogHistograms";
+				document.getElementById("get_report").action = "/dynalogHistograms";
 				document.getElementById("get_report").submit();
 
 			}
@@ -219,7 +219,7 @@
 					document.getElementById("hidden_folder").value = folder;
 					document.getElementById("hidden_date").value = selected_date;
 					document.getElementById("hidden_date2").value = selected_date2;
-					document.getElementById("get_report").action = "{{plweb_folder}}/dynalogGetReportDate";
+					document.getElementById("get_report").action = "/dynalogGetReportDate";
 					document.getElementById("get_report").submit();
 				}
 			}
@@ -237,7 +237,7 @@
 					document.getElementById("hidden_folder").value = folder;
 					document.getElementById("hidden_date").value = selected_date;
 					document.getElementById("hidden_date2").value = selected_date2;
-					document.getElementById("get_report").action = "{{plweb_folder}}/dynalogGetBigError/"+error;
+					document.getElementById("get_report").action = "/dynalogGetBigError/"+error;
 					document.getElementById("get_report").submit();
 				}
 
@@ -250,13 +250,13 @@
 				}
 				else{
 					document.getElementById("hidden_patient").value = str;
-					document.getElementById("get_report").action = "{{plweb_folder}}/dynalogGetReportPatient";
+					document.getElementById("get_report").action = "/dynalogGetReportPatient";
 					document.getElementById("get_report").submit();
 				}
 			}
 
 			function GetReportUploads(){
-				document.getElementById("get_report").action = "{{plweb_folder}}/dynalogGetReportUploads";
+				document.getElementById("get_report").action = "/dynalogGetReportUploads";
 				document.getElementById("get_report").submit();
 			}
 
@@ -265,7 +265,7 @@
 				var str_selected_mlc = $('#select_mlc').val();
 
 				var form = document.getElementById("send_calc");
-				form.action = "{{plweb_folder}}/dynalog_analyze";
+				form.action = "/dynalog_analyze";
 				document.getElementById("filename_calc").value = str_selected_file;
 				document.getElementById("mlc").value = str_selected_mlc;
 				document.getElementById("gamma_DTA").value = document.getElementById("set_DTA").value;

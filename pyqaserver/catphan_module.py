@@ -40,9 +40,6 @@ TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
 D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 PI = np.pi
 
 def catphan_helperf_analyze(args):
@@ -76,19 +73,18 @@ def catphan_helperf_analyze(args):
 # Here starts the bottle server
 ctp_app = Bottle()
 
-@ctp_app.route(PLWEB_FOLDER + '/catphan', method="POST")
+@ctp_app.route('/catphan', method="POST")
 def catphan_start():
     colormaps = ["gray", "Greys", "brg", "prism"]
     displayname = request.forms.hidden_displayname
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
 
     try:
         variables = general_functions.Read_from_dcm_database()
     except ConnectionError:
-        return template("error_template", {"error_message": "Orthanc is refusing connection.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Orthanc is refusing connection."})
     variables["displayname"] = displayname
     response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
     
@@ -100,7 +96,7 @@ def catphan_start():
     variables["colormaps"] = colormaps
     return template("catphan", variables)
 
-@ctp_app.route(PLWEB_FOLDER + '/catphan_calculate/<s>', method="POST")
+@ctp_app.route('/catphan_calculate/<s>', method="POST")
 def catphan_calculate(s):
     use_reference = request.forms.hidden_ref
     use_reference = True if use_reference=="true" else False
@@ -128,8 +124,7 @@ def catphan_calculate_helperf_catch_error(args):
     try:
         return catphan_calculate_helperf(args)
     except Exception as e:
-        return template("error_template", {"error_message": str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": str(e)})
 
 
 def catphan_calculate_helperf(args):
@@ -207,12 +202,12 @@ def catphan_calculate_helperf(args):
 
     if use_reference and ref_exists:
         if isinstance(mycbct_ref, Exception):
-            return template("error_template", {"error_message": "Unable to analyze reference image. " + str(mycbct_ref),
-                                               "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "Unable to analyze reference image. " + str(mycbct_ref)
+                                               })
     if isinstance(mycbct, Exception):
         general_functions.delete_files_in_subfolders([folder_path]) # Delete temporary images
-        return template("error_template", {"error_message": "Unable to analyze image. " + str(mycbct),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Unable to analyze image. " + str(mycbct)
+                                           })
     
     try:  # add this to prevent memory problems when threads with exceptions are still alive
         
@@ -704,8 +699,7 @@ def catphan_calculate_helperf(args):
                     "cnrs_names": cnrs_names,
                     "save_results": save_results,
                     "acquisition_datetime": acquisition_datetime,
-                    "pdf_report_enable": pdf_report_enable,
-                    "plweb_folder": PLWEB_FOLDER
+                    "pdf_report_enable": pdf_report_enable
                     }
 
         # Generate pylinac report:
@@ -715,8 +709,8 @@ def catphan_calculate_helperf(args):
             variables["pdf_report_filename"] = os.path.basename(pdf_file.name)
     except Exception as e:
         general_functions.delete_files_in_subfolders([folder_path]) # Delete temporary images
-        return template("error_template", {"error_message": "Cannot analyze image. "+str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot analyze image. "+str(e)
+                                           })
     else:
         return template("catphan_results", variables)
 

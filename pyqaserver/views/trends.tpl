@@ -396,7 +396,7 @@
 
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/fetch_trends", true);
+			xmlhttp.open("POST", "/fetch_trends", true);
 			xmlhttp.send(formData);
 		}
 
@@ -414,7 +414,7 @@
 				alert("Start date must be before End date!");
 				return;
 			}
-			document.getElementById("download_csv_form").action = "{{plweb_folder}}/download_csv";
+			document.getElementById("download_csv_form").action = "/download_csv";
 			document.getElementById("download_csv_form").submit();
 
 		}
@@ -528,7 +528,7 @@
 							fetch_data();
 						}
 					}
-					xmlhttp.open("POST", "{{plweb_folder}}/remove_measurement", true);
+					xmlhttp.open("POST", "/remove_measurement", true);
 					xmlhttp.send(formData);
 			}
 		% end

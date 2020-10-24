@@ -31,7 +31,7 @@
 			        {title:"Value", field:"Value"}
 			    ],
 			    layout:"fitColumns", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_institution_settings", //ajax URL
+			    ajaxURL:"/get_institution_settings", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
@@ -56,7 +56,7 @@
 						institution_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/update_institution_settings", true);
+				xmlhttp.open("POST", "/update_institution_settings", true);
 				xmlhttp.send(formData);
 		}
 	

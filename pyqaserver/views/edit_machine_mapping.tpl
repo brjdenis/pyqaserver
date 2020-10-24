@@ -34,11 +34,11 @@
 			        {title:"User energy", field:"UserEnergy"}
 			    ],
 			    layout:"fitColumns", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_mapping", //ajax URL
+			    ajaxURL:"/get_mapping", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
-			//table.setData("{{plweb_folder}}/get_user_data", {}, "post");
+			//table.setData("/get_user_data", {}, "post");
 
 		}
 
@@ -66,7 +66,7 @@
 						user_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/add_mapping", true);
+				xmlhttp.open("POST", "/add_mapping", true);
 				xmlhttp.send(formData);
 		}
 
@@ -88,7 +88,7 @@
 						user_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/remove_mapping", true);
+				xmlhttp.open("POST", "/remove_mapping", true);
 				xmlhttp.send(formData);
 		}
 	

@@ -110,7 +110,7 @@
 								<br>
 								<form method = "post" target="_self">
 									<input type="hidden" name="hidden_wl_pdf_report" id="hidden_wl_pdf_report" value="{{pdf_report_filename}}"/>
-									<input type="submit" value = "Export PDF" name = "pdf_export" formaction="{{plweb_folder}}/winstonlutz_pdf_export" onchange="this.form.submit()"/></p>
+									<input type="submit" value = "Export PDF" name = "pdf_export" formaction="/winstonlutz_pdf_export" onchange="this.form.submit()"/></p>
 								</form>
 							% end
 						</p>
@@ -159,7 +159,7 @@
                         
                     }
                 }
-                xmlhttp.open("POST", "{{plweb_folder}}/save_planarimaging", true);
+                xmlhttp.open("POST", "/save_planarimaging", true);
                 xmlhttp.send(formData);
                 document.getElementById("save_button").disabled = true;
                 document.getElementById("save_error").innerHTML = "Working on it ... ";

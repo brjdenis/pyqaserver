@@ -37,7 +37,7 @@
 			        {title:"Beam", field:"Beam"}
 			    ],
 			    layout:"fitColumns", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_treatmentunits_wl", //ajax URL
+			    ajaxURL:"/get_treatmentunits_wl", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
@@ -50,7 +50,7 @@
 			        {title:"Phantom", field:"Phantom"}
 			    ],
 			    layout:"fitColumns", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_phantoms_wl", //ajax URL
+			    ajaxURL:"/get_phantoms_wl", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
@@ -64,11 +64,11 @@
 			        {title:"Value", field:"Value"}
 			    ],
 			    layout:"fitData", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_settings_wl", //ajax URL
+			    ajaxURL:"/get_settings_wl", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
-			//table.setData("{{plweb_folder}}/get_user_data", {}, "post");
+			//table.setData("/get_user_data", {}, "post");
 
 		}
 		function tolerance_table(){
@@ -85,11 +85,11 @@
 			        {title:"COUCH_DIST_TOL", field:"COUCH_DIST_TOL"}
 			    ],
 			    layout:"fitData", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_tolerance_wl", //ajax URL
+			    ajaxURL:"/get_tolerance_wl", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
-			//table.setData("{{plweb_folder}}/get_user_data", {}, "post");
+			//table.setData("/get_user_data", {}, "post");
 
 		}
 
@@ -113,7 +113,7 @@
 						treatmentunits_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/add_treatmentunit_wl", true);
+				xmlhttp.open("POST", "/add_treatmentunit_wl", true);
 				xmlhttp.send(formData);
 		}
 
@@ -135,7 +135,7 @@
 						phantoms_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/add_phantom_wl", true);
+				xmlhttp.open("POST", "/add_phantom_wl", true);
 				xmlhttp.send(formData);
 		}
 
@@ -157,7 +157,7 @@
 						treatmentunits_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/remove_treatmentunit_wl", true);
+				xmlhttp.open("POST", "/remove_treatmentunit_wl", true);
 				xmlhttp.send(formData);
 		}
 
@@ -190,7 +190,7 @@
 						settings_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/update_settings_wl", true);
+				xmlhttp.open("POST", "/update_settings_wl", true);
 				xmlhttp.send(formData);
 		}
 		
@@ -212,7 +212,7 @@
 						phantoms_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/remove_phantom_wl", true);
+				xmlhttp.open("POST", "/remove_phantom_wl", true);
 				xmlhttp.send(formData);
 		}
 
@@ -247,7 +247,7 @@
 						tolerance_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/add_tolerance_wl", true);
+				xmlhttp.open("POST", "/add_tolerance_wl", true);
 				xmlhttp.send(formData);
 		}
 		function remove_tolerance(){
@@ -268,7 +268,7 @@
 						tolerance_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/remove_tolerance_wl", true);
+				xmlhttp.open("POST", "/remove_tolerance_wl", true);
 				xmlhttp.send(formData);
 		}
 	

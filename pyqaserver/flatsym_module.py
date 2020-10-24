@@ -43,28 +43,24 @@ TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
 D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 PI = np.pi
 
 # Here starts the bottle server
 flatsym_app = Bottle()
 
-@flatsym_app.route(PLWEB_FOLDER + '/flatsym', method="POST")
+@flatsym_app.route('/flatsym', method="POST")
 def flatsym():
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     displayname = request.forms.hidden_displayname
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     
     try:
         variables = general_functions.Read_from_dcm_database()
         variables["displayname"] = displayname
         response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
     except ConnectionError:
-        return template("error_template", {"error_message": "Orthanc is refusing connection.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Orthanc is refusing connection."})
     return template("flatsym", variables)
 
 
@@ -72,8 +68,7 @@ def flatsym_helper_catch_error(args):
     try:
         return flatsym_helper(args)
     except Exception as e:
-        return template("error_template", {"error_message": str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": str(e)})
 
 
 def flatsym_helper(args):
@@ -116,8 +111,8 @@ def flatsym_helper(args):
     try:
         flatsym = FlatSym(file_path)
     except Exception as e:
-        return template("error_template", {"error_message": "The FlatSym module cannot calculate. "+str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "The FlatSym module cannot calculate. "+str(e)
+                                           })
 
     # Define the center pixel where to get profiles:
     def find_field_centroid(img):
@@ -209,8 +204,7 @@ def flatsym_helper(args):
     try:
         flatsym.analyze(flatness_method=method, symmetry_method=method, vert_position=center[0], horiz_position=center[1])
     except Exception as e:
-        return template("error_template", {"error_message": "Analysis failed. "+str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Analysis failed. "+str(e)})
 
     symmetry_hor = round(flatsym.symmetry['horizontal']['value'], 2)
     symmetry_vrt = round(flatsym.symmetry['vertical']['value'], 2)
@@ -247,8 +241,7 @@ def flatsym_helper(args):
                 "script": script,
                 "save_results": save_results,
                 "acquisition_datetime": acquisition_datetime,
-                "calc_definition": calc_definition,
-                "plweb_folder": PLWEB_FOLDER
+                "calc_definition": calc_definition
                 }
     
         # Generate pylinac report:
@@ -262,7 +255,7 @@ def flatsym_helper(args):
     return template("flatsym_results", variables)
 
 
-@flatsym_app.route(PLWEB_FOLDER + '/flatsym_calculate/<w>', method="POST")
+@flatsym_app.route('/flatsym_calculate/<w>', method="POST")
 def flatsym_calculate(w):
     calc_definition = request.forms.hidden_definition
     center_definition = request.forms.hidden_center

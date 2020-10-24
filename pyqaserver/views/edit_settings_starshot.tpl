@@ -37,7 +37,7 @@
 			        {title:"Beam", field:"Beam"}
 			    ],
 			    layout:"fitColumns", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_treatmentunits_starshot", //ajax URL
+			    ajaxURL:"/get_treatmentunits_starshot", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
@@ -52,11 +52,11 @@
 			        {title:"Value", field:"Value"}
 			    ],
 			    layout:"fitData", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_settings_starshot", //ajax URL
+			    ajaxURL:"/get_settings_starshot", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
-			//table.setData("{{plweb_folder}}/get_user_data", {}, "post");
+			//table.setData("/get_user_data", {}, "post");
 
 		}
 		function tolerance_table(){
@@ -69,11 +69,11 @@
 			        {title:"GENERATE_PDF_REPORT", field:"GENERATE_PDF_REPORT"}
 			    ],
 			    layout:"fitData", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_tolerance_starshot", //ajax URL
+			    ajaxURL:"/get_tolerance_starshot", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
-			//table.setData("{{plweb_folder}}/get_user_data", {}, "post");
+			//table.setData("/get_user_data", {}, "post");
 
 		}
 
@@ -97,7 +97,7 @@
 						treatmentunits_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/add_treatmentunit_starshot", true);
+				xmlhttp.open("POST", "/add_treatmentunit_starshot", true);
 				xmlhttp.send(formData);
 		}
 
@@ -119,7 +119,7 @@
 						treatmentunits_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/remove_treatmentunit_starshot", true);
+				xmlhttp.open("POST", "/remove_treatmentunit_starshot", true);
 				xmlhttp.send(formData);
 		}
 
@@ -144,7 +144,7 @@
 						settings_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/update_settings_starshot", true);
+				xmlhttp.open("POST", "/update_settings_starshot", true);
 				xmlhttp.send(formData);
 		}
 		
@@ -171,7 +171,7 @@
 						tolerance_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/add_tolerance_starshot", true);
+				xmlhttp.open("POST", "/add_tolerance_starshot", true);
 				xmlhttp.send(formData);
 		}
 
@@ -193,7 +193,7 @@
 						tolerance_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/remove_tolerance_starshot", true);
+				xmlhttp.open("POST", "/remove_tolerance_starshot", true);
 				xmlhttp.send(formData);
 		}
 	

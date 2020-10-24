@@ -7,14 +7,13 @@ import configparser
 
 parent_module = sys.modules['.'.join(__name__.split('.')[:-1]) or '__main__']
 if __name__ == '__main__' or parent_module.__name__ == '__main__':
-    #sys.path.append(os.path.abspath(os.path.realpath("python_packages")))
+    # sys.path.append(os.path.abspath(os.path.realpath("python_packages")))
     import config
     import RestToolbox_modified as RestToolbox
     import general_settings_database
     import trends_database
     import general_functions
     import create_dynalog_database
-    from python_packages.bottlepy.bottle import Bottle, redirect, TEMPLATE_PATH, template, response, request
     from python_packages.bottlepy.bottle import run as bottle_run
     from administration import admin_app
     from winstonlutz_module import wl_app
@@ -31,7 +30,8 @@ if __name__ == '__main__' or parent_module.__name__ == '__main__':
     from general_routes import app_general
     from trends import trends_app
     from version import __version__
-
+    from python_packages.bottlepy.bottle import Bottle, redirect, \
+        TEMPLATE_PATH, template, response, request
 else:
     from . import config
     from . import RestToolbox_modified as RestToolbox
@@ -39,7 +39,6 @@ else:
     from . import trends_database
     from . import general_functions
     from . import create_dynalog_database
-    from .python_packages.bottlepy.bottle import Bottle, redirect, TEMPLATE_PATH, template, response, request
     from .python_packages.bottlepy.bottle import run as bottle_run
     from .administration import admin_app
     from .winstonlutz_module import wl_app
@@ -56,13 +55,13 @@ else:
     from .general_routes import app_general
     from .trends import trends_app
     from .version import __version__
+    from .python_packages.bottlepy.bottle import Bottle, redirect, \
+        TEMPLATE_PATH, template, response, request
 
 # Set version in the config module
 config.QASERVER_VERSION = __version__
 
 CUR_DIR = os.path.realpath(os.path.dirname(__file__))
-
-PLWEB_FOLDER = config.PLWEB_FOLDER
 
 # Path to Bottle templates
 TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
@@ -324,21 +323,20 @@ def main():
     
     @app.error(500)
     def custom500(error):
-        return template("error_template", {"error_message": "Cause unknown.",
-                                          "plweb_folder": PLWEB_FOLDER })
+        return template("error_template", {"error_message": "Cause unknown."})
     
     @app.route('/')
     @app.route('/qaserver')  # legacy
     @app.route('/qaserver/')  # legacy
     @app.route('/qaserver/login')  # legacy
     def redirect_to_login():
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     
-    @app.route(PLWEB_FOLDER)
+    @app.route("")
     def redirect_to_login2():
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
 
-    @app.route(PLWEB_FOLDER + "/login")
+    @app.route("/login")
     def login_form():
         try:
             images = [os.path.join("images", f) for f in os.listdir(os.path.join(CUR_DIR, "static", "images")) if f.endswith('.png')]
@@ -350,12 +348,12 @@ def main():
         else:
             image="blank"
 
-        return template("login", {"plweb_folder": PLWEB_FOLDER,
+        return template("login", {
                                   "institution": config.INSTITUTION,
                                   "image": image
                                   })
     
-    @app.route(PLWEB_FOLDER + '/login_check_credentials', method='POST')
+    @app.route('/login_check_credentials', method='POST')
     def login_check_credentials():
         # Get form data from login page
         username = request.forms.username
@@ -369,23 +367,21 @@ def main():
             else:
                 return "Success!"
     
-    @app.route(PLWEB_FOLDER + '/login', method='POST')
+    @app.route('/login', method='POST')
     def login_submit():
         # Get form data from login page
         username = request.forms.username
         password = request.forms.password
         user_list = general_functions.get_one_user(username)
         if user_list is None:
-            return template("error_template", {"error_message": "User not recognized.",
-                                               "plweb_folder": PLWEB_FOLDER })
+            return template("error_template", {"error_message": "User not recognized."})
         else:
             if not general_functions.check_encrypted_password(password, user_list[-3]):
-                return template("error_template", {"error_message": "Wrong password.",
-                                                   "plweb_folder": PLWEB_FOLDER })
+                return template("error_template", {"error_message": "Wrong password."})
             else:
                 response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
                 return template("menu_page", {"institution": config.INSTITUTION, "orthanc_url": config.ORTHANC_URL,
-                                "plweb_folder": PLWEB_FOLDER, "qaserver_version": config.QASERVER_VERSION,
+                                "qaserver_version": config.QASERVER_VERSION,
                                 "displayname": user_list[-1], "is_admin": general_functions.check_is_admin(username)})
     
     # Merge apps

@@ -23,38 +23,30 @@ CUR_DIR = os.path.realpath(os.path.dirname(__file__))
 # Path to Bottle templates
 TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 # Here starts the bottle server
 admin_app = Bottle()
 
-@admin_app.route(PLWEB_FOLDER + '/administration', method="POST")
+@admin_app.route('/administration', method="POST")
 def administration():
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     displayname = request.forms.hidden_displayname
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     
     elif not general_functions.check_is_admin(username):
-        return template("error_template", {"error_message": "Insufficient rights.",
-                                    "plweb_folder": PLWEB_FOLDER })
+        return template("error_template", {"error_message": "Insufficient rights."})
     else:
         variables = {
-            "plweb_folder": PLWEB_FOLDER,
             "displayname": displayname
             }
         response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
         return template("administration", variables)
 
-@admin_app.route(PLWEB_FOLDER + '/edit_users', method="POST")
+@admin_app.route('/edit_users', method="POST")
 def edit_users():
-    variables = {
-        "plweb_folder": PLWEB_FOLDER
-        }
-    return template("edit_users", variables)
+    return template("edit_users")
 
-@admin_app.route(PLWEB_FOLDER + '/get_user_data', method="POST")
+@admin_app.route('/get_user_data', method="POST")
 def get_user_data():
     json_string = []
     users = general_functions.get_users()
@@ -62,7 +54,7 @@ def get_user_data():
         json_string.append({"id": users[a][0], "Name": users[a][1], "Admin": users[a][2], "Displayname": users[a][3]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_user', method="POST")
+@admin_app.route('/add_user', method="POST")
 def add_user():
     username = request.forms.username
     displayname = request.forms.displayname
@@ -76,7 +68,7 @@ def add_user():
     else:
         return "Failed"
     
-@admin_app.route(PLWEB_FOLDER + '/remove_user', method="POST")
+@admin_app.route('/remove_user', method="POST")
 def remove_user():
     user_id = request.forms.user_id
     if not general_functions.can_delete(int(user_id)):
@@ -91,14 +83,11 @@ def remove_user():
     
     
 ################################ ORTHANC ####################################
-@admin_app.route(PLWEB_FOLDER + '/edit_orthanc', method="POST")
+@admin_app.route('/edit_orthanc', method="POST")
 def edit_orthanc():
-    variables = {
-        "plweb_folder": PLWEB_FOLDER
-        }
-    return template("edit_orthanc", variables)
+    return template("edit_orthanc")
 
-@admin_app.route(PLWEB_FOLDER + '/get_orthanc_settings', method="POST")
+@admin_app.route('/get_orthanc_settings', method="POST")
 def get_orthanc_settings():
     json_string = []
     users = general_functions.get_orthanc_settings()
@@ -108,7 +97,7 @@ def get_orthanc_settings():
     json_string.append({"Setting": "Password", "Value": users[3]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/update_orthanc_settings', method="POST")
+@admin_app.route('/update_orthanc_settings', method="POST")
 def update_orthanc_settings():
     IP = request.forms.IP
     Port = request.forms.Port
@@ -124,21 +113,18 @@ def update_orthanc_settings():
     
 
 ################################ INSTITUTION ####################################
-@admin_app.route(PLWEB_FOLDER + '/edit_institution', method="POST")
+@admin_app.route('/edit_institution', method="POST")
 def edit_institution():
-    variables = {
-        "plweb_folder": PLWEB_FOLDER
-        }
-    return template("edit_institution", variables)
+    return template("edit_institution")
 
-@admin_app.route(PLWEB_FOLDER + '/get_institution_settings', method="POST")
+@admin_app.route('/get_institution_settings', method="POST")
 def get_institution_settings():
     json_string = []
     users = general_functions.get_institution_settings()
     json_string.append({"Setting": "Name", "Value": users[0]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/update_institution_settings', method="POST")
+@admin_app.route('/update_institution_settings', method="POST")
 def update_institution_settings():
     Name = request.forms.Name
     try:
@@ -150,14 +136,11 @@ def update_institution_settings():
         return "Failed"
 
 ################################ WINSTON LUTZ ################################
-@admin_app.route(PLWEB_FOLDER + '/edit_settings_winstonlutz', method="POST")
+@admin_app.route('/edit_settings_winstonlutz', method="POST")
 def edit_settings_winstonlutz():
-    variables = {
-        "plweb_folder": PLWEB_FOLDER
-        }
-    return template("edit_settings_winstonlutz", variables)
+    return template("edit_settings_winstonlutz")
 
-@admin_app.route(PLWEB_FOLDER + '/get_treatmentunits_wl', method="POST")
+@admin_app.route('/get_treatmentunits_wl', method="POST")
 def get_treatmentunits_wl():
     json_string = []
     users = general_functions.get_treatmentunits_wl()
@@ -165,7 +148,7 @@ def get_treatmentunits_wl():
         json_string.append({"id": users[a][0], "Machine": users[a][1], "Beam": users[a][2]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_treatmentunit_wl', method="POST")
+@admin_app.route('/add_treatmentunit_wl', method="POST")
 def add_treatmentunit_wl():
     machine = request.forms.Machine
     beam = request.forms.Beam
@@ -177,7 +160,7 @@ def add_treatmentunit_wl():
     else:
         return "Failed"
     
-@admin_app.route(PLWEB_FOLDER + '/remove_treatmentunit_wl', method="POST")
+@admin_app.route('/remove_treatmentunit_wl', method="POST")
 def remove_treatmentunit_wl():
     unit_id = request.forms.unit_id
     if int(unit_id) < 1:
@@ -188,7 +171,7 @@ def remove_treatmentunit_wl():
     except:
         return "Failed!"
     
-@admin_app.route(PLWEB_FOLDER + '/get_settings_wl', method="POST")
+@admin_app.route('/get_settings_wl', method="POST")
 def get_settings_wl():
     json_string = []
     users = general_functions.get_settings_wl()
@@ -200,7 +183,7 @@ def get_settings_wl():
     json_string.append({"Setting": "COUCH_DIST_TOL", "Value": users[5]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/get_tolerance_wl', method="POST")
+@admin_app.route('/get_tolerance_wl', method="POST")
 def get_tolerance_wl():
     json_string = []
     users = general_functions.get_tolerance_wl()
@@ -210,7 +193,7 @@ def get_tolerance_wl():
                             "COLL_ASYM_TOL": i[5], "BEAM_DEV_TOL": i[6], "COUCH_DIST_TOL": i[7]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/update_settings_wl', method="POST")
+@admin_app.route('/update_settings_wl', method="POST")
 def update_settings_wl():
     passrate = request.forms.passrate
     actionrate = request.forms.actionrate
@@ -226,7 +209,7 @@ def update_settings_wl():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/add_tolerance_wl', method="POST")
+@admin_app.route('/add_tolerance_wl', method="POST")
 def add_tolerance_wl():
     machine = request.forms.machine_tol
     passrate = request.forms.passrate_tol
@@ -243,7 +226,7 @@ def add_tolerance_wl():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_tolerance_wl', method="POST")
+@admin_app.route('/remove_tolerance_wl', method="POST")
 def remove_tolerance_wl():
     tol_id = request.forms.tol_id
     if int(tol_id) < 1:
@@ -254,7 +237,7 @@ def remove_tolerance_wl():
     except:
         return "Failed!"
 
-@admin_app.route(PLWEB_FOLDER + '/get_phantoms_wl', method="POST")
+@admin_app.route('/get_phantoms_wl', method="POST")
 def get_phantoms_wl():
     json_string = []
     users = general_functions.get_phantoms_wl()
@@ -262,7 +245,7 @@ def get_phantoms_wl():
         json_string.append({"id": users[a][0], "Phantom": users[a][1]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_phantom_wl', method="POST")
+@admin_app.route('/add_phantom_wl', method="POST")
 def add_phantom_wl():
     phantom = request.forms.Phantom
     try:
@@ -273,7 +256,7 @@ def add_phantom_wl():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_phantom_wl', method="POST")
+@admin_app.route('/remove_phantom_wl', method="POST")
 def remove_phantom_wl():
     phantom_id = request.forms.phantom_id
     if int(phantom_id) < 1:
@@ -285,14 +268,11 @@ def remove_phantom_wl():
         return "Failed!"
 
 ################################ STARSHOT ################################
-@admin_app.route(PLWEB_FOLDER + '/edit_settings_starshot', method="POST")
+@admin_app.route('/edit_settings_starshot', method="POST")
 def edit_settings_starshot():
-    variables = {
-        "plweb_folder": PLWEB_FOLDER
-        }
-    return template("edit_settings_starshot", variables)
+    return template("edit_settings_starshot")
 
-@admin_app.route(PLWEB_FOLDER + '/get_treatmentunits_starshot', method="POST")
+@admin_app.route('/get_treatmentunits_starshot', method="POST")
 def get_treatmentunits_starshot():
     json_string = []
     users = general_functions.get_treatmentunits_starshot()
@@ -300,7 +280,7 @@ def get_treatmentunits_starshot():
         json_string.append({"id": users[a][0], "Machine": users[a][1], "Beam": users[a][2]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_treatmentunit_starshot', method="POST")
+@admin_app.route('/add_treatmentunit_starshot', method="POST")
 def add_treatmentunit_starshot():
     machine = request.forms.Machine
     beam = request.forms.Beam
@@ -312,7 +292,7 @@ def add_treatmentunit_starshot():
     else:
         return "Failed"
     
-@admin_app.route(PLWEB_FOLDER + '/remove_treatmentunit_starshot', method="POST")
+@admin_app.route('/remove_treatmentunit_starshot', method="POST")
 def remove_treatmentunit_starshot():
     unit_id = request.forms.unit_id
     if int(unit_id) < 1:
@@ -323,7 +303,7 @@ def remove_treatmentunit_starshot():
     except:
         return "Failed!"
     
-@admin_app.route(PLWEB_FOLDER + '/get_settings_starshot', method="POST")
+@admin_app.route('/get_settings_starshot', method="POST")
 def get_settings_starshot():
     json_string = []
     users = general_functions.get_settings_starshot()
@@ -332,7 +312,7 @@ def get_settings_starshot():
     return json.dumps(json_string)
 
 
-@admin_app.route(PLWEB_FOLDER + '/update_settings_starshot', method="POST")
+@admin_app.route('/update_settings_starshot', method="POST")
 def update_settings_starshot():
     passrate = request.forms.passrate
     generate_pdf = "True" if request.forms.generate_pdf=="true" else "False"
@@ -345,7 +325,7 @@ def update_settings_starshot():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/get_tolerance_starshot', method="POST")
+@admin_app.route('/get_tolerance_starshot', method="POST")
 def get_tolerance_starshot():
     json_string = []
     users = general_functions.get_tolerance_starshot()
@@ -354,7 +334,7 @@ def get_tolerance_starshot():
         json_string.append({"Id":i[0], "Machine": i[1], "TOLERANCE": i[2], "GENERATE_PDF_REPORT": i[3]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_tolerance_starshot', method="POST")
+@admin_app.route('/add_tolerance_starshot', method="POST")
 def add_tolerance_starshot():
     machine = request.forms.machine_tol
     passrate = request.forms.passrate_tol
@@ -367,7 +347,7 @@ def add_tolerance_starshot():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_tolerance_starshot', method="POST")
+@admin_app.route('/remove_tolerance_starshot', method="POST")
 def remove_tolerance_starshot():
     tol_id = request.forms.tol_id
     if int(tol_id) < 1:
@@ -380,14 +360,11 @@ def remove_tolerance_starshot():
 
 
 ################################ PICKETFENCE ################################
-@admin_app.route(PLWEB_FOLDER + '/edit_settings_picketfence', method="POST")
+@admin_app.route('/edit_settings_picketfence', method="POST")
 def edit_settings_picketfence():
-    variables = {
-        "plweb_folder": PLWEB_FOLDER
-        }
-    return template("edit_settings_picketfence", variables)
+    return template("edit_settings_picketfence")
 
-@admin_app.route(PLWEB_FOLDER + '/get_treatmentunits_picketfence', method="POST")
+@admin_app.route('/get_treatmentunits_picketfence', method="POST")
 def get_treatmentunits_picketfence():
     json_string = []
     users = general_functions.get_treatmentunits_picketfence()
@@ -395,7 +372,7 @@ def get_treatmentunits_picketfence():
         json_string.append({"id": users[a][0], "Machine": users[a][1], "Beam": users[a][2]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_treatmentunit_picketfence', method="POST")
+@admin_app.route('/add_treatmentunit_picketfence', method="POST")
 def add_treatmentunit_picketfence():
     machine = request.forms.Machine
     beam = request.forms.Beam
@@ -407,7 +384,7 @@ def add_treatmentunit_picketfence():
     else:
         return "Failed"
     
-@admin_app.route(PLWEB_FOLDER + '/remove_treatmentunit_picketfence', method="POST")
+@admin_app.route('/remove_treatmentunit_picketfence', method="POST")
 def remove_treatmentunit_picketfence():
     unit_id = request.forms.unit_id
     if int(unit_id) < 1:
@@ -418,7 +395,7 @@ def remove_treatmentunit_picketfence():
     except:
         return "Failed!"
     
-@admin_app.route(PLWEB_FOLDER + '/get_settings_picketfence', method="POST")
+@admin_app.route('/get_settings_picketfence', method="POST")
 def get_settings_picketfence():
     json_string = []
     users = general_functions.get_settings_picketfence()
@@ -427,7 +404,7 @@ def get_settings_picketfence():
     json_string.append({"Setting": "GENERATE_PDF_REPORT", "Value": users[2]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/get_tolerance_picketfence', method="POST")
+@admin_app.route('/get_tolerance_picketfence', method="POST")
 def get_tolerance_picketfence():
     json_string = []
     users = general_functions.get_tolerance_picketfence()
@@ -436,7 +413,7 @@ def get_tolerance_picketfence():
         json_string.append({"Id":i[0], "Machine": i[1], "ACTION_TOLERANCE": i[2], "TOLERANCE": i[3], "GENERATE_PDF_REPORT": i[4]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/update_settings_picketfence', method="POST")
+@admin_app.route('/update_settings_picketfence', method="POST")
 def update_settings_picketfence():
     action_tolerance = request.forms.action_tolerance
     tolerance = request.forms.tolerance
@@ -449,7 +426,7 @@ def update_settings_picketfence():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/add_tolerance_picketfence', method="POST")
+@admin_app.route('/add_tolerance_picketfence', method="POST")
 def add_tolerance_picketfence():
     machine = request.forms.machine_tol
     action_tolerance = request.forms.action_tolerance_tol
@@ -464,7 +441,7 @@ def add_tolerance_picketfence():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_tolerance_picketfence', method="POST")
+@admin_app.route('/remove_tolerance_picketfence', method="POST")
 def remove_tolerance_picketfence():
     tol_id = request.forms.tol_id
     if int(tol_id) < 1:
@@ -477,16 +454,15 @@ def remove_tolerance_picketfence():
 
 
 ################################ PLANAR IMAGING ################################
-@admin_app.route(PLWEB_FOLDER + '/edit_settings_planarimaging', method="POST")
+@admin_app.route('/edit_settings_planarimaging', method="POST")
 def edit_settings_planarimaging():
     variables = {
-        "plweb_folder": PLWEB_FOLDER,
         "phantoms": config.PLANARIMAGING_PHANTOMS
         }
     return template("edit_settings_planarimaging", variables)
 
 
-@admin_app.route(PLWEB_FOLDER + '/get_tolerance_planarimaging', method="POST")
+@admin_app.route('/get_tolerance_planarimaging', method="POST")
 def get_tolerance_planarimaging():
     json_string = []
     users = general_functions.get_tolerance_planarimaging()
@@ -496,7 +472,7 @@ def get_tolerance_planarimaging():
                             "HIGH_THRESHOLD": i[5], "GENERATE_PDF_REPORT": i[6]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_tolerance_planarimaging', method="POST")
+@admin_app.route('/add_tolerance_planarimaging', method="POST")
 def add_tolerance_planarimaging():
     machine = request.forms.machine_tol
     beam = request.forms.beam_tol
@@ -512,7 +488,7 @@ def add_tolerance_planarimaging():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_tolerance_planarimaging', method="POST")
+@admin_app.route('/remove_tolerance_planarimaging', method="POST")
 def remove_tolerance_planarimaging():
     tol_id = request.forms.tol_id
     if int(tol_id) < 1:
@@ -523,7 +499,7 @@ def remove_tolerance_planarimaging():
     except:
         return "Failed!"
 
-@admin_app.route(PLWEB_FOLDER + '/get_referenceimages_planarimaging', method="POST")
+@admin_app.route('/get_referenceimages_planarimaging', method="POST")
 def get_referenceimages_planarimaging():
     json_string = []
     users = general_functions.get_referenceimages_planarimaging()
@@ -533,7 +509,7 @@ def get_referenceimages_planarimaging():
     return json.dumps(json_string)
 
 
-@admin_app.route(PLWEB_FOLDER + '/add_referenceimage_planarimaging', method="POST")
+@admin_app.route('/add_referenceimage_planarimaging', method="POST")
 def add_referenceimage_planarimaging():
     machine = request.forms.Machine
     beam = request.forms.Beam
@@ -581,7 +557,7 @@ def add_referenceimage_planarimaging():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_referenceimage_planarimaging', method="POST")
+@admin_app.route('/remove_referenceimage_planarimaging', method="POST")
 def remove_referenceimage_planarimaging():
     ref_id = request.forms.ref_id
     if int(ref_id) < 1:
@@ -594,16 +570,15 @@ def remove_referenceimage_planarimaging():
 
 
 ################################ CATPHAN ################################
-@admin_app.route(PLWEB_FOLDER + '/edit_settings_catphan', method="POST")
+@admin_app.route('/edit_settings_catphan', method="POST")
 def edit_settings_catphan():
     variables = {
-        "plweb_folder": PLWEB_FOLDER,
         "phantoms": config.CATPHAN_PHANTOMS
         }
     return template("edit_settings_catphan", variables)
 
 
-@admin_app.route(PLWEB_FOLDER + '/get_tolerance_catphan', method="POST")
+@admin_app.route('/get_tolerance_catphan', method="POST")
 def get_tolerance_catphan():
     json_string = []
     users = general_functions.get_tolerance_catphan()
@@ -615,7 +590,7 @@ def get_tolerance_catphan():
                             "UNIFORMITYIDX": i[11], "GENERATE_PDF_REPORT": i[12]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_tolerance_catphan', method="POST")
+@admin_app.route('/add_tolerance_catphan', method="POST")
 def add_tolerance_catphan():
     machine = request.forms.machine_tol
     beam = request.forms.beam_tol
@@ -641,7 +616,7 @@ def add_tolerance_catphan():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_tolerance_catphan', method="POST")
+@admin_app.route('/remove_tolerance_catphan', method="POST")
 def remove_tolerance_catphan():
     tol_id = request.forms.tol_id
     if int(tol_id) < 1:
@@ -652,7 +627,7 @@ def remove_tolerance_catphan():
     except:
         return "Failed!"
 
-@admin_app.route(PLWEB_FOLDER + '/get_referenceimages_catphan', method="POST")
+@admin_app.route('/get_referenceimages_catphan', method="POST")
 def get_referenceimages_catphan():
     json_string = []
     users = general_functions.get_referenceimages_catphan()
@@ -662,7 +637,7 @@ def get_referenceimages_catphan():
     return json.dumps(json_string)
 
 
-@admin_app.route(PLWEB_FOLDER + '/add_referenceimage_catphan', method="POST")
+@admin_app.route('/add_referenceimage_catphan', method="POST")
 def add_referenceimage_catphan():
     machine = request.forms.Machine
     beam = request.forms.Beam
@@ -712,7 +687,7 @@ def add_referenceimage_catphan():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_referenceimage_catphan', method="POST")
+@admin_app.route('/remove_referenceimage_catphan', method="POST")
 def remove_referenceimage_catphan():
     ref_id = request.forms.ref_id
     if int(ref_id) < 1:
@@ -725,14 +700,11 @@ def remove_referenceimage_catphan():
 
 
 ################################ FLATSYM ################################
-@admin_app.route(PLWEB_FOLDER + '/edit_settings_flatsym', method="POST")
+@admin_app.route('/edit_settings_flatsym', method="POST")
 def edit_settings_flatsym():
-    variables = {
-        "plweb_folder": PLWEB_FOLDER
-        }
-    return template("edit_settings_flatsym", variables)
+    return template("edit_settings_flatsym")
 
-@admin_app.route(PLWEB_FOLDER + '/get_treatmentunits_flatsym', method="POST")
+@admin_app.route('/get_treatmentunits_flatsym', method="POST")
 def get_treatmentunits_flatsym():
     json_string = []
     users = general_functions.get_treatmentunits_flatsym()
@@ -740,7 +712,7 @@ def get_treatmentunits_flatsym():
         json_string.append({"id": users[a][0], "Machine": users[a][1], "Beam": users[a][2]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_treatmentunit_flatsym', method="POST")
+@admin_app.route('/add_treatmentunit_flatsym', method="POST")
 def add_treatmentunit_flatsym():
     machine = request.forms.Machine
     beam = request.forms.Beam
@@ -752,7 +724,7 @@ def add_treatmentunit_flatsym():
     else:
         return "Failed"
     
-@admin_app.route(PLWEB_FOLDER + '/remove_treatmentunit_flatsym', method="POST")
+@admin_app.route('/remove_treatmentunit_flatsym', method="POST")
 def remove_treatmentunit_flatsym():
     unit_id = request.forms.unit_id
     if int(unit_id) < 1:
@@ -763,7 +735,7 @@ def remove_treatmentunit_flatsym():
     except:
         return "Failed!"
     
-@admin_app.route(PLWEB_FOLDER + '/get_settings_flatsym', method="POST")
+@admin_app.route('/get_settings_flatsym', method="POST")
 def get_settings_flatsym():
     json_string = []
     users = general_functions.get_settings_flatsym()
@@ -773,7 +745,7 @@ def get_settings_flatsym():
     return json.dumps(json_string)
 
 
-@admin_app.route(PLWEB_FOLDER + '/update_settings_flatsym', method="POST")
+@admin_app.route('/update_settings_flatsym', method="POST")
 def update_settings_flatsym():
     tolerance_flat = request.forms.tolerance_flat
     tolerance_sym = request.forms.tolerance_sym
@@ -787,7 +759,7 @@ def update_settings_flatsym():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/get_tolerance_flatsym', method="POST")
+@admin_app.route('/get_tolerance_flatsym', method="POST")
 def get_tolerance_flatsym():
     json_string = []
     users = general_functions.get_tolerance_flatsym()
@@ -796,7 +768,7 @@ def get_tolerance_flatsym():
         json_string.append({"Id":i[0], "Machine": i[1], "TOLERANCE_FLAT": i[2], "TOLERANCE_SYM": i[3], "GENERATE_PDF_REPORT": i[4]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_tolerance_flatsym', method="POST")
+@admin_app.route('/add_tolerance_flatsym', method="POST")
 def add_tolerance_flatsym():
     machine = request.forms.machine_tol
     tolerance_flat = request.forms.tolerance_flat_tol
@@ -810,7 +782,7 @@ def add_tolerance_flatsym():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_tolerance_flatsym', method="POST")
+@admin_app.route('/remove_tolerance_flatsym', method="POST")
 def remove_tolerance_flatsym():
     tol_id = request.forms.tol_id
     if int(tol_id) < 1:
@@ -822,14 +794,11 @@ def remove_tolerance_flatsym():
         return "Failed!"
     
 ################################ VMAT ################################
-@admin_app.route(PLWEB_FOLDER + '/edit_settings_vmat', method="POST")
+@admin_app.route('/edit_settings_vmat', method="POST")
 def edit_settings_vmat():
-    variables = {
-        "plweb_folder": PLWEB_FOLDER
-        }
-    return template("edit_settings_vmat", variables)
+    return template("edit_settings_vmat")
 
-@admin_app.route(PLWEB_FOLDER + '/get_treatmentunits_vmat', method="POST")
+@admin_app.route('/get_treatmentunits_vmat', method="POST")
 def get_treatmentunits_vmat():
     json_string = []
     users = general_functions.get_treatmentunits_vmat()
@@ -837,7 +806,7 @@ def get_treatmentunits_vmat():
         json_string.append({"id": users[a][0], "Machine": users[a][1], "Beam": users[a][2]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_treatmentunit_vmat', method="POST")
+@admin_app.route('/add_treatmentunit_vmat', method="POST")
 def add_treatmentunit_vmat():
     machine = request.forms.Machine
     beam = request.forms.Beam
@@ -849,7 +818,7 @@ def add_treatmentunit_vmat():
     else:
         return "Failed"
     
-@admin_app.route(PLWEB_FOLDER + '/remove_treatmentunit_vmat', method="POST")
+@admin_app.route('/remove_treatmentunit_vmat', method="POST")
 def remove_treatmentunit_vmat():
     unit_id = request.forms.unit_id
     if int(unit_id) < 1:
@@ -860,7 +829,7 @@ def remove_treatmentunit_vmat():
     except:
         return "Failed!"
     
-@admin_app.route(PLWEB_FOLDER + '/get_settings_vmat', method="POST")
+@admin_app.route('/get_settings_vmat', method="POST")
 def get_settings_vmat():
     json_string = []
     users = general_functions.get_settings_vmat()
@@ -869,7 +838,7 @@ def get_settings_vmat():
     return json.dumps(json_string)
 
 
-@admin_app.route(PLWEB_FOLDER + '/update_settings_vmat', method="POST")
+@admin_app.route('/update_settings_vmat', method="POST")
 def update_settings_vmat():
     tolerance = request.forms.tolerance
     generate_pdf = "True" if request.forms.generate_pdf=="true" else "False"
@@ -882,7 +851,7 @@ def update_settings_vmat():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/get_tolerance_vmat', method="POST")
+@admin_app.route('/get_tolerance_vmat', method="POST")
 def get_tolerance_vmat():
     json_string = []
     users = general_functions.get_tolerance_vmat()
@@ -891,7 +860,7 @@ def get_tolerance_vmat():
         json_string.append({"Id":i[0], "Machine": i[1], "TOLERANCE": i[2], "GENERATE_PDF_REPORT": i[3]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_tolerance_vmat', method="POST")
+@admin_app.route('/add_tolerance_vmat', method="POST")
 def add_tolerance_vmat():
     machine = request.forms.machine_tol
     tolerance = request.forms.tolerance_tol
@@ -904,7 +873,7 @@ def add_tolerance_vmat():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_tolerance_vmat', method="POST")
+@admin_app.route('/remove_tolerance_vmat', method="POST")
 def remove_tolerance_vmat():
     tol_id = request.forms.tol_id
     if int(tol_id) < 1:
@@ -917,15 +886,14 @@ def remove_tolerance_vmat():
 
 
 ################################ FIELDSIZE ################################
-@admin_app.route(PLWEB_FOLDER + '/edit_settings_fieldsize', method="POST")
+@admin_app.route('/edit_settings_fieldsize', method="POST")
 def edit_settings_fieldsize():
     variables = {
-        "plweb_folder": PLWEB_FOLDER,
         "field_sizes": config.FIELDSIZE_FIELDS
         }
     return template("edit_settings_fieldsize", variables)
 
-@admin_app.route(PLWEB_FOLDER + '/get_treatmentunits_fieldsize', method="POST")
+@admin_app.route('/get_treatmentunits_fieldsize', method="POST")
 def get_treatmentunits_fieldsize():
     json_string = []
     users = general_functions.get_treatmentunits_fieldsize()
@@ -933,7 +901,7 @@ def get_treatmentunits_fieldsize():
         json_string.append({"id": users[a][0], "Machine": users[a][1], "Beam": users[a][2]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_treatmentunit_fieldsize', method="POST")
+@admin_app.route('/add_treatmentunit_fieldsize', method="POST")
 def add_treatmentunit_fieldsize():
     machine = request.forms.Machine
     beam = request.forms.Beam
@@ -945,7 +913,7 @@ def add_treatmentunit_fieldsize():
     else:
         return "Failed"
     
-@admin_app.route(PLWEB_FOLDER + '/remove_treatmentunit_fieldsize', method="POST")
+@admin_app.route('/remove_treatmentunit_fieldsize', method="POST")
 def remove_treatmentunit_fieldsize():
     unit_id = request.forms.unit_id
     if int(unit_id) < 1:
@@ -956,7 +924,7 @@ def remove_treatmentunit_fieldsize():
     except:
         return "Failed!"
     
-@admin_app.route(PLWEB_FOLDER + '/get_settings_fieldsize', method="POST")
+@admin_app.route('/get_settings_fieldsize', method="POST")
 def get_settings_fieldsize():
     json_string = []
     users = general_functions.get_settings_fieldsize()
@@ -978,7 +946,7 @@ def get_settings_fieldsize():
     json_string.append({"Setting": "TOLERANCE_ISO", "Value": users[15]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/get_tolerance_fieldsize', method="POST")
+@admin_app.route('/get_tolerance_fieldsize', method="POST")
 def get_tolerance_fieldsize():
     json_string = []
     users = general_functions.get_tolerance_fieldsize()
@@ -1003,7 +971,7 @@ def get_tolerance_fieldsize():
                             "TOLERANCE_ISO": i[17]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/update_settings_fieldsize', method="POST")
+@admin_app.route('/update_settings_fieldsize', method="POST")
 def update_settings_fieldsize():
     small_nominal = request.forms.small_nominal
     medium_nominal = request.forms.medium_nominal
@@ -1035,7 +1003,7 @@ def update_settings_fieldsize():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/add_tolerance_fieldsize', method="POST")
+@admin_app.route('/add_tolerance_fieldsize', method="POST")
 def add_tolerance_fieldsize():
     machine_tol = request.forms.machine_tol
     small_nominal_tol = request.forms.small_nominal_tol
@@ -1067,7 +1035,7 @@ def add_tolerance_fieldsize():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_tolerance_fieldsize', method="POST")
+@admin_app.route('/remove_tolerance_fieldsize', method="POST")
 def remove_tolerance_fieldsize():
     tol_id = request.forms.tol_id
     if int(tol_id) < 1:
@@ -1080,14 +1048,11 @@ def remove_tolerance_fieldsize():
 
 
 ################################ FIELD ROTATION ##############################
-@admin_app.route(PLWEB_FOLDER + '/edit_settings_fieldrotation', method="POST")
+@admin_app.route('/edit_settings_fieldrotation', method="POST")
 def edit_settings_fieldrotation():
-    variables = {
-        "plweb_folder": PLWEB_FOLDER
-        }
-    return template("edit_settings_fieldrotation", variables)
+    return template("edit_settings_fieldrotation")
 
-@admin_app.route(PLWEB_FOLDER + '/get_treatmentunits_fieldrotation', method="POST")
+@admin_app.route('/get_treatmentunits_fieldrotation', method="POST")
 def get_treatmentunits_fieldrotation():
     json_string = []
     users = general_functions.get_treatmentunits_fieldrotation()
@@ -1095,7 +1060,7 @@ def get_treatmentunits_fieldrotation():
         json_string.append({"id": users[a][0], "Machine": users[a][1], "Beam": users[a][2]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_treatmentunit_fieldrotation', method="POST")
+@admin_app.route('/add_treatmentunit_fieldrotation', method="POST")
 def add_treatmentunit_fieldrotation():
     machine = request.forms.Machine
     beam = request.forms.Beam
@@ -1107,7 +1072,7 @@ def add_treatmentunit_fieldrotation():
     else:
         return "Failed"
     
-@admin_app.route(PLWEB_FOLDER + '/remove_treatmentunit_fieldrotation', method="POST")
+@admin_app.route('/remove_treatmentunit_fieldrotation', method="POST")
 def remove_treatmentunit_fieldrotation():
     unit_id = request.forms.unit_id
     if int(unit_id) < 1:
@@ -1118,7 +1083,7 @@ def remove_treatmentunit_fieldrotation():
     except:
         return "Failed!"
     
-@admin_app.route(PLWEB_FOLDER + '/get_settings_fieldrotation', method="POST")
+@admin_app.route('/get_settings_fieldrotation', method="POST")
 def get_settings_fieldrotation():
     json_string = []
     users = general_functions.get_settings_fieldrotation()
@@ -1127,7 +1092,7 @@ def get_settings_fieldrotation():
     json_string.append({"Setting": "TOLERANCE_COUCHREL", "Value": users[2]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/get_tolerance_fieldrotation', method="POST")
+@admin_app.route('/get_tolerance_fieldrotation', method="POST")
 def get_tolerance_fieldrotation():
     json_string = []
     users = general_functions.get_tolerance_fieldrotation()
@@ -1136,7 +1101,7 @@ def get_tolerance_fieldrotation():
         json_string.append({"Id":i[0], "Machine": i[1], "TOLERANCE_COLLABS": i[2], "TOLERANCE_COLLREL": i[3], "TOLERANCE_COUCHREL": i[4]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/update_settings_fieldrotation', method="POST")
+@admin_app.route('/update_settings_fieldrotation', method="POST")
 def update_settings_fieldrotation():
     tolerance_collabs = request.forms.tolerance_collabs
     tolerance_collrel = request.forms.tolerance_collrel
@@ -1149,7 +1114,7 @@ def update_settings_fieldrotation():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/add_tolerance_fieldrotation', method="POST")
+@admin_app.route('/add_tolerance_fieldrotation', method="POST")
 def add_tolerance_fieldrotation():
     machine = request.forms.machine_tol
     tolerance_collabs_tol = request.forms.tolerance_collabs_tol
@@ -1164,7 +1129,7 @@ def add_tolerance_fieldrotation():
     else:
         return "Failed"
 
-@admin_app.route(PLWEB_FOLDER + '/remove_tolerance_fieldrotation', method="POST")
+@admin_app.route('/remove_tolerance_fieldrotation', method="POST")
 def remove_tolerance_fieldrotation():
     tol_id = request.forms.tol_id
     if int(tol_id) < 1:
@@ -1176,14 +1141,11 @@ def remove_tolerance_fieldrotation():
         return "Failed!"
 
 ############################## MACHINE MAPPING ##############################
-@admin_app.route(PLWEB_FOLDER + '/edit_machine_mapping', method="POST")
+@admin_app.route('/edit_machine_mapping', method="POST")
 def edit_machine_mapping():
-    variables = {
-        "plweb_folder": PLWEB_FOLDER
-        }
-    return template("edit_machine_mapping", variables)
+    return template("edit_machine_mapping")
 
-@admin_app.route(PLWEB_FOLDER + '/get_mapping', method="POST")
+@admin_app.route('/get_mapping', method="POST")
 def get_mapping():
     json_string = []
     users = general_functions.get_mapping()
@@ -1192,7 +1154,7 @@ def get_mapping():
                             "UserName": users[a][3],  "UserEnergy": users[a][4]})
     return json.dumps(json_string)
 
-@admin_app.route(PLWEB_FOLDER + '/add_mapping', method="POST")
+@admin_app.route('/add_mapping', method="POST")
 def add_mapping():
     dicomname = request.forms.DicomName
     username = request.forms.UserName
@@ -1206,7 +1168,7 @@ def add_mapping():
     else:
         return "Failed"
     
-@admin_app.route(PLWEB_FOLDER + '/remove_mapping', method="POST")
+@admin_app.route('/remove_mapping', method="POST")
 def remove_mapping():
     mapping_id = request.forms.mapping_id
     if int(mapping_id) < 1:
@@ -1219,14 +1181,11 @@ def remove_mapping():
 
 
 ############################# DYNALOG ###########################################
-@admin_app.route(PLWEB_FOLDER + '/edit_settings_dynalog', method="POST")
+@admin_app.route('/edit_settings_dynalog', method="POST")
 def edit_settings_dynalog():
-    variables = {
-        "plweb_folder": PLWEB_FOLDER
-        }
-    return template("edit_settings_dynalog", variables)
+    return template("edit_settings_dynalog")
 
-@admin_app.route(PLWEB_FOLDER + '/dynalog_start_batch_analysis', method=['POST'])
+@admin_app.route('/dynalog_start_batch_analysis', method=['POST'])
 def dynalog_start_batch_analysis():
     
     if __name__ == '__main__' or parent_module.__name__ == '__main__':
@@ -1249,7 +1208,7 @@ def dynalog_start_batch_analysis():
     else:
         return "Analysis already running!"
 
-@admin_app.route(PLWEB_FOLDER + '/get_dynalog_analysis_status', method="POST")
+@admin_app.route('/get_dynalog_analysis_status', method="POST")
 def get_dynalog_analysis_status():
     variables = {
                  "in_progress": config.DYNALOG_ANALYSIS_IN_PROGRESS,

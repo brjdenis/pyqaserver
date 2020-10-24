@@ -227,7 +227,7 @@
       </div>
       <form method="post" target="_self">
         <input type="hidden" name="hidden_wl_pdf_report" id="hidden_wl_pdf_report" value="{{pdf_report_filename}}" />
-        <button type="submit" class="btn btn-default" name="wl_pdf_export" formaction="{{plweb_folder}}/winstonlutz_pdf_export" onclick="this.form.submit()" />Get pylinac report</button>
+        <button type="submit" class="btn btn-default" name="wl_pdf_export" formaction="/winstonlutz_pdf_export" onclick="this.form.submit()" />Get pylinac report</button>
       </form>
 
     </div>
@@ -392,7 +392,7 @@
                         
                     }
                 }
-                xmlhttp.open("POST", "{{plweb_folder}}/save_winstonlutz", true);
+                xmlhttp.open("POST", "/save_winstonlutz", true);
                 xmlhttp.send(formData);
                 document.getElementById("save_button").disabled = true;
                 document.getElementById("save_error").innerHTML = "Working on it ... ";

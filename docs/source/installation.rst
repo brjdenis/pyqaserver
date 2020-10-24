@@ -28,6 +28,8 @@ Pyqaserver is sensitive to the version of dependencies. For pyqaserver 2.0.0 the
 	  - 2.2.1
 	* - httplib2
 	  - 0.18.1
+	* - matplotlib
+	  - 3.3.1
 
 Certain dependencies were adjusted to work with pyqaserver. These are packaged with pyqaserver. They include:
 

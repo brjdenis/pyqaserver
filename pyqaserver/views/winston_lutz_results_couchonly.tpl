@@ -282,7 +282,7 @@
                         
                     }
                 }
-                xmlhttp.open("POST", "{{plweb_folder}}/save_winstonlutz", true);
+                xmlhttp.open("POST", "/save_winstonlutz", true);
                 xmlhttp.send(formData);
                 document.getElementById("save_button").disabled = true;
                 document.getElementById("save_error").innerHTML = "Working on it ... ";

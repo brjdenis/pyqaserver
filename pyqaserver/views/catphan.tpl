@@ -65,7 +65,7 @@
 					enabledisable('Study', false);
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/searchStudies/" + str, true);
+			xmlhttp.open("POST", "/searchStudies/" + str, true);
 			xmlhttp.send();
 		}
 
@@ -87,7 +87,7 @@
 					enabledisable('Series', false);
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/searchSeries/" + str, true);
+			xmlhttp.open("POST", "/searchSeries/" + str, true);
 			xmlhttp.send();
 		}
 
@@ -122,7 +122,7 @@
 				}
 				
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/searchSeriesTags/" + str, true);
+			xmlhttp.open("POST", "/searchSeriesTags/" + str, true);
 			xmlhttp.send();
 			document.getElementById("info_link").href = "{{orthanc_url}}" + "/app/explorer.html#series?uuid=" + str;
 		}
@@ -150,7 +150,7 @@
 			enabledisable("Study", true);
 			enabledisable("Series", true);
 
-			document.getElementById("send_calc").action = "{{plweb_folder}}/catphan_calculate/"+series;
+			document.getElementById("send_calc").action = "/catphan_calculate/"+series;
 			document.getElementById("send_calc").submit();
 			
 		}

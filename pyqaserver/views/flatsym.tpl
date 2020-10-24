@@ -57,7 +57,7 @@
 					enabledisable('Study', false);
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/searchStudies/" + str, true);
+			xmlhttp.open("POST", "/searchStudies/" + str, true);
 			xmlhttp.send();
 		}
 
@@ -79,7 +79,7 @@
 					enabledisable('Series', false);
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/searchSeries/" + str, true);
+			xmlhttp.open("POST", "/searchSeries/" + str, true);
 			xmlhttp.send();
 		}
 
@@ -104,7 +104,7 @@
 					document.getElementById("img_preview").alt = "";
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/getInstanceImage/" + image, true);
+			xmlhttp.open("POST", "/getInstanceImage/" + image, true);
 			xmlhttp.send();
 		}
 
@@ -123,7 +123,7 @@
 					imagedescription.innerHTML = "<small>"+this.responseText.replace(/(\r\n|\n|\r)/gm,"<br>")+"</small>";
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/getInstanceImageDescription/" + image, true);
+			xmlhttp.open("POST", "/getInstanceImageDescription/" + image, true);
 			xmlhttp.send();
 		}
 
@@ -171,7 +171,7 @@
 				}
 				
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/searchInstances/" + str, true);
+			xmlhttp.open("POST", "/searchInstances/" + str, true);
 			xmlhttp.send();
 			document.getElementById("info_link").href = "{{orthanc_url}}" + "/app/explorer.html#series?uuid=" + str;
 		}
@@ -196,7 +196,7 @@
 			document.getElementById("hidden_coox").value = document.getElementById("center_point_x").value;
 			document.getElementById("hidden_cooy").value = document.getElementById("center_point_y").value;
 			document.getElementById("hidden_invert").value = document.getElementById("invert_image").checked;
-			document.getElementById("send_calc").action = "{{plweb_folder}}/flatsym_calculate/" + image;
+			document.getElementById("send_calc").action = "/flatsym_calculate/" + image;
 			document.getElementById("send_calc").submit();
 			
 		}

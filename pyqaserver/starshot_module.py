@@ -38,27 +38,23 @@ TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
 D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 PI = np.pi
 
 # Here starts the bottle server
 ss_app = Bottle()
 
-@ss_app.route(PLWEB_FOLDER + '/starshot', method="POST")
+@ss_app.route('/starshot', method="POST")
 def starshot_module():
     displayname = request.forms.hidden_displayname
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     try:
         variables = general_functions.Read_from_dcm_database()
         variables["displayname"] = displayname
         response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
     except ConnectionError:
-        return template("error_template", {"error_message": "Orthanc is refusing connection.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Orthanc is refusing connection."})
     return template("starshot", variables)
 
 
@@ -66,8 +62,7 @@ def starshot_helperf_catch_error(args):
     try:
         return starshot_helperf(args)
     except Exception as e:
-        return template("error_template", {"error_message": str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": str(e)})
 
 
 def starshot_helperf(args):
@@ -120,26 +115,22 @@ def starshot_helperf(args):
         try:
             star = Starshot(file_path)
         except Exception as e:
-            return template("error_template", {"error_message": "The Starshot module cannot calculate. "+str(e),
-                                               "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "The Starshot module cannot calculate. "+str(e)})
     elif sid==0.0 and dpi!=0:
         try:
             star = Starshot(file_path, dpi=dpi)
         except Exception as e:
-            return template("error_template", {"error_message": "The Starshot module cannot calculate. "+str(e),
-                                               "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "The Starshot module cannot calculate. "+str(e)})
     elif sid!=0.0 and dpi==0:
         try:
             star = Starshot(file_path, sid=sid)
         except Exception as e:
-            return template("error_template", {"error_message": "The Starshot module cannot calculate. "+str(e),
-                                               "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "The Starshot module cannot calculate. "+str(e)})
     else:
         try:
             star = Starshot(file_path, dpi=dpi, sid=sid)
         except Exception as e:
-            return template("error_template", {"error_message": "The Starshot module cannot calculate. "+str(e),
-                                               "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "The Starshot module cannot calculate. "+str(e)})
     
     # Here we force pixels to background outside of box:
     if clip_box != 0:
@@ -147,7 +138,7 @@ def starshot_helperf(args):
             star.image.check_inversion_by_histogram(percentiles=[4, 50, 96]) # Check inversion otherwise this might not work
             general_functions.clip_around_image(star.image, clip_box)
         except Exception as e:
-            return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e), "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e)})
     
     # If inversion is selected:
     if invert:
@@ -158,8 +149,7 @@ def starshot_helperf(args):
         star.analyze(radius=radius, min_peak_height=min_peak_height, tolerance=tolerance,
                      start_point=start_point, fwhm=fwhm, recursive=recursive)
     except Exception as e:
-        return template("error_template", {"error_message": "Module Starshot cannot calculate. "+str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Module Starshot cannot calculate. "+str(e)})
 
     fig_ss = Figure(figsize=(10, 6), tight_layout={"w_pad":4})
     img_ax = fig_ss.add_subplot(1,2,1)
@@ -195,7 +185,6 @@ def starshot_helperf(args):
                  "radius": star.wobble.radius_mm,
                  "tolerance": star.tolerance,
                  "circle_center": star.wobble.center,
-                 "plweb_folder": PLWEB_FOLDER,
                  "pdf_report_enable": pdf_report_enable,
                  "save_results": save_results,
                  "acquisition_datetime": acquisition_datetime
@@ -229,7 +218,7 @@ def starshot_helperf(args):
     general_functions.delete_files_in_subfolders([temp_folder]) # Delete image
     return template("starshot_results", variables)
 
-@ss_app.route(PLWEB_FOLDER + '/starshot_calculate/<imgtype>/<w>', method="POST")
+@ss_app.route('/starshot_calculate/<imgtype>/<w>', method="POST")
 def starshot_calculate(imgtype, w):
     # w is the image
 
@@ -261,11 +250,9 @@ def starshot_calculate(imgtype, w):
                     upload.save(dst, overwrite=False)
                 dst.close()
             else:
-                return template("error_template", {"error_message": "Please load a valid image file.",
-                                                   "plweb_folder": PLWEB_FOLDER})
+                return template("error_template", {"error_message": "Please load a valid image file."})
         else:
-            return template("error_template", {"error_message": "Please load a valid image file.",
-                                               "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "Please load a valid image file."})
 
     args = {"imgtype": imgtype, "w": w, "clip_box": clip_box, "radius":radius, "min_peak_height":min_peak_height,
             "start_x": start_x, "start_y":start_y, "dpi":dpi, "sid":sid, "fwhm":fwhm,"recursive":recursive,  "invert":invert, 

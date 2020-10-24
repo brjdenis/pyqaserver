@@ -67,7 +67,7 @@
 					enabledisable('Study', false);
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/searchStudies/" + str, true);
+			xmlhttp.open("POST", "/searchStudies/" + str, true);
 			xmlhttp.send();
 		}
 
@@ -89,7 +89,7 @@
 					enabledisable('Series', false);
 				}
 			}
-			xmlhttp.open("POST", "{{plweb_folder}}/searchSeries/" + str, true);
+			xmlhttp.open("POST", "/searchSeries/" + str, true);
 			xmlhttp.send();
 		}
 		
@@ -197,7 +197,7 @@
 				}
 			}
 
-			xmlhttp.open("POST", "{{plweb_folder}}/searchInstances/" + str.join("/"), true);
+			xmlhttp.open("POST", "/searchInstances/" + str.join("/"), true);
 			xmlhttp.send();
 			document.getElementById("info_link").href = "{{orthanc_url}}" + "/app/explorer.html#series?uuid=" + str[0];
 		}
@@ -276,7 +276,7 @@
 				document.getElementById("hidden_show_epid_points").value = document.getElementById("show_epid_points").checked;
 				document.getElementById("hidden_testtype").value = str_test_type;
 				document.getElementById("hidden_usecouch").value = document.getElementById("couch_test").checked;
-				document.getElementById("send_calc").action = "{{plweb_folder}}/winston_lutz_calculate/" + clip_box + "/" + fit + "/" + pyl;
+				document.getElementById("send_calc").action = "/winston_lutz_calculate/" + clip_box + "/" + fit + "/" + pyl;
 				document.getElementById("send_calc").submit();
 			}
 		}

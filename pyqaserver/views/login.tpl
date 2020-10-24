@@ -38,7 +38,7 @@
                     }
                 }
             }
-            xmlhttp.open("POST", "{{plweb_folder}}/login_check_credentials", true);
+            xmlhttp.open("POST", "/login_check_credentials", true);
             xmlhttp.send(formData);
 	    }
 
@@ -49,7 +49,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm">
-				<form class="form-signin" id="form-id" action="{{plweb_folder}}/login" method="POST" autocomplete="off">
+				<form class="form-signin" id="form-id" action="/login" method="POST" autocomplete="off">
 					<img class="img" src="/{{image}}" id="logo_image">
 					<h1 class="h3 mb-3 font-weight-normal">Sign in to pyQAserver</h1>
 					<label>Username</label>

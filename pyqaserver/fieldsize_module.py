@@ -39,9 +39,6 @@ TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
 D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 PI = np.pi
 
 # MLC type
@@ -50,19 +47,18 @@ LEAF_TYPE = ["Varian_120", "Varian_120HD", "Varian_80", "Elekta_80", "Elekta_160
 # Here starts the bottle server
 fieldsize_app = Bottle()
 
-@fieldsize_app.route(PLWEB_FOLDER + '/fieldsize', method="POST")
+@fieldsize_app.route('/fieldsize', method="POST")
 def fieldsize():
     displayname = request.forms.hidden_displayname
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     try:
         variables = general_functions.Read_from_dcm_database()
         variables["displayname"] = displayname
         response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
     except ConnectionError:
-        return template("error_template", {"error_message": "Orthanc is refusing connection.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Orthanc is refusing connection."})
     variables["LEAF_TYPE"] = LEAF_TYPE
     return template("fieldsize", variables)
 
@@ -71,8 +67,7 @@ def fieldsize_helperf_catch_error(args):
     try:
         return fieldsize_helperf(args)
     except Exception as e:
-        return template("error_template", {"error_message": str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": str(e)})
     
 
 def fieldsize_helperf(args):
@@ -138,8 +133,7 @@ def fieldsize_helperf(args):
         temp_folder1, file_path1 = RestToolbox.GetSingleDcm(config.ORTHANC_URL, w1)
         temp_folder2, file_path2 = RestToolbox.GetSingleDcm(config.ORTHANC_URL, w2)
     except:
-        return template("error_template", {"error_message": "Cannot read images.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot read images."})
     
     # Load first image
     try:
@@ -150,7 +144,7 @@ def fieldsize_helperf(args):
                 img1.check_inversion_by_histogram(percentiles=[4, 50, 96]) # Check inversion otherwise this might not work
                 general_functions.clip_around_image(img1, clipbox)
             except Exception as e:
-                return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e), "plweb_folder": PLWEB_FOLDER})
+                return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e)})
         else:
             img1.remove_edges(pixels=2)
         if invert:
@@ -162,8 +156,7 @@ def fieldsize_helperf(args):
             img1.filter(filter_size)
             
     except:
-        return template("error_template", {"error_message": "Cannot read image.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot read image."})
 
     try:
         img2 = pylinac_image.DicomImage(file_path2)
@@ -172,7 +165,7 @@ def fieldsize_helperf(args):
                 img2.check_inversion_by_histogram(percentiles=[4, 50, 96]) # Check inversion otherwise this might not work
                 general_functions.clip_around_image(img2, clipbox)
             except Exception as e:
-                return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e), "plweb_folder": PLWEB_FOLDER})
+                return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e)})
         else:
             img2.remove_edges(pixels=2)
         if invert:
@@ -183,8 +176,7 @@ def fieldsize_helperf(args):
         if filter_size != 0:
             img1.filter(filter_size)
     except:
-        return template("error_template", {"error_message": "Cannot read image.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot read image."})
 
     # FIRST IMAGE (to get isocenter):
     if iso_method == "Manual":
@@ -536,13 +528,12 @@ def fieldsize_helperf(args):
                  "expected_jaw": guessed_exp_jaw,
                  "guessed_fieldsize": guessed_nominal_name,
                  "acquisition_datetime": acquisition_datetime,
-                 "iso_method": iso_method,
-                 "plweb_folder": PLWEB_FOLDER
+                 "iso_method": iso_method
                  }
     general_functions.delete_files_in_subfolders([temp_folder1, temp_folder2]) # Delete image
     return template("fieldsize_results", variables)
 
-@fieldsize_app.route(PLWEB_FOLDER + '/fieldsize/<w1>/<w2>', method="POST")
+@fieldsize_app.route('/fieldsize/<w1>/<w2>', method="POST")
 def fieldsize_calculate(w1, w2):
     mlc_type = request.forms.hidden_mlctype
     iso_method = request.forms.hidden_setcenter

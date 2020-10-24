@@ -16,55 +16,55 @@
 
 
 		function winston_lutz() {
-			document.getElementById("form").action = "{{plweb_folder}}/winston_lutz";
+			document.getElementById("form").action = "/winston_lutz";
 			document.getElementById("form").submit();
 		}
 		function picket_fence() {
-			document.getElementById("form").action = "{{plweb_folder}}/picket_fence";
+			document.getElementById("form").action = "/picket_fence";
 			document.getElementById("form").submit();
 		}
 		function starshot() {
-			document.getElementById("form").action = "{{plweb_folder}}/starshot";
+			document.getElementById("form").action = "/starshot";
 			document.getElementById("form").submit();
 		}
 		function image_review() {
-			document.getElementById("form").action = "{{plweb_folder}}/image_review";
+			document.getElementById("form").action = "/image_review";
 			document.getElementById("form").submit();
 		}
 		function planar_imaging() {
-			document.getElementById("form").action = "{{plweb_folder}}/planar_imaging";
+			document.getElementById("form").action = "/planar_imaging";
 			document.getElementById("form").submit();
 		}
 		function dynalog() {
-			document.getElementById("form").action = "{{plweb_folder}}/dynalog";
+			document.getElementById("form").action = "/dynalog";
 			document.getElementById("form").submit();
 		}
 		function catphan() {
-			document.getElementById("form").action = "{{plweb_folder}}/catphan";
+			document.getElementById("form").action = "/catphan";
 			document.getElementById("form").submit();
 		}
 		function flatsym() {
-			document.getElementById("form").action = "{{plweb_folder}}/flatsym";
+			document.getElementById("form").action = "/flatsym";
 			document.getElementById("form").submit();
 		}
 		function vvmat() {
-			document.getElementById("form").action = "{{plweb_folder}}/vvmat";
+			document.getElementById("form").action = "/vvmat";
 			document.getElementById("form").submit();
 		}
 		function fieldsize() {
-			document.getElementById("form").action = "{{plweb_folder}}/fieldsize";
+			document.getElementById("form").action = "/fieldsize";
 			document.getElementById("form").submit();
 		}
 		function fieldrot() {
-			document.getElementById("form").action = "{{plweb_folder}}/fieldrot";
+			document.getElementById("form").action = "/fieldrot";
 			document.getElementById("form").submit();
 		}
 		function administration() {
-			document.getElementById("form").action = "{{plweb_folder}}/administration";
+			document.getElementById("form").action = "/administration";
 			document.getElementById("form").submit();
 		}
 		function trends() {
-			document.getElementById("form").action = "{{plweb_folder}}/review_trends";
+			document.getElementById("form").action = "/review_trends";
 			document.getElementById("form").submit();
 		}
 	</script>
@@ -142,7 +142,7 @@
             <div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<p class="navbar-text">Signed in as: <strong>{{displayname}}</strong></p>
-					<li class="active"><a href="{{plweb_folder}}/login">Logout</a></li>
+					<li class="active"><a href="/login">Logout</a></li>
 				</ul>
 			</div>
           </div><!--/.nav-collapse -->

@@ -33,11 +33,11 @@
 			        {title:"Is admin?", field:"Admin"}
 			    ],
 			    layout:"fitColumns", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_user_data", //ajax URL
+			    ajaxURL:"/get_user_data", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
-			//table.setData("{{plweb_folder}}/get_user_data", {}, "post");
+			//table.setData("/get_user_data", {}, "post");
 
 		}
 
@@ -65,7 +65,7 @@
 						user_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/add_user", true);
+				xmlhttp.open("POST", "/add_user", true);
 				xmlhttp.send(formData);
 		}
 
@@ -87,7 +87,7 @@
 						user_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/remove_user", true);
+				xmlhttp.open("POST", "/remove_user", true);
 				xmlhttp.send(formData);
 		}
 	

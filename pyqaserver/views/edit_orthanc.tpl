@@ -31,7 +31,7 @@
 			        {title:"Value", field:"Value"}
 			    ],
 			    layout:"fitColumns", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_orthanc_settings", //ajax URL
+			    ajaxURL:"/get_orthanc_settings", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
@@ -62,7 +62,7 @@
 						orthanc_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/update_orthanc_settings", true);
+				xmlhttp.open("POST", "/update_orthanc_settings", true);
 				xmlhttp.send(formData);
 		}
 	

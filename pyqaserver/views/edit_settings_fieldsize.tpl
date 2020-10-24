@@ -37,7 +37,7 @@
 			        {title:"Beam", field:"Beam"}
 			    ],
 			    layout:"fitColumns", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_treatmentunits_fieldsize", //ajax URL
+			    ajaxURL:"/get_treatmentunits_fieldsize", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
@@ -51,11 +51,11 @@
 			        {title:"Value", field:"Value"}
 			    ],
 			    layout:"fitData", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_settings_fieldsize", //ajax URL
+			    ajaxURL:"/get_settings_fieldsize", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
-			//table.setData("{{plweb_folder}}/get_user_data", {}, "post");
+			//table.setData("/get_user_data", {}, "post");
 
 		}
 		function tolerance_table(){
@@ -82,11 +82,11 @@
 			        {title:"TOLERANCE_ISO", field:"TOLERANCE_ISO"}
 			    ],
 			    layout:"fitData", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_tolerance_fieldsize", //ajax URL
+			    ajaxURL:"/get_tolerance_fieldsize", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
-			//table.setData("{{plweb_folder}}/get_user_data", {}, "post");
+			//table.setData("/get_user_data", {}, "post");
 
 		}
 
@@ -110,7 +110,7 @@
 						treatmentunits_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/add_treatmentunit_fieldsize", true);
+				xmlhttp.open("POST", "/add_treatmentunit_fieldsize", true);
 				xmlhttp.send(formData);
 		}
 
@@ -132,7 +132,7 @@
 						treatmentunits_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/remove_treatmentunit_fieldsize", true);
+				xmlhttp.open("POST", "/remove_treatmentunit_fieldsize", true);
 				xmlhttp.send(formData);
 		}
 
@@ -185,7 +185,7 @@
 						settings_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/update_settings_fieldsize", true);
+				xmlhttp.open("POST", "/update_settings_fieldsize", true);
 				xmlhttp.send(formData);
 		}
 		
@@ -240,7 +240,7 @@
 						tolerance_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/add_tolerance_fieldsize", true);
+				xmlhttp.open("POST", "/add_tolerance_fieldsize", true);
 				xmlhttp.send(formData);
 		}
 
@@ -262,7 +262,7 @@
 						tolerance_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/remove_tolerance_fieldsize", true);
+				xmlhttp.open("POST", "/remove_tolerance_fieldsize", true);
 				xmlhttp.send(formData);
 		}
 	

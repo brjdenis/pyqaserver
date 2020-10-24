@@ -37,29 +37,25 @@ TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
 D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 PI = np.pi
 
 # Here starts the bottle server
 fieldrot_app = Bottle()
 
-@fieldrot_app.route(PLWEB_FOLDER + '/fieldrot', method="POST")
+@fieldrot_app.route('/fieldrot', method="POST")
 def fieldrot():
     colormaps = ["Greys", "brg", "gray", "prism"]
     displayname = request.forms.hidden_displayname
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     try:
         variables = general_functions.Read_from_dcm_database()
         variables["colormaps"] = colormaps
         variables["displayname"] = displayname
         response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
     except ConnectionError:
-        return template("error_template", {"error_message": "Orthanc is refusing connection.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Orthanc is refusing connection."})
     return template("fieldrot", variables)
 
 
@@ -67,8 +63,7 @@ def fieldrot_helperf_catch_error(args):
     try:
         return fieldrot_helperf(args)
     except Exception as e:
-        return template("error_template", {"error_message": str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": str(e)})
 
 
 def fieldrot_helperf(args):
@@ -120,8 +115,7 @@ def fieldrot_helperf(args):
         temp_folder1, file_path1 = RestToolbox.GetSingleDcm(config.ORTHANC_URL, w1)
         temp_folder2, file_path2 = RestToolbox.GetSingleDcm(config.ORTHANC_URL, w2)
     except:
-        return template("error_template", {"error_message": "Cannot read images.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot read images."})
     
     # Load first image
     try:
@@ -132,7 +126,7 @@ def fieldrot_helperf(args):
                 img1.check_inversion_by_histogram(percentiles=[4, 50, 96]) # Check inversion otherwise this might not work
                 general_functions.clip_around_image(img1, clipbox)
             except Exception as e:
-                return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e), "plweb_folder": PLWEB_FOLDER})
+                return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e)})
         else:
             img1.remove_edges(pixels=2)
         if invert:
@@ -141,8 +135,7 @@ def fieldrot_helperf(args):
             img1.check_inversion()
         img1.flipud()
     except:
-        return template("error_template", {"error_message": "Cannot read image.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot read image."})
     try:
         img2 = pylinac_image.DicomImage(file_path2)
         if clipbox != 0:
@@ -150,7 +143,7 @@ def fieldrot_helperf(args):
                 img2.check_inversion_by_histogram(percentiles=[4, 50, 96]) # Check inversion otherwise this might not work
                 general_functions.clip_around_image(img2, clipbox)
             except Exception as e:
-                return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e), "plweb_folder": PLWEB_FOLDER})
+                return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e)})
         else:
             img2.remove_edges(pixels=2)
         if invert:
@@ -159,8 +152,7 @@ def fieldrot_helperf(args):
             img2.check_inversion()
         img2.flipud()
     except:
-        return template("error_template", {"error_message": "Cannot read image.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot read image."})
 
     # Apply some filtering
     if med_filter > 0:
@@ -172,7 +164,7 @@ def fieldrot_helperf(args):
         center_cax1, rad_field_bounding_box1, field_corners1 = field_rotation._find_field_centroid(img1)
         center_cax2, rad_field_bounding_box2, field_corners2 = field_rotation._find_field_centroid(img2)
     except Exception as e:
-        return template("error_template", {"error_message": str(e), "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": str(e)})
     
     field_corners1 = field_corners1.astype(int)
     field_corners2 = field_corners2.astype(int)
@@ -190,7 +182,7 @@ def fieldrot_helperf(args):
                 bbs1 = field_rotation._find_bb(img1, rad_field_bounding_box1)
                 bbs2 = field_rotation._find_bb(img2, rad_field_bounding_box2)
         except Exception as e:
-            return template("error_template", {"error_message": str(e), "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": str(e)})
 
         bb_coord1_1, bw_bb_im1_1 = bbs1[0]
         bb_coord1_2, bw_bb_im1_2 = bbs1[1]
@@ -226,7 +218,7 @@ def fieldrot_helperf(args):
             samples_left1, samples_right1, p_left1, p_right1 = field_rotation.find_penumbra_points(direction, number_samples, field_corners1, margin, img1_filled)
             samples_left2, samples_right2, p_left2, p_right2 = field_rotation.find_penumbra_points(direction2, number_samples, field_corners2, margin, img2_filled)
         except Exception as e:
-            return template("error_template", {"error_message": str(e), "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": str(e)})
 
         # Calculate field edge slopes
         pmin = 0
@@ -424,7 +416,7 @@ def fieldrot_helperf(args):
             samples_left1, samples_right1, p_left1, p_right1 = field_rotation.find_penumbra_points(direction, number_samples, field_corners1, margin, img1.array)
             samples_left2, samples_right2, p_left2, p_right2 = field_rotation.find_penumbra_points(direction2, number_samples, field_corners2, margin, img2.array)
         except Exception as e:
-            return template("error_template", {"error_message": str(e), "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": str(e)})
 
         # Calculate field edge slopes
         pmin = 0
@@ -541,7 +533,7 @@ def fieldrot_helperf(args):
                 bbs1 = field_rotation._find_bb(img1, rad_field_bounding_box1)
                 bbs2 = field_rotation._find_bb(img2, rad_field_bounding_box2)
         except Exception as e:
-            return template("error_template", {"error_message": str(e), "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": str(e)})
         
         bb_coord1_1, bw_bb_im1_1 = bbs1[0]
         bb_coord1_2, bw_bb_im1_2 = bbs1[1]
@@ -604,11 +596,10 @@ def fieldrot_helperf(args):
                      }
     variables["acquisition_datetime"] = acquisition_datetime
     variables["save_results"] = save_results
-    variables["plweb_folder"] =  PLWEB_FOLDER
     general_functions.delete_files_in_subfolders([temp_folder1, temp_folder2]) # Delete image
     return template("fieldrot_results", variables)
 
-@fieldrot_app.route(PLWEB_FOLDER + '/fieldrot/<w1>/<w2>', method="POST")
+@fieldrot_app.route('/fieldrot/<w1>/<w2>', method="POST")
 def fieldrot_calculate(w1, w2):
     colormap = request.forms.hidden_colormap
     test_type = request.forms.hidden_type

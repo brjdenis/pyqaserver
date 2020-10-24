@@ -18,9 +18,6 @@ BOKEH_TABLES_JS = "/bokeh/js/bokeh-tables-2.2.1.min.js"
 # Generate secret key for cookies:
 SECRET_KEY = base64.b64encode(os.urandom(12).hex().encode())
 
-# A stupid variable I invented, now it must be empty :(
-PLWEB_FOLDER = ""
-
 # Name of the folder with reference images
 REFERENCE_IMAGES_FOLDER = "reference_images"
 

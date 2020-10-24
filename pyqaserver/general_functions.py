@@ -23,8 +23,6 @@ else:
     from . import config
     from . import RestToolbox_modified as RestToolbox
 
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 def encrypt_password(password):
     return pwd_context.hash(password)
 
@@ -35,7 +33,6 @@ def get_configuration():
     return [config.QASERVER_VERSION,
             config.INSTITUTION,
             config.SECRET_KEY,
-            config.PLWEB_FOLDER,
             config.REFERENCE_IMAGES_FOLDER,
             config.WORKING_DIRECTORY,
             config.GENERAL_DATABASE,
@@ -61,7 +58,6 @@ def set_configuration(cfg):
     [config.QASERVER_VERSION,
     config.INSTITUTION,
     config.SECRET_KEY,
-    config.PLWEB_FOLDER,
     config.REFERENCE_IMAGES_FOLDER,
     config.WORKING_DIRECTORY,
     config.GENERAL_DATABASE,
@@ -1141,16 +1137,14 @@ def Read_from_dcm_database():
                      "names": ["-----------"] + list(np.array(names)[order]),
                      "IDs": ["--"] + list(np.array(IDs)[order]),
                      "orthanc_url": config.ORTHANC_URL,
-                     "institution": config.INSTITUTION,
-                     "plweb_folder": PLWEB_FOLDER
+                     "institution": config.INSTITUTION
                      }
     else:
         variables = {"orthanc_id": [],
                      "names": [],
                      "IDs": [],
                      "orthanc_url": config.ORTHANC_URL,
-                     "institution": config.INSTITUTION,
-                     "plweb_folder": PLWEB_FOLDER
+                     "institution": config.INSTITUTION
                      }
     return variables
 

@@ -22,9 +22,6 @@ CUR_DIR = os.path.realpath(os.path.dirname(__file__))
 # Path to Bottle templates
 TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 WINSTON_LUTZ_PARAMETERS = {"Default": ["BBshiftX", "BBshiftY", "BBshiftZ", "BeamDeviation", "CollAsymX", "CollAsymY",
                                        "WobbleColl", "WobbleGnt", "EpidDevX", "EpidDevY", "RadiusMax"],
                           
@@ -164,7 +161,7 @@ def get_trend_data(Module, TestType, Parameters, Machine, Beam, Phantom, Date1, 
     conn.close()
     return data
 
-@trends_app.route(PLWEB_FOLDER + '/save_winstonlutz', method="POST")
+@trends_app.route('/save_winstonlutz', method="POST")
 def save_winstonlutz():
     json_data = json.loads(request.forms.json_data)
     if json_data=={}:
@@ -199,7 +196,7 @@ def save_winstonlutz():
     else:
         return "Failed"
 
-@trends_app.route(PLWEB_FOLDER + '/save_starshot', method="POST")
+@trends_app.route('/save_starshot', method="POST")
 def save_starshot():
     json_data = json.loads(request.forms.json_data)
     machine = json_data["Machine"] if json_data["Machine"] is not None else ""
@@ -233,7 +230,7 @@ def save_starshot():
     else:
         return "Failed"
 
-@trends_app.route(PLWEB_FOLDER + '/save_picketfence', method="POST")
+@trends_app.route('/save_picketfence', method="POST")
 def save_picketfence():
     json_data = json.loads(request.forms.json_data)
     machine = json_data["Machine"] if json_data["Machine"] is not None else ""
@@ -267,7 +264,7 @@ def save_picketfence():
     else:
         return "Failed"
 
-@trends_app.route(PLWEB_FOLDER + '/save_planarimaging', method="POST")
+@trends_app.route('/save_planarimaging', method="POST")
 def save_planarimaging():
     json_data = json.loads(request.forms.json_data)
     machine = json_data["Machine"] if json_data["Machine"] is not None else ""
@@ -303,7 +300,7 @@ def save_planarimaging():
     else:
         return "Failed"
 
-@trends_app.route(PLWEB_FOLDER + '/save_catphan', method="POST")
+@trends_app.route('/save_catphan', method="POST")
 def save_catphan():
     json_data = json.loads(request.forms.json_data)
     machine = json_data["Machine"] if json_data["Machine"] is not None else ""
@@ -340,7 +337,7 @@ def save_catphan():
         return "Failed"
 
 
-@trends_app.route(PLWEB_FOLDER + '/save_flatsym', method="POST")
+@trends_app.route('/save_flatsym', method="POST")
 def save_flatsym():
     json_data = json.loads(request.forms.json_data)
     machine = json_data["Machine"] if json_data["Machine"] is not None else ""
@@ -374,7 +371,7 @@ def save_flatsym():
     else:
         return "Failed"
 
-@trends_app.route(PLWEB_FOLDER + '/save_vmat', method="POST")
+@trends_app.route('/save_vmat', method="POST")
 def save_vmat():
     json_data = json.loads(request.forms.json_data)
     machine = json_data["Machine"] if json_data["Machine"] is not None else ""
@@ -408,7 +405,7 @@ def save_vmat():
     else:
         return "Failed"
 
-@trends_app.route(PLWEB_FOLDER + '/save_fieldsize', method="POST")
+@trends_app.route('/save_fieldsize', method="POST")
 def save_fieldsize():
     json_data = json.loads(request.forms.json_data)
     machine = json_data["Machine"] if json_data["Machine"] is not None else ""
@@ -444,7 +441,7 @@ def save_fieldsize():
     else:
         return "Failed"
 
-@trends_app.route(PLWEB_FOLDER + '/save_fieldrotation', method="POST")
+@trends_app.route('/save_fieldrotation', method="POST")
 def save_fieldrotation():
     json_data = json.loads(request.forms.json_data)
     machine = json_data["Machine"] if json_data["Machine"] is not None else ""
@@ -485,7 +482,7 @@ def save_fieldrotation():
         return "Failed"
 
 
-@trends_app.route(PLWEB_FOLDER + '/remove_measurement', method="POST")
+@trends_app.route('/remove_measurement', method="POST")
 def remove_measurement():
     rowid = request.forms.rowid
     module = request.forms.module
@@ -522,12 +519,12 @@ def remove_measurement():
     else:
         return "Failed"
 
-@trends_app.route(PLWEB_FOLDER + '/review_trends', method="POST")
+@trends_app.route('/review_trends', method="POST")
 def review_trends():
     displayname = request.forms.hidden_displayname
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     
     tables = {"Winston Lutz": WINSTON_LUTZ_PARAMETERS,
               "Starshot": STARSHOT_PARAMETERS,
@@ -553,7 +550,6 @@ def review_trends():
     variables = {
                 "tables": json.dumps(tables),
                 "unique_names": json.dumps(unique_names),
-                "plweb_folder": PLWEB_FOLDER,
                 "displayname": displayname,
                 "is_admin": general_functions.check_is_admin(username)
                 }
@@ -561,7 +557,7 @@ def review_trends():
     return template("trends", variables)
 
 
-@trends_app.route(PLWEB_FOLDER + '/fetch_trends', method="POST")
+@trends_app.route('/fetch_trends', method="POST")
 def fetch_trends():
     Module = request.forms.Module
     TestType = request.forms.TestType
@@ -580,7 +576,7 @@ def fetch_trends():
     return json.dumps(get_trend_data(Module, TestType, Parameters, Machine, Beam, Phantom, Date1, Date2))
 
 
-@trends_app.route(PLWEB_FOLDER + '/download_csv', method="POST")
+@trends_app.route('/download_csv', method="POST")
 def download_csv():
     Module = request.forms.hidden_module
     TestType = request.forms.hidden_testtype

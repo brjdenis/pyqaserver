@@ -7,7 +7,6 @@ import numpy as np
 import matplotlib.style
 import matplotlib
 matplotlib.use('Agg')
-from matplotlib.figure import Figure
 
 # To revert back to matplotlib 1.0 style
 matplotlib.style.use('classic')
@@ -50,28 +49,24 @@ TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
 D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 PI = np.pi
 
 # Here starts the bottle server
 plimg_app = Bottle()
 
-@plimg_app.route(PLWEB_FOLDER + '/planar_imaging', method="POST")
+@plimg_app.route('/planar_imaging', method="POST")
 def planar_imaging_start():
 
     colormaps = ["gray", "Greys", "brg", "prism"]
     displayname = request.forms.hidden_displayname
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     try:
         variables = general_functions.Read_from_dcm_database()
     except ConnectionError:
         return template("error_template", {"error_message": "Orthanc is "
-                                           "refusing connection.",
-                                           "plweb_folder": PLWEB_FOLDER})
+                                           "refusing connection."})
     variables["displayname"] = displayname
     response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
     variables["colormaps"] = colormaps
@@ -89,8 +84,7 @@ def planar_imaging_helperf_catch_error(args):
     try:
         return planar_imaging_helperf(args)
     except Exception as e:
-        return template("error_template", {"error_message": str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": str(e)})
 
 
 def planar_imaging_helperf(args):
@@ -125,8 +119,7 @@ def planar_imaging_helperf(args):
     try:
         temp_folder1, file_path1 = RestToolbox.GetSingleDcm(config.ORTHANC_URL, w1)
     except:
-        return template("error_template", {"error_message": "Cannot read image.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot read image."})
 
     ref_path1 = general_functions.get_referenceimagepath_planarimaging(machine, beam, phantom)
 
@@ -160,11 +153,10 @@ def planar_imaging_helperf(args):
                 #pi1.image.check_inversion_by_histogram()
                 general_functions.clip_around_image(pi1.image, clip_box)
             except Exception as e:
-                return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e), "plweb_folder": PLWEB_FOLDER})
+                return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e)})
         pi1.analyze(low_contrast_threshold=lowtresh, high_contrast_threshold=hightresh, invert=inv, angle_override=None if leedsrot2==0 else leedsrot2)
     except Exception as e:
-         return template("error_template", {"error_message": "Cannot analyze image 1. " + str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+         return template("error_template", {"error_message": "Cannot analyze image 1. " + str(e)})
 
     # Analyze reference images if they exists
 
@@ -186,12 +178,11 @@ def planar_imaging_helperf(args):
                     #ref1.image.check_inversion_by_histogram()
                     general_functions.clip_around_image(ref1.image, clip_box)
                 except Exception as e:
-                    return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e), "plweb_folder": PLWEB_FOLDER})
+                    return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e)})
             ref1.analyze(low_contrast_threshold=lowtresh, high_contrast_threshold=hightresh, invert=inv, angle_override=None if leedsrot1==0 else leedsrot1)
         except:
              return template("error_template", {"error_message": "Cannot analyze reference image."\
-                                                " Check that the image in the database is valid.",
-                                               "plweb_folder": PLWEB_FOLDER})
+                                                " Check that the image in the database is valid."})
                  
     save_results = {
                     "machine": machine,
@@ -200,7 +191,7 @@ def planar_imaging_helperf(args):
                     "displayname": displayname
                     }
 
-    fig = Figure(figsize=(10.5, 5), tight_layout={"w_pad":0,  "pad": 1.5})
+    fig = matplotlib.figure(figsize=(10.5, 5), tight_layout={"w_pad":0,  "pad": 1.5})
     ax_ref = fig.add_subplot(1,2,1)
     ax_pi = fig.add_subplot(1,2,2)
 
@@ -364,7 +355,7 @@ def planar_imaging_helperf(args):
         outline_obj_ref1.plot2axes(ax_ref, edgecolor='g', **settings_ref1)
     
     # Plot low frequency contrast, CNR and rMTF
-    fig2 = Figure(figsize=(10.5, 10), tight_layout={"w_pad":1})
+    fig2 = matplotlib.figure(figsize=(10.5, 10), tight_layout={"w_pad":1})
     ax_lfc = fig2.add_subplot(2,2,1)
     ax_lfcnr = fig2.add_subplot(2,2,2)
     ax_rmtf = fig2.add_subplot(2,2,3)
@@ -449,7 +440,6 @@ def planar_imaging_helperf(args):
 
     variables = {"script": script,
          "script2": script2,
-         "plweb_folder": PLWEB_FOLDER,
          "f30": f30,
          "f40": f40,
          "f50": f50,
@@ -489,7 +479,7 @@ def planar_imaging_helperf(args):
     return template("planar_imaging_results", variables)
 
 
-@plimg_app.route(PLWEB_FOLDER + '/planar_imaging_calculate/<w1>', method="POST")
+@plimg_app.route('/planar_imaging_calculate/<w1>', method="POST")
 def planar_imaging_calculate(w1):
     # This function gets data from website and starts the calculation
 

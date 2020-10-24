@@ -39,9 +39,6 @@ TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
 D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 PI = np.pi
 
 # MLC type for PicketFence analysis:
@@ -50,19 +47,18 @@ LEAF_TYPE = ["Varian_120", "Varian_120HD", "Varian_80", "Elekta_80", "Elekta_160
 # Here starts the bottle server
 pf_app = Bottle()
 
-@pf_app.route(PLWEB_FOLDER + '/picket_fence', method="POST")
+@pf_app.route('/picket_fence', method="POST")
 def picket_fence():
 
     displayname = request.forms.hidden_displayname
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     try:
         variables = general_functions.Read_from_dcm_database()
         variables["displayname"] = displayname
     except ConnectionError:
-        return template("error_template", {"error_message": "Orthanc is refusing connection.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Orthanc is refusing connection."})
     variables["LEAF_TYPE"] = LEAF_TYPE
     response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
     return template("picket_fence", variables)
@@ -71,8 +67,7 @@ def picket_fence_helperf_catch_error(args):
     try:
         return picket_fence_helperf(args)
     except Exception as e:
-        return template("error_template", {"error_message": str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": str(e)})
 
 def picket_fence_helperf(args):
     '''This function is used in order to prevent memory problems'''
@@ -130,8 +125,7 @@ def picket_fence_helperf(args):
     try:
         pf = PicketFence(file_path, filter=py_filter)
     except Exception as e:
-        return template("error_template", {"error_message": "Module PicketFence cannot calculate. "+str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Module PicketFence cannot calculate. "+str(e)})
 
     # Here we force pixels to background outside of box:
     if clip_box != 0:
@@ -139,14 +133,14 @@ def picket_fence_helperf(args):
             pf.image.check_inversion_by_histogram(percentiles=[4, 50, 96]) # Check inversion otherwise this might not work
             general_functions.clip_around_image(pf.image, clip_box)
         except Exception as e:
-            return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e), "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "Unable to apply clipbox. "+str(e)})
 
     # Now invert if needed
     if invert:
         try:
             pf.image.invert()
         except Exception as e:
-            return template("error_template", {"error_message": "Unable to invert the image. "+str(e), "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "Unable to invert the image. "+str(e)})
     
     # Now analyze
     try:
@@ -158,7 +152,7 @@ def picket_fence_helperf(args):
             pf.analyze(tolerance=tolerance, action_tolerance=action_tol, mlc_type=mlc, sag_adjustment=float(sag), num_pickets=num_pickets,
                        orientation=orientation)
     except Exception as e:
-        return template("error_template", {"error_message": "Picket fence module cannot analyze. "+str(e), "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Picket fence module cannot analyze. "+str(e)})
         
     # Added an if clause to tell if num of mlc's are not the same on all pickets:
 
@@ -168,8 +162,7 @@ def picket_fence_helperf(args):
             return template("error_template", {"error_message": "Not all pickets have the same number of leaves. "+
                                                "Probably your image si too skewed. Rotate your collimator a bit "+
                                                "and try again. Use the jaws perpendicular to MLCs to set the right "+
-                                               "collimator angle.",
-                                               "plweb_folder": PLWEB_FOLDER})
+                                               "collimator angle."})
     error_array = np.array([])
     max_error = []
     max_error_leaf = []
@@ -353,7 +346,6 @@ def picket_fence_helperf(args):
     variables = {
                  "script": script,
                  "script2": script2,
-                 "plweb_folder": PLWEB_FOLDER,
                  "passed": passed,
                  "max_error": max_error,
                  "max_error_leaf": max_error_leaf,
@@ -399,7 +391,7 @@ def picket_fence_helperf(args):
     general_functions.delete_files_in_subfolders([temp_folder]) # Delete image
     return template("picket_fence_results", variables)
 
-@pf_app.route(PLWEB_FOLDER + '/picket_fence_calculate/<w>', method="POST")
+@pf_app.route('/picket_fence_calculate/<w>', method="POST")
 def picket_fence_calculate(w):
     # w is the image, m is the mlc type
     

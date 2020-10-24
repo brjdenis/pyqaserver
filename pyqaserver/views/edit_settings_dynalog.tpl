@@ -36,7 +36,7 @@
 						document.getElementById("update_error").innerHTML = temp;
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/dynalog_start_batch_analysis", true);
+				xmlhttp.open("POST", "/dynalog_start_batch_analysis", true);
 				xmlhttp.send();
 		}
 
@@ -56,7 +56,7 @@
 						$('#progress_bar').css("width", temp["current_file"] + "%");
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/get_dynalog_analysis_status", true);
+				xmlhttp.open("POST", "/get_dynalog_analysis_status", true);
 				xmlhttp.send();
 		}
 

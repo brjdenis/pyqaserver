@@ -43,38 +43,33 @@ BOKEH_TABLES_JS = config.BOKEH_TABLES_JS
 D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 PI = np.pi
 
 # Here starts the bottle server
 imgreview_app = Bottle()
 
-@imgreview_app.route(PLWEB_FOLDER + '/image_review', method="POST")
+@imgreview_app.route('/image_review', method="POST")
 def image_review():
 
     colormaps = ["Greys", "gray", "brg", "prism"]
     displayname = request.forms.hidden_displayname
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     try:
         variables = general_functions.Read_from_dcm_database()
         variables["colormaps"] = colormaps
         variables["displayname"] = displayname
         response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
     except ConnectionError:
-        return template("error_template", {"error_message": "Orthanc is refusing connection.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Orthanc is refusing connection."})
     return template("image_review", variables)
 
 def image_review_helperf_catch_error(args):
     try:
         return image_review_helperf(args)
     except Exception as e:
-        return template("error_template", {"error_message": str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": str(e)})
     
     
 def image_review_helperf(args):
@@ -94,8 +89,7 @@ def image_review_helperf(args):
             img.array = (img.array - int(img.metadata.RescaleIntercept)) / int(img.metadata.RescaleSlope)
         img_array = np.flipud(img.array)
     except:
-        return template("error_template", {"error_message": "Cannot read image.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot read image."})
     size_x = img_array.shape[1]
     size_y = img_array.shape[0]
     img_min = np.min(img_array)
@@ -329,7 +323,7 @@ def image_review_helperf(args):
     general_functions.delete_files_in_subfolders([temp_folder]) # Delete image
     return template("image_review_results", variables)
 
-@imgreview_app.route(PLWEB_FOLDER + '/image_review_calculate/<w>', method="POST")
+@imgreview_app.route('/image_review_calculate/<w>', method="POST")
 def image_review_calculate(w):
     #Function that returns the profiles of the image
     # w is the image

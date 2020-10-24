@@ -37,9 +37,6 @@ TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
 D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 PI = np.pi
 
 # MLC type for PicketFence analysis:
@@ -48,19 +45,18 @@ LEAF_TYPE = ["Varian_120", "Varian_120HD", "Varian_80", "Elekta_80", "Elekta_160
 # Here starts the bottle server
 vmat_app = Bottle()
 
-@vmat_app.route(PLWEB_FOLDER + '/vvmat', method="POST")
+@vmat_app.route('/vvmat', method="POST")
 def vvmat():
     displayname = request.forms.hidden_displayname
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     try:
         variables = general_functions.Read_from_dcm_database()
         variables["displayname"] = displayname
         response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
     except ConnectionError:
-        return template("error_template", {"error_message": "Orthanc is refusing connection.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Orthanc is refusing connection."})
     return template("vvmat", variables)
 
 
@@ -68,8 +64,7 @@ def vmat_helperf_catch_error(args):
     try:
         return vmat_helperf(args)
     except Exception as e:
-        return template("error_template", {"error_message": str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": str(e)})
 
 
 def vmat_helperf(args):
@@ -105,13 +100,12 @@ def vmat_helperf(args):
 
     if w1==w2:
         return template("error_template", {"error_message": "Selected images must not be equal. One image should be an open field,"\
-                                           " the other DRGS or DRMLC.", "plweb_folder": PLWEB_FOLDER})
+                                           " the other DRGS or DRMLC."})
     try:
         temp_folder1, file_path1 = RestToolbox.GetSingleDcm(config.ORTHANC_URL, w1)
         temp_folder2, file_path2 = RestToolbox.GetSingleDcm(config.ORTHANC_URL, w2)
     except:
-        return template("error_template", {"error_message": "Cannot read images.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot read images."})
 
     try:
         if testtype == "DRGS":
@@ -120,8 +114,7 @@ def vmat_helperf(args):
             myvmat = DRMLC(image_paths=(file_path1, file_path2))
         myvmat.analyze(tolerance=tolerance)
     except Exception as e:
-        return template("error_template", {"error_message": "Cannot analyze images. "+str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Cannot analyze images. "+str(e)})
 
     fig1 = Figure(figsize=(10.5, 5), tight_layout={"w_pad":3,  "pad": 3})
     ax1 = fig1.add_subplot(1,2,1)
@@ -174,7 +167,6 @@ def vmat_helperf(args):
                 "test_passed": test_passed,
                 "save_results": save_results,
                 "pdf_report_enable": pdf_report_enable,
-                "plweb_folder": PLWEB_FOLDER,
                 "acquisition_datetime": acquisition_datetime
                 }
     # Generate pylinac report:
@@ -186,7 +178,7 @@ def vmat_helperf(args):
     general_functions.delete_files_in_subfolders([temp_folder1, temp_folder2]) # Delete image
     return template("vmat_results", variables)
 
-@vmat_app.route(PLWEB_FOLDER + '/vvmat/<w1>/<w2>/<testtype>', method="POST")
+@vmat_app.route('/vvmat/<w1>/<w2>/<testtype>', method="POST")
 def vvmat_calculate(w1, w2, testtype):
     imgdescription = request.forms.hidden_imgdescription
     station = request.forms.hidden_station

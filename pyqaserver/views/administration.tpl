@@ -34,59 +34,59 @@
 		}
 
 		function edit_users(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_users";
+			document.getElementById("send_calc").action = "/edit_users";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_orthanc(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_orthanc";
+			document.getElementById("send_calc").action = "/edit_orthanc";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_institution(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_institution";
+			document.getElementById("send_calc").action = "/edit_institution";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_settings_winstonlutz(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_settings_winstonlutz";
+			document.getElementById("send_calc").action = "/edit_settings_winstonlutz";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_settings_starshot(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_settings_starshot";
+			document.getElementById("send_calc").action = "/edit_settings_starshot";
 			document.getElementById("send_calc").submit();
 		}
 		function machine_mapping(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_machine_mapping";
+			document.getElementById("send_calc").action = "/edit_machine_mapping";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_picketfence(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_settings_picketfence";
+			document.getElementById("send_calc").action = "/edit_settings_picketfence";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_planarimaging(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_settings_planarimaging";
+			document.getElementById("send_calc").action = "/edit_settings_planarimaging";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_catphan(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_settings_catphan";
+			document.getElementById("send_calc").action = "/edit_settings_catphan";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_flatsym(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_settings_flatsym";
+			document.getElementById("send_calc").action = "/edit_settings_flatsym";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_vmat(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_settings_vmat";
+			document.getElementById("send_calc").action = "/edit_settings_vmat";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_fieldsize(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_settings_fieldsize";
+			document.getElementById("send_calc").action = "/edit_settings_fieldsize";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_fieldrotation(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_settings_fieldrotation";
+			document.getElementById("send_calc").action = "/edit_settings_fieldrotation";
 			document.getElementById("send_calc").submit();
 		}
 		function edit_settings_dynalog(){
-			document.getElementById("send_calc").action = "{{plweb_folder}}/edit_settings_dynalog";
+			document.getElementById("send_calc").action = "/edit_settings_dynalog";
 			document.getElementById("send_calc").submit();
 		}
 

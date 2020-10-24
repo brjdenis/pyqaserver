@@ -363,7 +363,7 @@
                         
                     }
                 }
-                xmlhttp.open("POST", "{{plweb_folder}}/save_fieldsize", true);
+                xmlhttp.open("POST", "/save_fieldsize", true);
                 xmlhttp.send(formData);
                 document.getElementById("save_button").disabled = true;
                 document.getElementById("save_error").innerHTML = "Working on it ... ";

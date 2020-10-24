@@ -43,22 +43,19 @@ TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
 D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
-# Working directory
-PLWEB_FOLDER = config.PLWEB_FOLDER
-
 PI = np.pi
 
 # Here starts the bottle server
 wl_app = Bottle()
 
 
-@wl_app.route(PLWEB_FOLDER + '/winston_lutz', method="POST")
+@wl_app.route('/winston_lutz', method="POST")
 def winston_lutz():
     colormaps = ["Greys", "gray", "brg", "prism"]
     displayname = request.forms.hidden_displayname
     username = request.get_cookie("account", secret=config.SECRET_KEY)
     if not username:
-        redirect(PLWEB_FOLDER + "/login")
+        redirect("/login")
     #colormaps = matplotlib.pyplot.colormaps()
     try:
         variables = general_functions.Read_from_dcm_database()
@@ -67,8 +64,7 @@ def winston_lutz():
         response.set_cookie("account", username, secret=config.SECRET_KEY, samesite="lax")
         return template("winston_lutz", variables)
     except ConnectionError:
-        return template("error_template", {"error_message": "Orthanc is refusing connection.",
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "Orthanc is refusing connection."})
 
 def winstonlutz_default_calculation_helperf(path):
     try:
@@ -82,8 +78,7 @@ def winstonlutz_helperf_catch_error(args):
     try:
         return winstonlutz_helperf(args)
     except Exception as e:
-        return template("error_template", {"error_message": str(e),
-                                           "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": str(e)})
 
 def winstonlutz_helperf(args):
     # This function is used to calculated results for the winstonlutz module
@@ -150,8 +145,7 @@ def winstonlutz_helperf(args):
             wl = WinstonLutz(folder_path, use_filenames=use_filenames)
         except Exception as e:
             general_functions.delete_files_in_subfolders([folder_path])
-            return template("error_template", {"error_message": "Module WinstonLutz cannot calculate. "+str(e),
-                                               "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "Module WinstonLutz cannot calculate. "+str(e)})
 
         pdf_file = tempfile.NamedTemporaryFile(delete=False, prefix="pylinac_", suffix=".pdf", dir=config.PDF_REPORT_FOLDER)
         try:
@@ -420,7 +414,6 @@ def winstonlutz_helperf(args):
                      "institution": config.INSTITUTION,
                      "acquisition_datetime": acquisition_datetime,
                      "pdf_report_filename": os.path.basename(pdf_file.name),
-                     "plweb_folder": PLWEB_FOLDER,
                      "axis_images": axis_images,
                      "max_deviation": round(np.max(radius), 2),
                      "radius": radius,
@@ -452,8 +445,7 @@ def winstonlutz_helperf(args):
                      "Coll2DisoSize": wl.collimator_iso_size,
                      "MaxCollRMS": max(wl.axis_rms_deviation("Collimator")),
                      "Couch2DisoDia": wl.couch_iso_size,
-                     "MaxCouchRMS": max(wl.axis_rms_deviation("Couch")),
-                     "plweb_folder": PLWEB_FOLDER
+                     "MaxCouchRMS": max(wl.axis_rms_deviation("Couch"))
                      }
 
         return template("winston_lutz_pylinac_results", variables)
@@ -491,8 +483,8 @@ def winstonlutz_helperf(args):
         for pp in range(0, N, 1):
             if isinstance(image_list[pp], Exception):
                 general_functions.delete_files_in_subfolders(file_paths) # Delete temporary images (all subfolders)
-                return template("error_template", {"error_message": "Unable to analyze image " + str(pp) +". " + str(image_list[pp]),
-                                                   "plweb_folder": PLWEB_FOLDER})
+                return template("error_template", {"error_message": "Unable to analyze image " + str(pp) +". " + str(image_list[pp])
+                                                   })
         try:  # Add this to prevent memory add-up because of nonkilled threads
             # Draw matrix of each image
             fig_wl = Figure(figsize=(8, 4*rows))
@@ -547,8 +539,7 @@ def winstonlutz_helperf(args):
         
         except Exception as e:
             general_functions.delete_files_in_subfolders(file_paths) # Delete temporary images (all subfolders)
-            return template("error_template", {"error_message": "Unable to plot images. " + str(e),
-                                               "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "Unable to plot images. " + str(e)})
         
         try:
             if use_couch==False:
@@ -693,8 +684,7 @@ def winstonlutz_helperf(args):
                              "beam_dev_tol": beam_dev_tol,
                              "SIDs": list(set(SIDs)),
                              "apply_tolerance_to_coll_asym": apply_tolerance_to_coll_asym,
-                             "save_results": save_results,
-                             "plweb_folder": PLWEB_FOLDER
+                             "save_results": save_results
                              }
 
                 return template("winston_lutz_results", variables)
@@ -869,8 +859,7 @@ def winstonlutz_helperf(args):
                                  "couch_wobble": R_2,
                                  "couch_iso_dev_x": couch_iso_dev_x,
                                  "couch_iso_dev_y": couch_iso_dev_y,
-                                 "save_results": save_results,
-                                 "plweb_folder": PLWEB_FOLDER
+                                 "save_results": save_results
                                  }
                     #gc.collect() # Collect and delete mpl plots
 
@@ -964,8 +953,7 @@ def winstonlutz_helperf(args):
                                  "iso_position": center_2,
                                  "image_numbers": img_numbers,
                                  "SIDs": list(set(SIDs)),
-                                 "save_results": save_results,
-                                 "plweb_folder": PLWEB_FOLDER
+                                 "save_results": save_results
                                  }
 
                     return template("winston_lutz_results_couchonly", variables)
@@ -1050,19 +1038,17 @@ def winstonlutz_helperf(args):
                                  "iso_position": center_2,
                                  "image_numbers": img_numbers,
                                  "SIDs": list(set(SIDs)),
-                                 "save_results": save_results,
-                                 "plweb_folder": PLWEB_FOLDER
+                                 "save_results": save_results
                                  }
 
                     return template("winston_lutz_results_collimatoronly", variables)
 
         except Exception as w:
             general_functions.delete_files_in_subfolders(file_paths) # Delete temporary images (all subfolders)
-            return template("error_template", {"error_message": "Unable to plot images. " + str(w),
-                                               "plweb_folder": PLWEB_FOLDER})
+            return template("error_template", {"error_message": "Unable to plot images. " + str(w)})
 
 
-@wl_app.route(PLWEB_FOLDER + '/winston_lutz_calculate/<w>/<c>/<p>', method="POST")
+@wl_app.route('/winston_lutz_calculate/<w>/<c>/<p>', method="POST")
 def winston_lutz_calculate(w, c, p):
     # Function that analyzes the images and sends results to the interface
     # p is for pylinac's analysis
@@ -1083,19 +1069,19 @@ def winston_lutz_calculate(w, c, p):
     imglist = json.loads(request.forms.get("useimglist"))  # True/False -should the image be in the series?
 
     if not any(imglist):
-        return template("error_template", {"error_message": "All images are unchecked.", "plweb_folder": PLWEB_FOLDER})
+        return template("error_template", {"error_message": "All images are unchecked."})
 
     if (sum(imglist)< 11) and (use_couch==True) and (test_type=="Gnt/coll + couch rotation"):
         return template("error_template", {"error_message": "At least 8 + 3 images are required to determine \
-                                           linac isocenter and couch axis of rotation.", "plweb_folder": PLWEB_FOLDER})
+                                           linac isocenter and couch axis of rotation."})
 
     if (sum(imglist)< 3) and (use_couch==True) and (test_type=="Couch only"):
         return template("error_template", {"error_message": "At least 3 images are required to determine \
-                                            couch axis of rotation.", "plweb_folder": PLWEB_FOLDER})
+                                            couch axis of rotation."})
 
     if (sum(imglist)< 3) and (use_couch==True) and (test_type=="Collimator only"):
         return template("error_template", {"error_message": "At least 3 images are required to determine \
-                                            collimator axis of rotation.", "plweb_folder": PLWEB_FOLDER})
+                                            collimator axis of rotation."})
     if p == "True": # if pylinac is chosen
         pylinac_angles_full = json.loads(request.forms.get("pylinacangles"))
         pylinac_angles_full = [int(float(x)) if x!="" else None for x in pylinac_angles_full]
@@ -1111,7 +1097,7 @@ def winston_lutz_calculate(w, c, p):
         # IF user entered values for gantry/couch/coll angles change file names:
         if pylinac_angles_full.count(None) == 0:
             if len(pylinac_angles) != len(file_paths):
-                return template("error_template", {"error_message": "The number of angles does not match the number of images.", "plweb_folder": PLWEB_FOLDER})
+                return template("error_template", {"error_message": "The number of angles does not match the number of images."})
             
             # Add coll/gantry/couch angles to the file name
             for z in range(0, len(file_paths)):
@@ -1131,7 +1117,7 @@ def winston_lutz_calculate(w, c, p):
                     general_functions.clip_around_image(orig_img, clip_box)
                     orig_img.save(filename)
                 except:
-                    return template("error_template", {"error_message": "Unable to apply clipbox.", "plweb_folder": PLWEB_FOLDER})
+                    return template("error_template", {"error_message": "Unable to apply clipbox."})
     else:
         pylinac_angles_full = []
         folder_path = []
@@ -1157,7 +1143,7 @@ def winston_lutz_calculate(w, c, p):
                         general_functions.clip_around_image(orig_img, clip_box)
                         orig_img.save(os.path.join(subfolder, filename))
                     except:
-                        return template("error_template", {"error_message": "Unable to apply clipbox.", "plweb_folder": PLWEB_FOLDER})
+                        return template("error_template", {"error_message": "Unable to apply clipbox."})
 
     args = {"colormap": colormap,
             "clip_box": clip_box,
@@ -1185,7 +1171,7 @@ def winston_lutz_calculate(w, c, p):
     pool.join()
     return data
 
-@wl_app.route(PLWEB_FOLDER + '/winstonlutz_pdf_export', method="post")
+@wl_app.route('/winstonlutz_pdf_export', method="post")
 def winstonlutz_pdf_export():
     # Send the pdf file to the user
     pdf_file = str(request.forms.get("hidden_wl_pdf_report"))

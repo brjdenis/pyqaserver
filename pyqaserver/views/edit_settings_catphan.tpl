@@ -47,11 +47,11 @@
 			        {title:"GENERATE_PDF_REPORT", field:"GENERATE_PDF_REPORT"}
 			    ],
 			    layout:"fitData", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_tolerance_catphan", //ajax URL
+			    ajaxURL:"/get_tolerance_catphan", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
-			//table.setData("{{plweb_folder}}/get_user_data", {}, "post");
+			//table.setData("/get_user_data", {}, "post");
 
 		}
 
@@ -66,11 +66,11 @@
 			        {title:"Path", field:"Path"}
 			    ],
 			    layout:"fitData", //fit columns to width of table (optional)
-			    ajaxURL:"{{plweb_folder}}/get_referenceimages_catphan", //ajax URL
+			    ajaxURL:"/get_referenceimages_catphan", //ajax URL
 			    ajaxParams:{}, //ajax parameters
 			    ajaxConfig:"post", //ajax HTTP request type
 			});
-			//table.setData("{{plweb_folder}}/get_user_data", {}, "post");
+			//table.setData("/get_user_data", {}, "post");
 
 		}
 
@@ -116,7 +116,7 @@
 						tolerance_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/add_tolerance_catphan", true);
+				xmlhttp.open("POST", "/add_tolerance_catphan", true);
 				xmlhttp.send(formData);
 		}
 		function remove_tolerance(){
@@ -137,7 +137,7 @@
 						tolerance_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/remove_tolerance_catphan", true);
+				xmlhttp.open("POST", "/remove_tolerance_catphan", true);
 				xmlhttp.send(formData);
 		}
 
@@ -165,7 +165,7 @@
 						referenceimages_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/add_referenceimage_catphan", true);
+				xmlhttp.open("POST", "/add_referenceimage_catphan", true);
 				xmlhttp.send(formData);
 				document.getElementById("ref_add_error").innerHTML = "Working on it ... ";
 		}
@@ -187,7 +187,7 @@
 						referenceimages_table();
 					}
 				}
-				xmlhttp.open("POST", "{{plweb_folder}}/remove_referenceimage_catphan", true);
+				xmlhttp.open("POST", "/remove_referenceimage_catphan", true);
 				xmlhttp.send(formData);
 		}
 	
