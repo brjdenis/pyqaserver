@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.style
 import matplotlib
 matplotlib.use('Agg')
+from matplotlib.figure import Figure
 
 # To revert back to matplotlib 1.0 style
 matplotlib.style.use('classic')
@@ -81,6 +82,7 @@ def planar_imaging_start():
 
 
 def planar_imaging_helperf_catch_error(args):
+    return planar_imaging_helperf(args)
     try:
         return planar_imaging_helperf(args)
     except Exception as e:
@@ -191,7 +193,7 @@ def planar_imaging_helperf(args):
                     "displayname": displayname
                     }
 
-    fig = matplotlib.figure(figsize=(10.5, 5), tight_layout={"w_pad":0,  "pad": 1.5})
+    fig = Figure(figsize=(10.5, 5), tight_layout={"w_pad":0,  "pad": 1.5})
     ax_ref = fig.add_subplot(1,2,1)
     ax_pi = fig.add_subplot(1,2,2)
 
@@ -355,7 +357,7 @@ def planar_imaging_helperf(args):
         outline_obj_ref1.plot2axes(ax_ref, edgecolor='g', **settings_ref1)
     
     # Plot low frequency contrast, CNR and rMTF
-    fig2 = matplotlib.figure(figsize=(10.5, 10), tight_layout={"w_pad":1})
+    fig2 = Figure(figsize=(10.5, 10), tight_layout={"w_pad":1})
     ax_lfc = fig2.add_subplot(2,2,1)
     ax_lfcnr = fig2.add_subplot(2,2,2)
     ax_rmtf = fig2.add_subplot(2,2,3)
