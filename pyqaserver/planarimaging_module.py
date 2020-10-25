@@ -82,7 +82,6 @@ def planar_imaging_start():
 
 
 def planar_imaging_helperf_catch_error(args):
-    return planar_imaging_helperf(args)
     try:
         return planar_imaging_helperf(args)
     except Exception as e:
