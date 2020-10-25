@@ -34,6 +34,7 @@ def get_configuration():
             config.INSTITUTION,
             config.SECRET_KEY,
             config.REFERENCE_IMAGES_FOLDER,
+            config.REFERENCE_IMAGES_FOLDER_NAME,
             config.WORKING_DIRECTORY,
             config.GENERAL_DATABASE,
             config.TRENDS_DATABASE,
@@ -59,6 +60,7 @@ def set_configuration(cfg):
     config.INSTITUTION,
     config.SECRET_KEY,
     config.REFERENCE_IMAGES_FOLDER,
+    config.REFERENCE_IMAGES_FOLDER_NAME,
     config.WORKING_DIRECTORY,
     config.GENERAL_DATABASE,
     config.TRENDS_DATABASE,
@@ -107,6 +109,7 @@ def can_delete(user_id):
 
 def get_one_user(username):
     conn = sql.connect(config.GENERAL_DATABASE)
+    conn.row_factory = sql.Row
     curs = conn.cursor()
     curs.execute("SELECT Name, Password, Admin, DisplayName FROM Users WHERE Name = ?", (username, ))
     data = curs.fetchone()

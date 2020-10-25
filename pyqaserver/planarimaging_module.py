@@ -124,7 +124,7 @@ def planar_imaging_helperf(args):
     ref_path1 = general_functions.get_referenceimagepath_planarimaging(machine, beam, phantom)
 
     if ref_path1 is not None:
-        ref_path1 = os.path.join(config.WORKING_DIRECTORY, config.REFERENCE_IMAGES_FOLDER, ref_path1[0])
+        ref_path1 = os.path.join(config.REFERENCE_IMAGES_FOLDER, ref_path1[0])
         if os.path.exists(ref_path1):
             ref1_exists = True
         else:

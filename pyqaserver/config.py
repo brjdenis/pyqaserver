@@ -15,11 +15,12 @@ BOKEH_WIDGETS_JS = "/bokeh/js/bokeh-widgets-2.2.1.min.js"
 BOKEH_TABLES_CSS = "/bokeh/css/bokeh-tables-2.2.1.min.css"
 BOKEH_TABLES_JS = "/bokeh/js/bokeh-tables-2.2.1.min.js"
 
-# Generate secret key for cookies:
+# Generate secret key for cookies and dynalog send_post function:
 SECRET_KEY = base64.b64encode(os.urandom(12).hex().encode())
 
 # Name of the folder with reference images
-REFERENCE_IMAGES_FOLDER = "reference_images"
+REFERENCE_IMAGES_FOLDER_NAME = "reference_images"
+REFERENCE_IMAGES_FOLDER = ""
 
 # Database directory (passed in by user!):
 WORKING_DIRECTORY = ""
@@ -50,7 +51,7 @@ DYNALOG_DATABASE = ""
 DYNALOG_ARCHIVE_FOLDER_NAME = "ARCHIVE"
 DYNALOG_ARCHIVE = ""
 DYNALOG_FAILED_FOLDER_NAME = "dynalogs_with_errors"
-DYNALOG_FAILED  = ""
+DYNALOG_FAILED = ""
 DYNALOG_CONFIG_NAME = "dynalog_config.ini"
 DYNALOG_CONFIG = ""
 DYNALOG_SEND_POST_NAME = "dynalog_send_post_request.py"

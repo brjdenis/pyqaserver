@@ -283,7 +283,7 @@ The *dynalog_config.ini* must be configured before pyqaserver is started. Here a
 
 Dynalogs - Setting up scheduled analysis
 --------------------------------------------------
-Open "dynalog_send_post_request.py" and edit the line
+Open "dynalog_send_post_request.py" and edit the *http* variable
 
 ``http://localhost/dynalog_start_batch_analysis``
 

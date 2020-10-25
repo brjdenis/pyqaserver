@@ -167,7 +167,7 @@ def catphan_calculate_helperf(args):
     ref_path = general_functions.get_referenceimagepath_catphan(machine, beam, phantom)
 
     if ref_path is not None:
-        ref_path = os.path.join(config.WORKING_DIRECTORY, config.REFERENCE_IMAGES_FOLDER, ref_path[0])
+        ref_path = os.path.join(config.REFERENCE_IMAGES_FOLDER, ref_path[0])
         if os.path.exists(ref_path):
             ref_exists = True
         else:

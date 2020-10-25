@@ -517,7 +517,7 @@ def add_referenceimage_planarimaging():
     orthanc_instance = request.forms.Instance
     
     new_name = os.path.join(phantom, machine, beam)
-    new_path = os.path.join(config.WORKING_DIRECTORY, config.REFERENCE_IMAGES_FOLDER, new_name)
+    new_path = os.path.join(config.REFERENCE_IMAGES_FOLDER, new_name)
     
     # If the sql database already references machine/beam/phantom, then do nothing.
     if general_functions.has_referenceimages_planarimaging(machine, beam, phantom)[0]==1:
@@ -646,7 +646,7 @@ def add_referenceimage_catphan():
     
     new_name = os.path.join(phantom, machine, beam)
     new_folder_name = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
-    new_path = os.path.join(config.WORKING_DIRECTORY, config.REFERENCE_IMAGES_FOLDER, new_name, new_folder_name)
+    new_path = os.path.join(config.REFERENCE_IMAGES_FOLDER, new_name, new_folder_name)
     
     # If the sql database already references machine/beam/phantom, then do nothing.
     if general_functions.has_referenceimages_catphan(machine, beam, phantom)[0]==1:
