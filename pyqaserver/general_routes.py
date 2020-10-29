@@ -7,7 +7,7 @@ import base64
 
 parent_module = sys.modules['.'.join(__name__.split('.')[:-1]) or '__main__']
 if __name__ == '__main__' or parent_module.__name__ == '__main__':
-    #sys.path.append(os.path.abspath(os.path.realpath("python_packages")))
+    # sys.path.append(os.path.abspath(os.path.realpath("python_packages")))
     import config
     import RestToolbox_modified as RestToolbox
     from python_packages.bottlepy.bottle import Bottle, static_file
@@ -22,56 +22,32 @@ CUR_DIR = os.path.realpath(os.path.dirname(__file__))
 CUR_DIR_STATIC = os.path.join(CUR_DIR, "static")
 CUR_DIR_STATIC_DOCS = os.path.join(CUR_DIR_STATIC, "docs")
 
-@app_general.get('/<filename:re:.*\.(css)>')
-def stylesheets(filename):
-    # Serve css files
-    return static_file(filename, root=CUR_DIR_STATIC)
 
-@app_general.get('/<filename:re:.*\.(map)>')
-def stylesheets_map(filename):
-    # Serve css files
-    return static_file(filename, root=CUR_DIR_STATIC)
-
-@app_general.get('/<filename:re:.*\.(ttf)>')
-def font_bootstrap(filename):
-    # Serve font files
-    return static_file(filename, root=CUR_DIR_STATIC)
-
-@app_general.get('/<filename:re:.*\.(woff)>')
-def font_bootstrap_woff(filename):
-    # Serve font files
-    return static_file(filename, root=CUR_DIR_STATIC)
-
-@app_general.get('/<filename:re:.*\.(woff2)>')
-def font_bootstrap_woff2(filename):
-    # Serve font files
-    return static_file(filename, root=CUR_DIR_STATIC)
-
-@app_general.get('/<filename:re:.*\.(js)>')
-def javascript(filename):
-    # Serve js files
-    return static_file(filename, root=CUR_DIR_STATIC)
-
+@app_general.get('/<filename:re:.*\.(png)>')
 @app_general.get('/<filename:re:.*\.(html)>')
-def html(filename):
-    # Serve html files
+@app_general.get('/<filename:re:.*\.(js)>')
+@app_general.get('/<filename:re:.*\.(woff2)>')
+@app_general.get('/<filename:re:.*\.(woff)>')
+@app_general.get('/<filename:re:.*\.(ttf)>')
+@app_general.get('/<filename:re:.*\.(map)>')
+@app_general.get('/<filename:re:.*\.(css)>')
+def misc_file(filename):
     return static_file(filename, root=CUR_DIR_STATIC)
+
 
 @app_general.get('/docs/<filepath:path>')
 def server_sphinx(filepath):
-    # Serve sphinx
     return static_file(filepath, root=CUR_DIR_STATIC_DOCS)
 
-@app_general.get('/<filename:re:.*\.(png)>')
-def png(filename):
-    # Serve png files
-    return static_file(filename, root=CUR_DIR_STATIC)
 
-@app_general.route('/searchStudies/<s>', method="POST")
-def livesearch_study(s):
-    if s != "FirstLineEmptyLineFromJavascriptPatient":
+# \\TODO: The following methods must be optimized
+
+
+@app_general.route('/searchStudies/<series>', method="POST")
+def livesearch_study(series):
+    if series != "FirstLineEmptyLineFromJavascriptPatient":
         # Function to get studies and return them to the interface
-        data = RestToolbox.GetPatientData(config.ORTHANC_URL, [s])
+        data = RestToolbox.GetPatientData(config.ORTHANC_URL, [series])
         studies = data[0]["Studies"]
         data_s = RestToolbox.GetStudies(config.ORTHANC_URL, studies)
         study_names = []

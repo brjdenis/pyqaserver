@@ -9,3 +9,5 @@ __pycache__/
 *.pyc
 
 #Files to ignore
+/TODO LIST.txt
+/.pylintrc

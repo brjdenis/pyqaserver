@@ -1113,11 +1113,9 @@ def delete_files_in_subfolders(file_paths):
 
 def Read_from_dcm_database():
     # Function that reads from the orthanc database and gives a list of patients.
-    try:
-        p = RestToolbox.GetPatientIds(config.ORTHANC_URL)
-        data = RestToolbox.GetPatientData(config.ORTHANC_URL, p)
-    except:
-        raise ConnectionError
+
+    p = RestToolbox.GetPatientIds(config.ORTHANC_URL)
+    data = RestToolbox.GetPatientData(config.ORTHANC_URL, p)
 
     names = []
     IDs = []

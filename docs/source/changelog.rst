@@ -4,6 +4,18 @@
 Changelog
 #########
 
+
+***************
+Version 2.1.0
+***************
+
+Bug fixes
+==========
+
+* (Planar imaging) `#8 <https://github.com/brjdenis/pyqaserver/issues/8>`_ Reference image analysis did not work.
+* (Catphan) `#9 <https://github.com/brjdenis/pyqaserver/issues/9>`_ Unable to save results to the database because of an error in the passing of variable to html.
+
+
 ***************
 Version 2.0.0
 ***************

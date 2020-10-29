@@ -440,7 +440,7 @@
 				var trace = {
 							  x: x,
 							  y: y,
-							  type: 'scattergl',
+							  //type: 'scattergl',
 							  mode: 'lines+markers',
 							  showlegend: true,
 							  text: comment,

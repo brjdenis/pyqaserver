@@ -685,7 +685,7 @@
                              "UniformityIndex": "{{uidx}}",
                              "UniformityAbsoluteValue": "{{sum(hvalues)/len(hvalues)}}"
                             };
-            
+
             % if save_results["phantom"] == "Catphan 604":
                 json_data["Bone50_HU"] = HU_CNR_values_dict['50% Bone'][0];
                 json_data["Bone20_HU"] = HU_CNR_values_dict['20% Bone'][0];

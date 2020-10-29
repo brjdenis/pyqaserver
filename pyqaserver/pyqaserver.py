@@ -4,7 +4,6 @@ import re
 import sqlite3 as sql
 import random
 import configparser
-import collections
 
 parent_module = sys.modules['.'.join(__name__.split('.')[:-1]) or '__main__']
 if __name__ == '__main__' or parent_module.__name__ == '__main__':
@@ -318,15 +317,12 @@ def main():
             error_message="Cause unknown."
         )
 
+    @app.route('')
     @app.route('/')
     @app.route('/qaserver')  # legacy
     @app.route('/qaserver/')  # legacy
     @app.route('/qaserver/login')  # legacy
     def redirect_to_login():
-        redirect("/login")
-
-    @app.route("")
-    def redirect_to_login2():
         redirect("/login")
 
     @app.route("/login")
@@ -408,7 +404,15 @@ def main():
     app.merge(trends_app)
 
     ip, port = sys.argv[1].split(":")
-    bottle_run(app=app, server="waitress", host=ip, port=port, reloader=False, debug=False)
+
+    bottle_run(
+        app=app,
+        server="waitress",
+        host=ip,
+        port=port,
+        reloader=False,
+        debug=False
+    )
 
 
 if __name__ == '__main__':

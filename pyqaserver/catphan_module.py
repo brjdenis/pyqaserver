@@ -441,11 +441,10 @@ def catphan_calculate_helperf(args):
             HU_nominal.append(0)
             HU_names.append("Background "+str(key))
             cnrs404.append(np.nan)
-            HU_CNR_values_dict[key] = [value.pixel_value, np.nan] 
+            HU_CNR_values_dict[key] = [value.pixel_value, "nan"] 
         
         # For easier acces of values in results
         save_results["HU_CNR_values_dict"] = HU_CNR_values_dict
-        
         lcv = mycbct.ctp404.lcv
         slice_thickness = round(mycbct.ctp404.meas_slice_thickness, 2)
         phantom_roll = round(mycbct.ctp404.catphan_roll, 2)
