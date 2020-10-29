@@ -6,7 +6,7 @@ from multiprocessing import Pool
 from multiprocessing.pool import ThreadPool
 import numpy as np
 from scipy import optimize
-from pylinac import WinstonLutz as WinstonLutz
+from pylinac import WinstonLutz
 from pylinac.core import image as pylinacimage
 import matplotlib.style
 import matplotlib
@@ -96,7 +96,7 @@ def collect_data(images, usepylinac):
     }
 
 
-def plot_scatter_diagram(cax2bb, epid2cax, image_num, gantries, collimators,
+def plot_scatter_diagram(cax2bb, epid2cax, image_numbers, gantries, collimators,
                          couches, pass_rate, success_rate, show_epid_points):
 
     fig_focal = Figure(figsize=(7, 7))
@@ -104,12 +104,12 @@ def plot_scatter_diagram(cax2bb, epid2cax, image_num, gantries, collimators,
 
     cax2bb = np.asarray(cax2bb)
     epid2cax = np.asarray(epid2cax)
-    image_order = np.argsort([int(j)-1 for j in image_num])
-    N = len(image_num)
+    image_order = np.argsort([int(j)-1 for j in image_numbers])
+    N = len(image_numbers)
     labels = []
     for i in range(N):
         label = "img={}, G={:d}, B={:d}, P={:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm".format(
-            image_num[i],
+            image_numbers[i],
             int(gantries[i]),
             int(collimators[i]),
             int(couches[i]),
@@ -137,7 +137,7 @@ def plot_scatter_diagram(cax2bb, epid2cax, image_num, gantries, collimators,
         labels2 = []
         for i in range(N):
             label2 = "img={}, G={:d}, B={:d}, P={:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm".format(
-                image_num[i],
+                image_numbers[i],
                 int(gantries[i]),
                 int(collimators[i]),
                 int(couches[i]),
@@ -189,13 +189,10 @@ def plot_scatter_diagram(cax2bb, epid2cax, image_num, gantries, collimators,
     return fig_focal
 
 
-def determine_image_numbers(file_paths_names, images):
+def determine_image_numbers(file_paths_names, images, img_numbers):
     image_numbers = []
     for img in images:
-        try:
-            image_numbers.append(str(file_paths_names.index(img.file)+1))
-        except ValueError:
-            image_numbers.append("NA")
+        image_numbers.append(img_numbers[file_paths_names.index(img.file)])
     return image_numbers
 
 
@@ -216,7 +213,7 @@ def create_2D_figure(images, img_numbers, clipbox, zoom, usepylinac, cmap):
         array = img.array
 
         # Plot the array and the contour of the 50 percent isodose line
-        ax.imshow(array, cmap=cmap, interpolation="none",  origin='lower')
+        ax.imshow(array, cmap=cmap, interpolation="none", origin='lower')
         level = np.average(np.percentile(array, [5, 99.9]))
         ax.contour(array, levels=[level], colors=["blue"])  # CAX
 
@@ -275,7 +272,7 @@ def create_wobble_figure(wl):
             ax_wobble = fig_wobble.add_subplot(1, 3, n+1)
             img = images[0]
             array = img.array
-            ax_wobble.imshow(array, cmap=matplotlib.cm.Greys, interpolation="none",  origin='lower')
+            ax_wobble.imshow(array, cmap=matplotlib.cm.Greys, interpolation="none", origin='lower')
             ax_wobble.plot(img.bb.x, img.bb.y, 'r+', markersize=12, markeredgewidth=2, zorder=2)
             ax_wobble.plot(img.field_cax.x, img.field_cax.y, 'b+', markersize=12, markeredgewidth=2, zorder=2)
             ax_wobble.plot(img.epid.x, img.epid.y, 'yo', ms=5, markeredgewidth=0.0, zorder=1)
@@ -352,16 +349,15 @@ def winston_lutz():
 
 
 def winstonlutz_helperf(args):
-    clipbox = args["clipbox"]
+    folder_path = args["folder_path"]
     file_paths = args["file_paths"]
-    file_paths_full = args["file_paths_full"]
-    colormap = args["colormap"]
+    img_numbers = args["img_numbers"]
     usepylinac = args["usepylinac"]
     use_filenames = args["use_filenames"]
-    folder_path = args["folder_path"]
+    clipbox = args["clipbox"]
+    colormap = args["colormap"]
     zoom = args["zoom"]
     show_epid_points = args["show_epid_points"]
-    imglist = args["imglist"]
     test_type = args["test_type"]
     use_couch = args["use_couch"]
     station = args["station"]
@@ -392,17 +388,16 @@ def winstonlutz_helperf(args):
     couch_dist_tol = float(couch_dist_tol)
 
     save_results = {
-                    "user_machine": user_machine,
-                    "user_energy": user_energy,
-                    "machines_and_energies": machines_and_energies,
-                    "phantoms": general_functions.get_phantoms_wl(),
-                    "displayname": displayname
-                    }
+        "user_machine": user_machine,
+        "user_energy": user_energy,
+        "machines_and_energies": machines_and_energies,
+        "phantoms": general_functions.get_phantoms_wl(),
+        "displayname": displayname
+    }
 
     cmap = matplotlib.cm.get_cmap(colormap)
 
     if usepylinac:
-        file_paths_names = [os.path.basename(fp) for fp in file_paths_full]
         try:
             wl = WinstonLutz(folder_path, use_filenames=use_filenames)
         except Exception as e:
@@ -422,41 +417,42 @@ def winstonlutz_helperf(args):
         pdf_file.close()
 
         # Plot images
+        file_paths_names = [os.path.basename(fp) for fp in file_paths]
         axis_images = [None, None, None, None, None, None]
         if wl._contains_axis_images("Gantry"):
             images = [image for image in wl.images if image.variable_axis in ("Gantry", "Reference")]
-            image_numbers = determine_image_numbers(file_paths_names, images)
+            image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
             fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
             axis_images[0] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         if wl._contains_axis_images("Collimator"):
             images = [image for image in wl.images if image.variable_axis in ("Collimator", "Reference")]
-            image_numbers = determine_image_numbers(file_paths_names, images)
+            image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
             fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
             axis_images[1] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         if wl._contains_axis_images("Couch"):
             images = [image for image in wl.images if image.variable_axis in ("Couch", "Reference")]
-            image_numbers = determine_image_numbers(file_paths_names, images)
+            image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
             fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
             axis_images[2] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         if wl._contains_axis_images("GB Combo"):
             images = [image for image in wl.images if image.variable_axis in ("GB Combo", "Reference")]
-            image_numbers = determine_image_numbers(file_paths_names, images)
+            image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
             fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
             axis_images[3] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         if wl._contains_axis_images("GBP Combo"):
             images = [image for image in wl.images if image.variable_axis in ("GBP Combo", "Reference")]
-            image_numbers = determine_image_numbers(file_paths_names, images)
+            image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
             fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
             axis_images[4] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         # If none of the above, just plot all the images
-        if all([element == None for element in axis_images[:-1]]):
+        if all([element is None for element in axis_images[:-1]]):
             images = [image for image in wl.images]
-            image_numbers = determine_image_numbers(file_paths_names, images)
+            image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
             fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
             axis_images[5] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
@@ -511,13 +507,13 @@ def winstonlutz_helperf(args):
         gantries = collected_data["gantries"]
         collimators = collected_data["collimators"]
         couches = collected_data["couches"]
-        image_num = determine_image_numbers(file_paths_names, wl.images)
+        image_numbers = determine_image_numbers(file_paths_names, wl.images, img_numbers)
 
         # Get other results
         quickresults = wl.results(as_list=True)
 
         # Add scatter plot
-        fig_focal = plot_scatter_diagram(cax2bb, epid2cax, image_num, gantries,
+        fig_focal = plot_scatter_diagram(cax2bb, epid2cax, image_numbers, gantries,
                                          collimators, couches, pass_rate,
                                          success_rate, show_epid_points)
 
@@ -526,41 +522,41 @@ def winstonlutz_helperf(args):
         general_functions.delete_files_in_subfolders([folder_path])
 
         variables = {
-                     "acquisition_datetime": acquisition_datetime,
-                     "pdf_report_filename": os.path.basename(pdf_file.name),
-                     "axis_images": axis_images,
-                     "max_deviation": round(np.max(radius), 2),
-                     "radius": radius,
-                     "pass_rate": pass_rate,
-                     "success_rate": success_rate,
-                     "SIDs": list(set(SIDs)),
-                     "cax_position": cax_position,
-                     "bb_position": bb_position,
-                     "result": result,
-                     "image_type": image_type,
-                     "image_num": image_num,
-                     "gantries": gantries,
-                     "collimators": collimators,
-                     "couches": couches,
-                     "script_focal": script_focal,
-                     "script_wobble": script_wobble,
-                     "script_gantry_epid_sag": script_gantry_epid_sag,
-                     "quickresults": quickresults,
-                     "save_results": save_results,
-                     "Max2DbbCAX": wl.cax2bb_distance('max'),
-                     "Median2DbbCAX": wl.cax2bb_distance('median'),
-                     "BBshiftX": wl.bb_shift_vector.x,
-                     "BBshiftY": wl.bb_shift_vector.y,
-                     "BBshiftZ": wl.bb_shift_vector.z,
-                     "GntIsoSize": wl.gantry_iso_size,
-                     "MaxGntRMS": max(wl.axis_rms_deviation("Gantry")),
-                     "MaxEpidRMS": max(wl.axis_rms_deviation("Epid")),
-                     "GntColl3DisoSize": wl.gantry_coll_iso_size,
-                     "Coll2DisoSize": wl.collimator_iso_size,
-                     "MaxCollRMS": max(wl.axis_rms_deviation("Collimator")),
-                     "Couch2DisoDia": wl.couch_iso_size,
-                     "MaxCouchRMS": max(wl.axis_rms_deviation("Couch"))
-                     }
+            "acquisition_datetime": acquisition_datetime,
+            "pdf_report_filename": os.path.basename(pdf_file.name),
+            "axis_images": axis_images,
+            "max_deviation": round(np.max(radius), 2),
+            "radius": radius,
+            "pass_rate": pass_rate,
+            "success_rate": success_rate,
+            "SIDs": list(set(SIDs)),
+            "cax_position": cax_position,
+            "bb_position": bb_position,
+            "result": result,
+            "image_type": image_type,
+            "image_numbers": image_numbers,
+            "gantries": gantries,
+            "collimators": collimators,
+            "couches": couches,
+            "script_focal": script_focal,
+            "script_wobble": script_wobble,
+            "script_gantry_epid_sag": script_gantry_epid_sag,
+            "quickresults": quickresults,
+            "save_results": save_results,
+            "Max2DbbCAX": wl.cax2bb_distance('max'),
+            "Median2DbbCAX": wl.cax2bb_distance('median'),
+            "BBshiftX": wl.bb_shift_vector.x,
+            "BBshiftY": wl.bb_shift_vector.y,
+            "BBshiftZ": wl.bb_shift_vector.z,
+            "GntIsoSize": wl.gantry_iso_size,
+            "MaxGntRMS": max(wl.axis_rms_deviation("Gantry")),
+            "MaxEpidRMS": max(wl.axis_rms_deviation("Epid")),
+            "GntColl3DisoSize": wl.gantry_coll_iso_size,
+            "Coll2DisoSize": wl.collimator_iso_size,
+            "MaxCollRMS": max(wl.axis_rms_deviation("Collimator")),
+            "Couch2DisoDia": wl.couch_iso_size,
+            "MaxCouchRMS": max(wl.axis_rms_deviation("Couch"))
+        }
 
         return template("winston_lutz_pylinac_results", variables)
 
@@ -580,17 +576,11 @@ def winstonlutz_helperf(args):
         SIDs = []
         epid2cax = []
 
-        # Get sequential image number:
-        img_numbers = []
-        for i in range(len(imglist)):
-            if imglist[i]:
-                img_numbers.append(i+1)
-
         # Analyze all images
         def winstonlutz_default_calculation_helperf(path):
             return WinstonLutz(path, use_filenames=False)
 
-        p = ThreadPool(4)
+        p = ThreadPool()
         image_list = p.map(winstonlutz_default_calculation_helperf, file_paths)
         p.close()
         p.join()
@@ -1154,9 +1144,9 @@ def winstonlutz_helperf_catch_error(args):
 def winston_lutz_calculate(clipbox, zoom, usepylinac):
     colormap = request.forms.hidden_colormap
     test_type = request.forms.hidden_testtype
-    use_couch = True if request.forms.hidden_usecouch=="true" else False
-    show_epid_points = True if request.forms.hidden_show_epid_points=="true" else False
-    usepylinac = True if usepylinac=="True" else False
+    use_couch = True if request.forms.hidden_usecouch == "true" else False
+    show_epid_points = True if request.forms.hidden_show_epid_points == "true" else False
+    usepylinac = True if usepylinac == "True" else False
     station = request.forms.hidden_station
     imgdescription = request.forms.hidden_imgdescription
     displayname = request.forms.hidden_displayname
@@ -1174,48 +1164,52 @@ def winston_lutz_calculate(clipbox, zoom, usepylinac):
             error_message="All images are unchecked."
         )
 
-    if (sum(imglist)<11) and (use_couch) and (test_type=="Gnt/coll + couch rotation"):
+    if (sum(imglist) < 11) and (use_couch) and (test_type == "Gnt/coll + couch rotation"):
         return template(
             "error_template.tpl",
-            error_message="At least 8 + 3 images are required to determine "\
+            error_message="At least 8 + 3 images are required to determine "
                           "linac isocenter and couch axis of rotation."
         )
 
-    if (sum(imglist)<3) and (use_couch) and (test_type=="Couch only"):
+    if (sum(imglist) < 3) and (use_couch) and (test_type == "Couch only"):
         return template(
             "error_template.tpl",
-            error_message="At least 3 images are required to determine "\
+            error_message="At least 3 images are required to determine "
                           "couch axis of rotation."
         )
 
-    if (sum(imglist)<3) and (use_couch) and (test_type=="Collimator only"):
+    if (sum(imglist) < 3) and (use_couch) and (test_type == "Collimator only"):
         return template(
             "error_template.tpl",
-            error_message="At least 3 images are required to determine "\
-                           "collimator axis of rotation."
+            error_message="At least 3 images are required to determine "
+                          "collimator axis of rotation."
         )
 
-    if usepylinac: # If pylinac is chosen
+    # Get sequential image number:
+    img_numbers = []  # Starting with 1
+    for i in range(len(imglist)):
+        if imglist[i]:
+            img_numbers.append(i+1)
+
+    if usepylinac:
         pylinac_angles_full = json.loads(request.forms.pylinacangles)
-        pylinac_angles_full = [int(float(x)) if x!="" else None for x in pylinac_angles_full]
+        pylinac_angles_full = [int(float(x)) if x != "" else None for x in pylinac_angles_full]
 
         if pylinac_angles_full.count(None) == 0:
             use_filenames = True
- 
+
         pylinac_angles_full = np.array(pylinac_angles_full).reshape((-1, 3)).tolist()
         pylinac_angles = []
 
-        for i in range(0, len(pylinac_angles_full)):
+        for i in range(len(pylinac_angles_full)):
             if imglist[i]:
                 pylinac_angles.append(pylinac_angles_full[i])
 
-        (folder_path,
-        file_paths,
-        file_paths_full) = RestToolbox.GetSeries2Folder(config.ORTHANC_URL, instances_list, imglist)
+        (folder_path, file_paths, file_paths_full) = RestToolbox.GetSeries2Folder(config.ORTHANC_URL, instances_list, imglist)
 
         if use_filenames:
             # Add coll/gantry/couch angles to the file name
-            for z in range(0, len(file_paths)):
+            for z in range(len(file_paths)):
                 f = file_paths[z]
                 img_name = os.path.splitext(os.path.basename(f))[0]
                 new_name = img_name + "_gantry" + str(pylinac_angles[z][0]) \
@@ -1230,7 +1224,7 @@ def winston_lutz_calculate(clipbox, zoom, usepylinac):
             for filename in file_paths:
                 try:
                     orig_img = pylinacimage.DicomImage(filename)
-                    orig_img.check_inversion() # Check inversion first
+                    orig_img.check_inversion()
                     general_functions.clip_around_image(orig_img, clipbox)
                     orig_img.save(filename)
                 except:
@@ -1239,7 +1233,6 @@ def winston_lutz_calculate(clipbox, zoom, usepylinac):
                         error_message="Unable to apply clipbox."
                     )
     else:
-        pylinac_angles_full = []
         folder_path = []
         file_paths_full = RestToolbox.GetSeries2Subfolders(config.ORTHANC_URL, instances_list, imglist)
 
@@ -1263,26 +1256,28 @@ def winston_lutz_calculate(clipbox, zoom, usepylinac):
                             error_message="Unable to apply clipbox."
                         )
 
-    args = {"colormap": colormap,
-            "clipbox": clipbox,
-            "zoom": zoom,
-            "usepylinac": usepylinac,
-            "show_epid_points": show_epid_points,
-            "file_paths_full": file_paths_full,
-            "use_filenames": use_filenames,
-            "folder_path": folder_path,
-            "file_paths": file_paths,
-            "imglist": imglist,
-            "test_type": test_type,
-            "use_couch": use_couch,
-            "station": station,
-            "imgdescription": imgdescription,
-            "displayname": displayname,
-            "acquisition_datetime": acquisition_datetime,
-            "start_x": start_x,
-            "start_y": start_y,
-            "config": general_functions.get_configuration()
-            }
+    # Note that file_paths are dcm files if usepylinac==True else subfolders
+
+    args = {
+        "folder_path": folder_path,
+        "file_paths": file_paths,
+        "img_numbers": img_numbers,
+        "colormap": colormap,
+        "clipbox": clipbox,
+        "zoom": zoom,
+        "usepylinac": usepylinac,
+        "show_epid_points": show_epid_points,
+        "use_filenames": use_filenames,
+        "test_type": test_type,
+        "use_couch": use_couch,
+        "station": station,
+        "imgdescription": imgdescription,
+        "displayname": displayname,
+        "acquisition_datetime": acquisition_datetime,
+        "start_x": start_x,
+        "start_y": start_y,
+        "config": general_functions.get_configuration()
+    }
 
     pool = Pool(1)
     try:

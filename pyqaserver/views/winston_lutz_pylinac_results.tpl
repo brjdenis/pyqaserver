@@ -165,7 +165,7 @@
                 % else:
               <tr>
             % end
-            <td>{{image_num[k]}}</td>
+            <td>{{image_numbers[k]}}</td>
             <td>{{gantries[k]}}</td>
             <td>{{collimators[k]}}</td>
             <td>{{couches[k]}}</td>
@@ -351,7 +351,8 @@
 
         function save_to_database(){
             var formData = new FormData();
-            var json_data = {"User": "{{save_results["displayname"]}}",
+            var json_data = {
+                             "User": "{{save_results["displayname"]}}",
                              "Machine": $('#machines').val(),
                              "Beam": $('#energies').val(),
                              "Phantom": $('#phantom').val(),
