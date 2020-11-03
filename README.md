@@ -70,9 +70,24 @@ For example, if you wish to run it as localhost:
 pyqaserver 127.0.0.1:8080 PATH_TO_DATABASE_FOLDER
 ~~~
 
-The PATH_TO_DATABASE_FOLDER must the full absolute path to an empty directory where pyqaserver will install a small database. Anytime you restart the server, point to the same directory.
 
 The web page is available at http://127.0.0.1:8080 ...
+
+The PATH_TO_DATABASE_FOLDER must the full absolute path to an empty directory where pyqaserver will install a small database. Anytime you restart the server, point to the same directory.
+
+When upgrading to a new version, make a backup copy of the database folder, but do not change it. First, uninstall pyqaserver with
+
+~~~
+pip uninstall pyqaserver
+~~~
+
+And then install the new version:
+
+~~~
+pip install pyqaserver==2.0.1
+~~~
+
+Point the server to the same database directory and it should work.
 
 ## Documentation
 
