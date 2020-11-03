@@ -73,7 +73,7 @@ pyqaserver 127.0.0.1:8080 PATH_TO_DATABASE_FOLDER
 
 The web page is available at http://127.0.0.1:8080 ...
 
-PATH_TO_DATABASE_FOLDER must be the full absolute path of the database server. If you are running pyqaserver for the first time, this should be an empty directory where pyqaserver will install a small sqlite database. Anytime you restart the server, point to the same directory. 
+PATH_TO_DATABASE_FOLDER must be the full absolute path of pyqserver's database. If you are running pyqaserver for the first time, this should be an empty directory where pyqaserver will install a small sqlite database. Anytime you restart the server, point to the same directory. 
 
 When upgrading to a new version, make a backup copy of the database folder, but do not change it. First, uninstall pyqaserver with
 
