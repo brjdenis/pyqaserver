@@ -469,14 +469,18 @@
                 <h3 class="panel-title">Estimated BB wobble (couch rotation)</h3>
             </div>
             <div class="panel-body">
-                Radius:
+
             </div>
             <table class="table  table-borderless">
                 <tr>
                     <td>
+                        Radius
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         {{round(couch_wobble, 2)}} mm
                     </td>
-
                 </tr>
 
             </table>

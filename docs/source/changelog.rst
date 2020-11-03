@@ -6,7 +6,7 @@ Changelog
 
 
 ***************
-Version 2.1.0
+Version 2.0.1
 ***************
 
 Bug fixes
@@ -14,7 +14,8 @@ Bug fixes
 
 * (Planar imaging) `#8 <https://github.com/brjdenis/pyqaserver/issues/8>`_ Reference image analysis did not work.
 * (Catphan) `#9 <https://github.com/brjdenis/pyqaserver/issues/9>`_ Unable to save results to the database because of an error in the passing of variable to html.
-
+* (Winston-Lutz) `#10 <https://github.com/brjdenis/pyqaserver/issues/10>`_ The Winkler diagram was wrong. For gantry angles 180 and 90 the x axis inversion was not taken into account. 
+* (plotly.jy) Plotting in certain situations did not work in Chrome. Removed "scattergl".
 
 ***************
 Version 2.0.0

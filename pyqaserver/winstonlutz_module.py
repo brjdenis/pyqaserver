@@ -22,6 +22,7 @@ if __name__ == '__main__' or parent_module.__name__ == '__main__':
     import config
     from python_packages.bottlepy.bottle import Bottle, request, \
         TEMPLATE_PATH, static_file, template, redirect, response
+    from python_packages import mpld3
     from general_functions import get_energy_from_imgdescription
     from general_functions import get_user_machine_and_energy
     from general_functions import get_machines_and_energies
@@ -30,11 +31,11 @@ if __name__ == '__main__' or parent_module.__name__ == '__main__':
     from general_functions import get_treatmentunits_wl
     import general_functions
     import RestToolbox_modified as RestToolbox
-    from python_packages import mpld3
 else:
     from . import config
     from .python_packages.bottlepy.bottle import Bottle, request, \
         TEMPLATE_PATH, static_file, template, redirect, response
+    from .python_packages import mpld3
     from .general_functions import get_energy_from_imgdescription
     from .general_functions import get_user_machine_and_energy
     from .general_functions import get_machines_and_energies
@@ -43,7 +44,7 @@ else:
     from .general_functions import get_treatmentunits_wl
     from . import general_functions
     from . import RestToolbox_modified as RestToolbox
-    from .python_packages import mpld3
+
 
 CUR_DIR = os.path.realpath(os.path.dirname(__file__))
 TEMPLATE_PATH.insert(0, os.path.join(CUR_DIR, 'views'))
@@ -51,7 +52,7 @@ D3_URL = config.D3_URL
 MPLD3_URL = config.MPLD3_URL
 
 
-def collect_data(images, usepylinac):
+def collect_data(images):
     # images is a list o WLimages (wl.images)
     cax_position = []
     bb_position = []
@@ -97,36 +98,60 @@ def collect_data(images, usepylinac):
 
 
 def plot_scatter_diagram(cax2bb, epid2cax, image_numbers, gantries, collimators,
-                         couches, pass_rate, success_rate, show_epid_points):
-
-    fig_focal = Figure(figsize=(7, 7))
-    ax_focal = fig_focal.add_subplot(1, 1, 1)
+                         couches, pass_rate, success_rate, show_epid_points,
+                         use_pylinac, use_couch, test_type,
+                         circle_center=None, circle_radius=None,
+                         linac_iso_x=None, linac_iso_y=None):
 
     cax2bb = np.asarray(cax2bb)
     epid2cax = np.asarray(epid2cax)
     image_order = np.argsort([int(j)-1 for j in image_numbers])
     N = len(image_numbers)
+
+    if use_pylinac:
+        fig_focal = Figure(figsize=(7, 7), tight_layout={"w_pad": 0, "pad": 0})
+        ax_focal = fig_focal.add_subplot(1, 1, 1)
+    elif use_couch is False:
+        fig_focal = Figure(figsize=(10.5, 5), tight_layout={"w_pad": 0, "pad": 0})
+        ax_focal = fig_focal.add_subplot(1, 2, 1, aspect=1)
+        ax_gantry = fig_focal.add_subplot(1, 2, 2, aspect=1)
+    elif test_type == "Gnt/coll + couch rotation":
+        fig_focal = Figure(figsize=(10.5, 5), tight_layout={"w_pad": 0, "pad": 0})
+        ax_focal = fig_focal.add_subplot(1, 2, 1, aspect=1)
+        ax_couch = fig_focal.add_subplot(1, 2, 2, aspect=1)
+        # Redefine
+        N = 8
+        image_order = np.argsort([int(j)-1 for j in image_numbers[:8]])
+
     labels = []
     for i in range(N):
-        label = "img={}, G={:d}, B={:d}, P={:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm".format(
-            image_numbers[i],
-            int(gantries[i]),
-            int(collimators[i]),
-            int(couches[i]),
-            cax2bb[i, 0],
-            cax2bb[i, 1],
-            np.linalg.norm(cax2bb[i, :])
-        )
+        if use_pylinac:
+            label = "img={}, G={:d}, B={:d}, P={:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm".format(
+                image_numbers[i],
+                int(gantries[i]),
+                int(collimators[i]),
+                int(couches[i]),
+                cax2bb[i, 0],
+                cax2bb[i, 1],
+                np.linalg.norm(cax2bb[i, :])
+            )
+        elif use_couch is False or test_type == "Gnt/coll + couch rotation":
+            label = 'Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(
+                image_numbers[i],
+                cax2bb[i, 0],
+                cax2bb[i, 1],
+                np.linalg.norm(cax2bb[i, :])
+            )
         labels.append(label)
     labels = np.array(labels)[image_order]
 
     # Plot scatter points and green lines between them. Add tooltips.
     ax_focal.scatter(
-        cax2bb[:, 0][image_order], cax2bb[:, 1][image_order],
+        cax2bb[:, 0][image_order][:N], cax2bb[:, 1][image_order][:N],
         c=["blue"]*N, alpha=0.5, s=80, zorder=1, linewidths=1
     )
     scatter = ax_focal.plot(
-        cax2bb[:, 0][image_order], cax2bb[:, 1][image_order],
+        cax2bb[:, 0][image_order][:N], cax2bb[:, 1][image_order][:N],
         linestyle="-", color="green", alpha=0.5, marker="o", markersize=12,
         zorder=2, markerfacecolor='none', markeredgecolor='none'
     )
@@ -136,24 +161,32 @@ def plot_scatter_diagram(cax2bb, epid2cax, image_numbers, gantries, collimators,
     if show_epid_points:
         labels2 = []
         for i in range(N):
-            label2 = "img={}, G={:d}, B={:d}, P={:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm".format(
-                image_numbers[i],
-                int(gantries[i]),
-                int(collimators[i]),
-                int(couches[i]),
-                epid2cax[i, 0],
-                epid2cax[i, 1],
-                np.linalg.norm(epid2cax[i, :])
-            )
+            if use_pylinac:
+                label2 = "img={}, G={:d}, B={:d}, P={:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm".format(
+                    image_numbers[i],
+                    int(gantries[i]),
+                    int(collimators[i]),
+                    int(couches[i]),
+                    epid2cax[i, 0],
+                    epid2cax[i, 1],
+                    np.linalg.norm(epid2cax[i, :])
+                )
+            elif use_couch is False or test_type == "Gnt/coll + couch rotation":
+                label2 = "Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm".format(
+                    image_numbers[i],
+                    epid2cax[i, 0],
+                    epid2cax[i, 1],
+                    np.linalg.norm(epid2cax[i, :])
+                )
             labels2.append(label2)
         labels2 = np.array(labels2)[image_order]
 
         ax_focal.scatter(
-            epid2cax[:, 0], epid2cax[:, 1],
+            epid2cax[:, 0][:N], epid2cax[:, 1][:N],
             c=["yellow"]*N, alpha=0.5, s=80, zorder=1, linewidths=1
         )
         scatter2 = ax_focal.plot(
-            epid2cax[:, 0][image_order], epid2cax[:, 1][image_order],
+            epid2cax[:, 0][image_order][:N], epid2cax[:, 1][image_order][:N],
             linestyle="-", color="none", alpha=0.5, marker="o", markersize=12,
             zorder=2, markerfacecolor='none', markeredgecolor='none'
         )
@@ -167,8 +200,12 @@ def plot_scatter_diagram(cax2bb, epid2cax, image_numbers, gantries, collimators,
     ax_focal.plot([None], [None], c="blue", linestyle="None", alpha=0.5, marker="o", label="CAX")
 
     # Add BB marker
-    p = ax_focal.plot([0], [0], "r+", mew=3, ms=10, label="BB")
-    tooltip3 = mpld3.plugins.PointLabelTooltip(p[0], labels=["Ballbearing"], location="top left")
+    if show_epid_points:
+        p = ax_focal.plot([0], [0], "r+", mew=3, ms=10, label="BB/CAX")
+        tooltip3 = mpld3.plugins.PointLabelTooltip(p[0], labels=["Ballbearing or CAX"], location="top left")
+    else:
+        p = ax_focal.plot([0], [0], "r+", mew=3, ms=10, label="BB")
+        tooltip3 = mpld3.plugins.PointLabelTooltip(p[0], labels=["Ballbearing"], location="top left")
     mpld3.plugins.connect(fig_focal, tooltip3)
 
     # Add tolerance circles
@@ -184,9 +221,334 @@ def plot_scatter_diagram(cax2bb, epid2cax, image_numbers, gantries, collimators,
     ax_focal.set_xlabel("X [mm]")
     ax_focal.set_ylabel("Y [mm]")
     ax_focal.legend(framealpha=0, numpoints=1, ncol=3, loc='lower right', fontsize=8)
-    fig_focal.set_tight_layout(True)
 
+    # Plot Winkler-style diagram or couch semi-circle
+    if not use_pylinac and use_couch is False:
+        dis = cax2bb[:, 0]
+
+        if len(cax2bb) == 8:
+            lines180 = np.array(
+                [
+                    [-dis[0], -dis[0], -10, 10],
+                    [-dis[1], -dis[1], -10, 10]
+                ]
+            )
+            lines270 = np.array(
+                [
+                    [-10, 10, dis[2], dis[2]],
+                    [-10, 10, dis[3], dis[3]]
+                ]
+            )
+            lines0 = np.array(
+                [
+                    [dis[4], dis[4], -10, 10],
+                    [dis[5], dis[5], -10, 10]
+                ]
+            )
+            lines90 = np.array(
+                [
+                    [-10, 10, -dis[6], -dis[6]],
+                    [-10, 10, -dis[7], -dis[7]]
+                ]
+            )
+
+            ln1 = ax_gantry.plot(lines180[0, 0:2], lines180[0, 2:], color="grey", alpha=0.5, linewidth=1, linestyle="--")
+            ln2 = ax_gantry.plot(lines180[1, 0:2], lines180[1, 2:], color="grey", alpha=0.5, linewidth=1, linestyle="--")
+            ln3 = ax_gantry.plot(lines270[0, 0:2], lines270[0, 2:], color="grey", alpha=0.5, linewidth=1, linestyle="--")
+            ln4 = ax_gantry.plot(lines270[1, 0:2], lines270[1, 2:], color="grey", alpha=0.5, linewidth=1, linestyle="--")
+            ln5 = ax_gantry.plot(lines0[0, 0:2], lines0[0, 2:], color="grey", alpha=0.5, linewidth=1, linestyle="-")
+            ln6 = ax_gantry.plot(lines0[1, 0:2], lines0[1, 2:], color="grey", alpha=0.5, linewidth=1, linestyle="-")
+            ln7 = ax_gantry.plot(lines90[0, 0:2], lines90[0, 2:], color="grey", alpha=0.5, linewidth=1, linestyle="-")
+            ln8 = ax_gantry.plot(lines90[1, 0:2], lines90[1, 2:], color="grey", alpha=0.5, linewidth=1, linestyle="-")
+
+            # Add simple line tooltips (just gantry angle)
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(ln1[0], label="1"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(ln2[0], label="2"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(ln3[0], label="3"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(ln4[0], label="4"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(ln5[0], label="5"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(ln6[0], label="6"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(ln7[0], label="7"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(ln8[0], label="8"))
+
+            # Plot average lines
+            avg180 = np.average(lines180, axis=0)
+            avg270 = np.average(lines270, axis=0)
+            avg0 = np.average(lines0, axis=0)
+            avg90 = np.average(lines90, axis=0)
+
+            la1 = ax_gantry.plot(avg180[0:2], avg180[2:], color="purple", linewidth=2, linestyle="--")
+            la2 = ax_gantry.plot(avg270[0:2], avg270[2:], color="purple", linewidth=2, linestyle="--")
+            la3 = ax_gantry.plot(avg0[0:2], avg0[2:], color="purple", linewidth=2, linestyle="-")
+            la4 = ax_gantry.plot(avg90[0:2], avg90[2:], color="purple", linewidth=2, linestyle="-")
+
+            # Add tooltips
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(la1[0], label="Gantry 180"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(la2[0], label="Gantry 270"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(la3[0], label="Gantry 0"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(la4[0], label="Gantry 90"))
+
+            gantry_center_x = [avg180[0:2], avg0[0:2]]
+            gantry_center_y = [avg270[2:], avg90[2:]]
+
+        elif len(cax2bb) == 4:
+            lines180 = np.array(
+                [-dis[0], -dis[0], -10, 10]
+            )
+            lines270 = np.array(
+                [-10, 10, dis[1], dis[1]]
+            )
+            lines0 = np.array(
+                [dis[2], dis[2], -10, 10]
+            )
+            lines90 = np.array(
+                [-10, 10, -dis[3], -dis[3]]
+            )
+
+            la1 = ax_gantry.plot(lines180[0:2], lines180[2:], color="purple", linewidth=2, linestyle="--")
+            la2 = ax_gantry.plot(lines270[0:2], lines270[2:], color="purple", linewidth=2, linestyle="--")
+            la3 = ax_gantry.plot(lines0[0:2], lines0[2:], color="purple", linewidth=2, linestyle="-")
+            la4 = ax_gantry.plot(lines90[0:2], lines90[2:], color="purple", linewidth=2, linestyle="-")
+
+            # Add tooltips
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(la1[0], label="Gantry 180"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(la2[0], label="Gantry 270"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(la3[0], label="Gantry 0"))
+            mpld3.plugins.connect(fig_focal, mpld3.plugins.LineLabelTooltip(la4[0], label="Gantry 90"))
+
+            gantry_center_x = [lines180[0:2], lines0[0:2]]
+            gantry_center_y = [lines270[2:], lines90[2:]]
+        else:
+            gantry_center_x = []
+            gantry_center_y = []
+
+        gantry_center_x = np.average(gantry_center_x)
+        gantry_center_y = np.average(gantry_center_y)
+        limits_gantry = np.max(np.abs(cax2bb[:, 0])) + 0.2
+
+        ax_gantry.set_xlim([-limits_gantry, limits_gantry])
+        ax_gantry.set_ylim([-limits_gantry, limits_gantry])
+        ax_gantry.set_xlabel("LAT [mm]")
+        ax_gantry.set_ylabel("VRT [mm]")
+        ax_gantry.set_title("Gantry 2D CAX projection")
+
+        bb = ax_gantry.plot([0], [0], "r+", mew=3, ms=10, label="BB")
+        axis = ax_gantry.plot([gantry_center_x], [gantry_center_y], "x", color="black", mew=1, ms=10, label="Axis")
+
+        # Add tooltips for BB and gantry axis
+        tooltip_bb = mpld3.plugins.PointLabelTooltip(bb[0], labels=["Ballbearing"], location="top left")
+        tooltip_axis = mpld3.plugins.PointLabelTooltip(axis[0], labels=["Gantry axis"], location="top left")
+        mpld3.plugins.connect(fig_focal, tooltip_bb, tooltip_axis)
+
+        ax_gantry.legend(framealpha=0, numpoints=1, ncol=2, loc='lower right', fontsize=8)
+        ax_gantry.autoscale(False)
+
+    elif use_couch and test_type == "Gnt/coll + couch rotation":
+
+        bb_position_couch = -(cax2bb + epid2cax)[8:]
+        cax2epid_couch = -epid2cax[8:]
+        M = len(bb_position_couch)
+
+        if test_type == "Gnt/coll + couch rotation":
+            # Plot couch points with labels
+            labels_couch = []
+            for i in range(M):
+                label3 = "Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm".format(
+                    image_numbers[N+i],
+                    bb_position_couch[i, 0],
+                    bb_position_couch[i, 1],
+                    np.linalg.norm(bb_position_couch[i, :])
+                )
+                labels_couch.append(label3)
+            labels_couch = np.array(labels_couch)
+
+            ax_couch.scatter(
+                bb_position_couch[:, 0], bb_position_couch[:, 1],
+                c=["red"]*M, alpha=0.5, s=80, zorder=1, linewidths=1
+            )
+            scatter_couch = ax_couch.plot(
+                bb_position_couch[:, 0], bb_position_couch[:, 1],
+                linestyle="-", color="green", alpha=0.5, marker="o", markersize=12,
+                zorder=2, markerfacecolor='none', markeredgecolor='none'
+            )
+            tooltip4 = mpld3.plugins.PointLabelTooltip(scatter_couch[0], labels=labels_couch, location="top left")
+
+            # Plot CAX points (with respect to EPID)
+            labels_couch_cax = []
+            for i in range(M):
+                label4 = "Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm".format(
+                    image_numbers[N+i],
+                    cax2epid_couch[i, 0],
+                    cax2epid_couch[i, 1],
+                    np.linalg.norm(cax2epid_couch[i, :])
+                )
+                labels_couch_cax.append(label4)
+
+            cax_points = ax_couch.plot(
+                cax2epid_couch[:, 0], cax2epid_couch[:, 1],
+                c="blue", linestyle=None, linewidth=0, alpha=0.85,
+                markersize=5, marker="o", label="CAX"
+            )
+            tooltip5 = mpld3.plugins.PointLabelTooltip(cax_points[0], labels=labels_couch_cax, location="top left")
+
+            # Plot center of couch axis and fitted circle
+            ax_couch.add_patch(
+                patches.Circle(
+                    circle_center, circle_radius,
+                    color='black', alpha=0.85, fill=False, linewidth=1
+                )
+            )
+
+            labels_caxis = ['Couch axis, x = {:04.2f} mm, y = {:04.2f} mm'.format(circle_center[0], circle_center[1])]
+            ax_couch.plot(
+                [circle_center[0]], [circle_center[1]],
+                linestyle="None", color="black", alpha=1, marker="x",
+                markersize=12, zorder=2
+            )
+            couch_circle = ax_couch.plot(
+                [circle_center[0]], [circle_center[1]],
+                linestyle="None", color="black", alpha=1, marker="o",
+                markersize=15, zorder=2, markerfacecolor='none', markeredgecolor='none'
+            )
+            tooltip6 = mpld3.plugins.PointLabelTooltip(couch_circle[0], labels=labels_caxis, location="top left")
+
+            # Plot isocenter of linac
+            liso = ax_couch.plot(
+                [linac_iso_x], [linac_iso_y],
+                c="blue", linestyle=None, linewidth=0, alpha=0.5, marker="s",
+                markersize=10, label="ISO"
+            )
+            labels_iso = ["Linac isocenter x = {:04.2f} mm, y = {:04.2f} mm".format(linac_iso_x, linac_iso_y)]
+            tooltip7 = mpld3.plugins.PointLabelTooltip(liso[0], labels=labels_iso, location="top left")
+
+            # Add labels
+            ax_couch.plot(
+                [None], [None],
+                c="red", linestyle=None, linewidth=0, alpha=0.5, marker="o",
+                markersize=10, label="BB"
+            )
+            ax_couch.plot(
+                [None], [None],
+                c="black", linestyle=None, linewidth=0, alpha=1, marker="x",
+                markersize=10, label="Axis"
+            )
+            mpld3.plugins.connect(fig_focal, tooltip4, tooltip5, tooltip6, tooltip7)
+            ax_couch.autoscale(False)
+
+            margin = 0.2
+            if np.all(np.isnan(circle_center)):
+                limits_couch = np.max(np.abs(cax2bb[:, 0])) + margin
+                ax_couch.set_xlim([-limits_couch, limits_couch])
+                ax_couch.set_ylim([-limits_couch, limits_couch])
+            else:
+                limits_couch_left = circle_center[0] - circle_radius - margin
+                limits_couch_right = circle_center[0] + circle_radius + margin
+                limits_couch_bottom = circle_center[1] - circle_radius - margin
+                limits_couch_top = circle_center[1] + circle_radius + margin
+                ax_couch.set_xlim([limits_couch_left, limits_couch_right])
+                ax_couch.set_ylim([limits_couch_bottom, limits_couch_top])
+
+            ax_couch.set_title("Couch diagram")
+            ax_couch.set_xlabel("LAT [mm]")
+            ax_couch.set_ylabel("LONG [mm]")
+            ax_couch.legend(framealpha=0, numpoints=1, ncol=4, loc='lower right', fontsize=8)
+
+    fig_focal.set_tight_layout(True)
     return fig_focal
+
+
+def plot_couchcoll_scatter_diagram(cax2bb, epid2cax, image_numbers,
+                                   test_type, circle_center=None,
+                                   circle_radius=None):
+    cax2bb = np.asarray(cax2bb)
+    epid2cax = np.asarray(epid2cax)
+    N = len(image_numbers)
+
+    fig = Figure(figsize=(7, 7))
+    ax = fig.add_subplot(1, 1, 1, aspect=1)
+
+    if test_type == "Couch only":
+        scatter_points = -(cax2bb + epid2cax)
+        scatter_color = "red"
+        scatter_points_aux = -epid2cax  # CAX to epid
+        scatter_color_aux = "blue"
+    else:  # Coll only
+        scatter_points = cax2bb
+        scatter_color = "blue"
+        scatter_points_aux = np.array([[0, 0]])  # The BB at the center
+        scatter_color_aux = "red"
+
+    # Plot BB or CAX scatter points
+    labels = []
+    for i in range(N):
+        label = 'Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(
+            image_numbers[i], scatter_points[i, 0],
+            scatter_points[i, 1], np.linalg.norm(scatter_points[i, :]))
+        labels.append(label)
+
+    ax.scatter(
+        scatter_points[:, 0], scatter_points[:, 1],
+        c=[scatter_color]*N, alpha=0.5, s=80, zorder=1, linewidths=1
+    )
+    scatter = ax.plot(
+        scatter_points[:, 0], scatter_points[:, 1],
+        linestyle="-", color=scatter_color, alpha=0.5, marker="o", markersize=12,
+        zorder=2, markerfacecolor='none', markeredgecolor='none'
+    )
+    tooltip1 = mpld3.plugins.PointLabelTooltip(scatter[0], labels=labels, location="top left")
+
+    # Plot CAX or BB points (auxiliary)
+    labels_aux = []
+    for i in range(len(scatter_points_aux)):
+        label = 'Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(
+            image_numbers[i], scatter_points_aux[i, 0],
+            scatter_points_aux[i, 1], np.linalg.norm(scatter_points_aux[i, :]))
+        labels_aux.append(label)
+
+    scatter_aux = ax.plot(
+        scatter_points_aux[:, 0], scatter_points_aux[:, 1],
+        linestyle="none", linewidth=0, color=scatter_color_aux, alpha=0.85, marker="+", markersize=10,
+        zorder=2, markeredgewidth=2
+    )
+    if test_type != "Couch only":
+        labels_aux = ["BB"]
+    tooltip2 = mpld3.plugins.PointLabelTooltip(scatter_aux[0], labels=labels_aux, location="top left")
+
+    # Plot circle and center
+    ax.add_patch(
+        patches.Circle(
+            circle_center, circle_radius,
+            color='black', alpha=0.85, fill=False, linewidth=1
+        )
+    )
+
+    labels_caxis = ['Axis, x = {:04.2f} mm, y = {:04.2f} mm'.format(circle_center[0], circle_center[1])]
+    cc = ax.plot(
+        [circle_center[0]], [circle_center[1]],
+        linestyle="None", linewidth=0, color="black", alpha=1, marker="x",
+        markersize=10, markeredgewidth=2, zorder=2
+    )
+    tooltip3 = mpld3.plugins.PointLabelTooltip(cc[0], labels=labels_caxis, location="top left")
+    mpld3.plugins.connect(fig, tooltip1, tooltip2, tooltip3)
+
+    margin = 0.2
+    if np.all(np.isnan(circle_center)):
+        limits = np.max(np.abs(scatter_points[:, 0])) + margin
+        ax.set_xlim([-limits, limits])
+        ax.set_ylim([-limits, limits])
+    else:
+        limits_left = circle_center[0] - circle_radius - margin
+        limits_right = circle_center[0] + circle_radius + margin
+        limits_bottom = circle_center[1] - circle_radius - margin
+        limits_top = circle_center[1] + circle_radius + margin
+        ax.set_xlim([limits_left, limits_right])
+        ax.set_ylim([limits_bottom, limits_top])
+
+    ax.set_title("Scatter diagram")
+    ax.set_xlabel("LAT [mm]")
+    ax.set_ylabel("LONG [mm]")
+    fig.set_tight_layout(True)
+    return fig
 
 
 def determine_image_numbers(file_paths_names, images, img_numbers):
@@ -196,7 +558,7 @@ def determine_image_numbers(file_paths_names, images, img_numbers):
     return image_numbers
 
 
-def create_2D_figure(images, img_numbers, clipbox, zoom, usepylinac, cmap):
+def create_2D_figure(images, img_numbers, clipbox, zoom, use_pylinac, cmap):
     # Function that fills the figure with axis images.
     N = len(images)
     if N % 2 == 0:
@@ -222,7 +584,7 @@ def create_2D_figure(images, img_numbers, clipbox, zoom, usepylinac, cmap):
         ax.plot(img.bb.x, img.bb.y, 'r+', markersize=24, markeredgewidth=3, zorder=2)
         ax.plot(img.epid.x, img.epid.y, 'yo', ms=10, markeredgewidth=0.0, zorder=1)
 
-        if usepylinac:
+        if use_pylinac:
             title = "{}. Gantry={}, Coll.={}, Couch={}".format(
                 img_numbers[m],
                 int(img.gantry_angle),
@@ -243,9 +605,9 @@ def create_2D_figure(images, img_numbers, clipbox, zoom, usepylinac, cmap):
 
         # Plot edges of untouched area with a line:
         if clipbox != 0:
-            t = int((img.shape[0] + clipbox*img.dpmm)/2)  # Top  edge
+            t = int((img.shape[0] + clipbox*img.dpmm)/2)  # Top edge
             b = int((img.shape[0] - clipbox*img.dpmm)/2)  # Bottom edge
-            ll = int((img.shape[1] - clipbox*img.dpmm)/2)  # Left  edge
+            ll = int((img.shape[1] - clipbox*img.dpmm)/2)  # Left edge
             r = int((img.shape[1] + clipbox*img.dpmm)/2)  # Right edge
             ax.plot([ll, ll, r, r, ll], [b, t, t, b, b], "-g")
 
@@ -297,7 +659,9 @@ def create_wobble_figure(wl):
                 xs = [ref_x + imgg.bb.x - imgg.field_cax.x for imgg in images[1:]]
                 ys = [ref_y + imgg.bb.y - imgg.field_cax.y for imgg in images[1:]]
                 ax_wobble.plot(xs, ys, 'r+', markersize=12, markeredgewidth=2, zorder=2)
-                circle_couch = patches.Circle((ref_x, ref_y), 1.0*img.dpmm, color='cyan', zorder=2, fill=False, linestyle='--')
+                circle_couch = patches.Circle(
+                    (ref_x, ref_y), 1.0*img.dpmm,
+                    color='cyan', zorder=2, fill=False, linestyle='--')
                 ax_wobble.add_patch(circle_couch)
 
             # Zoom in on BB
@@ -352,7 +716,7 @@ def winstonlutz_helperf(args):
     folder_path = args["folder_path"]
     file_paths = args["file_paths"]
     img_numbers = args["img_numbers"]
-    usepylinac = args["usepylinac"]
+    use_pylinac = args["use_pylinac"]
     use_filenames = args["use_filenames"]
     clipbox = args["clipbox"]
     colormap = args["colormap"]
@@ -395,9 +759,9 @@ def winstonlutz_helperf(args):
         "displayname": displayname
     }
 
-    cmap = matplotlib.cm.get_cmap(colormap)
+    file_paths_names = [os.path.basename(fp) for fp in file_paths]
 
-    if usepylinac:
+    if use_pylinac:
         try:
             wl = WinstonLutz(folder_path, use_filenames=use_filenames)
         except Exception as e:
@@ -417,43 +781,42 @@ def winstonlutz_helperf(args):
         pdf_file.close()
 
         # Plot images
-        file_paths_names = [os.path.basename(fp) for fp in file_paths]
         axis_images = [None, None, None, None, None, None]
         if wl._contains_axis_images("Gantry"):
             images = [image for image in wl.images if image.variable_axis in ("Gantry", "Reference")]
             image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
-            fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
+            fig = create_2D_figure(images, image_numbers, clipbox, zoom, use_pylinac, colormap)
             axis_images[0] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         if wl._contains_axis_images("Collimator"):
             images = [image for image in wl.images if image.variable_axis in ("Collimator", "Reference")]
             image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
-            fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
+            fig = create_2D_figure(images, image_numbers, clipbox, zoom, use_pylinac, colormap)
             axis_images[1] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         if wl._contains_axis_images("Couch"):
             images = [image for image in wl.images if image.variable_axis in ("Couch", "Reference")]
             image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
-            fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
+            fig = create_2D_figure(images, image_numbers, clipbox, zoom, use_pylinac, colormap)
             axis_images[2] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         if wl._contains_axis_images("GB Combo"):
             images = [image for image in wl.images if image.variable_axis in ("GB Combo", "Reference")]
             image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
-            fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
+            fig = create_2D_figure(images, image_numbers, clipbox, zoom, use_pylinac, colormap)
             axis_images[3] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         if wl._contains_axis_images("GBP Combo"):
             images = [image for image in wl.images if image.variable_axis in ("GBP Combo", "Reference")]
             image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
-            fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
+            fig = create_2D_figure(images, image_numbers, clipbox, zoom, use_pylinac, colormap)
             axis_images[4] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         # If none of the above, just plot all the images
         if all([element is None for element in axis_images[:-1]]):
-            images = [image for image in wl.images]
+            images = wl.images
             image_numbers = determine_image_numbers(file_paths_names, images, img_numbers)
-            fig = create_2D_figure(images, image_numbers, clipbox, zoom, usepylinac, colormap)
+            fig = create_2D_figure(images, image_numbers, clipbox, zoom, use_pylinac, colormap)
             axis_images[5] = mpld3.fig_to_html(fig, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         # Plot wobble images
@@ -494,8 +857,7 @@ def winstonlutz_helperf(args):
         script_gantry_epid_sag = mpld3.fig_to_html(fig_gantry_epid_sag, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
         # Calculate stuff
-        N = len(wl.images)
-        collected_data = collect_data(wl.images, usepylinac)
+        collected_data = collect_data(wl.images)
         cax_position = collected_data["cax_position"]
         bb_position = collected_data["bb_position"]
         cax2bb = collected_data["cax2bb"]
@@ -515,7 +877,8 @@ def winstonlutz_helperf(args):
         # Add scatter plot
         fig_focal = plot_scatter_diagram(cax2bb, epid2cax, image_numbers, gantries,
                                          collimators, couches, pass_rate,
-                                         success_rate, show_epid_points)
+                                         success_rate, show_epid_points,
+                                         use_pylinac, use_couch, test_type)
 
         script_focal = mpld3.fig_to_html(fig_focal, d3_url=D3_URL, mpld3_url=MPLD3_URL)
 
@@ -562,21 +925,6 @@ def winstonlutz_helperf(args):
 
     else:
         # This is the non-pylinac analysis
-        N = len(file_paths)
-        if N % 2 == 0:
-            rows = int(N/2)
-        else:
-            rows = int(N//2) + 1
-
-        cax_position = []
-        bb_position = []
-        cax2bb = []
-        result = []
-        radius = []
-        SIDs = []
-        epid2cax = []
-
-        # Analyze all images
         def winstonlutz_default_calculation_helperf(path):
             return WinstonLutz(path, use_filenames=False)
 
@@ -584,552 +932,241 @@ def winstonlutz_helperf(args):
         image_list = p.map(winstonlutz_default_calculation_helperf, file_paths)
         p.close()
         p.join()
- 
-        # Draw matrix of each image
-        fig_wl = Figure(figsize=(8, 4*rows))
-        for m in range(0, N, 1):
-            ax = fig_wl.add_subplot(rows, 2, m+1)
-            wl = image_list[m]
-            img = wl.images[0]
 
-            array = img.array
-            dpmm = img.dpmm
+        images = [image.images[0] for image in image_list]
+        fig_wl = create_2D_figure(images, img_numbers, clipbox, zoom, use_pylinac, colormap)
 
-            cax_position.append([-(img.epid.x-img.field_cax.x)/dpmm, -(img.epid.y-img.field_cax.y)/dpmm])
-            bb_position.append([-(img.epid.x-img.bb.x)/dpmm, -(img.epid.y-img.bb.y)/dpmm])
-            vec = [(img.field_cax.x - img.bb.x)/dpmm, (img.field_cax.y - img.bb.y)/dpmm]  # From BB to CAX (BB in the center)
-            cax2bb.append(vec)
-            epid2cax.append([(img.epid.x - img.field_cax.x)/dpmm, (img.epid.y - img.field_cax.y)/dpmm])
-            SIDs.append(img.sid)
-            result.append([vec[0], vec[1]])
-            radius.append(np.sqrt(vec[0]*vec[0] + vec[1]*vec[1]))
+        # Collect stuff
+        collected_data = collect_data(images)
+        cax_position = collected_data["cax_position"]
+        bb_position = collected_data["bb_position"]
+        cax2bb = collected_data["cax2bb"]
+        epid2cax = collected_data["epid2cax"]
+        result = collected_data["result"]
+        radius = collected_data["radius"]
+        SIDs = collected_data["SIDs"]
+        gantries = collected_data["gantries"]
+        collimators = collected_data["collimators"]
+        couches = collected_data["couches"]
 
-            # Plot the array and the contour of the 50 percent isodose line
-            ax.imshow(array, cmap=cmap, interpolation="none",  origin='lower')
-            level = np.average(np.percentile(array, [5, 99.9]))
-            ax.contour(array, levels=[level], colors = ["blue"])  # CAX
-    
-            # Plot centers: field, BB, EPID
-            ax.plot(img.field_cax.x, img.field_cax.y, 'b+', markersize=24, markeredgewidth=3, zorder=2)
-            ax.plot(img.bb.x, img.bb.y, 'r+', markersize=24, markeredgewidth=3, zorder=2)
-            ax.plot(img.epid.x, img.epid.y, 'yo', ms=10, markeredgewidth=0.0, zorder=1)
-            
-            ax.set_title(str(img_numbers[m])+". dx = "+str(round(vec[0], 2))+" mm,  dy = "+str(round(vec[1], 2))+" mm")
-
-            # Plot edges of untouched area with a line:
-            if clipbox != 0:
-                n_t = int((img.shape[0] + clipbox*img.dpmm)/2)  # Top  edge
-                n_b = int((img.shape[0] - clipbox*img.dpmm)/2)  # bottom edge
-                n_l = int((img.shape[1] - clipbox*img.dpmm)/2)  # Left  edge
-                n_r = int((img.shape[1] + clipbox*img.dpmm)/2)  #  right edge
-                ax.plot([n_l, n_l, n_r, n_r, n_l], [n_b, n_t, n_t, n_b, n_b], "-g")
-    
-            if zoom == "True":
-                # If zoom is used:
-                ax.set_ylim(img.rad_field_bounding_box[0], img.rad_field_bounding_box[1])
-                ax.set_xlim(img.rad_field_bounding_box[2], img.rad_field_bounding_box[3])
-                ax.autoscale(False)
-            else:
-                ax.autoscale(True)
-        fig_wl.set_tight_layout(True)
         script = mpld3.fig_to_html(fig_wl, d3_url=D3_URL, mpld3_url=MPLD3_URL)
-        general_functions.delete_figure([fig_wl])
         general_functions.delete_files_in_subfolders(file_paths)
 
-        if use_couch==False:
-            # Add scatter plot for the diagram
-            fig_focal = Figure(figsize=(10.5, 5), tight_layout={"w_pad":0,  "pad": 0})
-            ax_focal = fig_focal.add_subplot(1,2,1, aspect=1)
-            ax_gantry = fig_focal.add_subplot(1,2,2, aspect=1)
-    
+        if use_couch is False:
             cax2bb = np.asarray(cax2bb)
             epid2cax = np.asarray(epid2cax)
-    
-            colors = ["blue"]*N
-            colors2 = ["yellow"]*N
-            labels = ['Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(img_numbers[i], cax2bb[i, 0], cax2bb[i, 1], 
-                        np.linalg.norm(cax2bb[i, :])) for i in range(N)]
-            ax_focal.scatter(cax2bb[:,0], cax2bb[:, 1], c=colors, alpha=0.5,  s=80, zorder=1, linewidths=1)
-            scatter = ax_focal.plot(cax2bb[:,0], cax2bb[:, 1], linestyle="-", color="green", alpha=0.5, marker="o", markersize=12, zorder=2,  markerfacecolor='none', markeredgecolor='none')
-            tooltip = mpld3.plugins.PointLabelTooltip(scatter[0], labels=labels, location="top left")
-    
-            if show_epid_points:
-                labels2 = ['Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(img_numbers[i], epid2cax[i, 0], epid2cax[i, 1], 
-                            np.linalg.norm(epid2cax[i, :])) for i in range(N)]
-                ax_focal.scatter(epid2cax[:,0], epid2cax[:, 1], c=colors2, alpha=0.5,  s=80, zorder=1, linewidths=1)
-                scatter2 = ax_focal.plot(epid2cax[:,0], epid2cax[:, 1], linestyle="-", color="none", alpha=0.5, marker="o", markersize=12, zorder=2,  markerfacecolor='none', markeredgecolor='none')
-                tooltip2 = mpld3.plugins.PointLabelTooltip(scatter2[0], labels=labels2, location="top left")
-                mpld3.plugins.connect(fig_focal, tooltip, tooltip2)
-                ax_focal.plot([None], [None], c="yellow", linestyle=None, alpha=0.5, marker="o", label="EPID") # Legend labels
-            else:
-                mpld3.plugins.connect(fig_focal, tooltip)
-            
-            # Legend labels:
-            ax_focal.plot([None], [None], c="blue", linestyle=None, alpha=0.5, marker="o", label="CAX")
-    
-            limits_focal = pass_rate + 0.2 # Define the extent of the diagram
-            if show_epid_points:
-                p = ax_focal.plot([0],[0], "r+", mew=3, ms=10, label="BB/CAX")
-                tooltip3 = mpld3.plugins.PointLabelTooltip(p[0], labels=["Ballbearing or CAX"], location="top left")
-            else:
-                p = ax_focal.plot([0],[0], "r+", mew=3, ms=10, label="BB")
-                tooltip3 = mpld3.plugins.PointLabelTooltip(p[0], labels=["Ballbearing"], location="top left")
-            mpld3.plugins.connect(fig_focal, tooltip3)
-            ax_focal.add_patch(patches.Circle((0, 0), pass_rate, color='r', linestyle="dashed", fill=False))
-            ax_focal.add_patch(patches.Circle((0, 0), success_rate, color='g', linestyle="dashed", fill=False))
-            ax_focal.autoscale(False)
-            ax_focal.set_xlim([-limits_focal, limits_focal])
-            ax_focal.set_ylim([-limits_focal, limits_focal])
-            ax_focal.set_title("Scatter diagram")
-            ax_focal.set_xlabel("X [mm]")
-            ax_focal.set_ylabel("Y [mm]")
-            ax_focal.legend(framealpha=0, numpoints=1, ncol=3, loc='lower right', fontsize=8)
-            fig_focal.set_tight_layout(True)
 
-            # Plot Winkler gantry diagram
-            if len(cax2bb) == 8:
-                gantry = np.asarray([180, 180, 270, 270, 0, 0, 90, 90])*np.pi/180
-                t = np.linspace(-10, 10, 2)
-                for i in range(len(cax2bb)):
-                    x = cax2bb[i][0]*np.cos(gantry[i]) + np.sin(gantry[i])*t
-                    y = cax2bb[i][0]*np.sin(gantry[i]) + np.cos(gantry[i])*t
-                    ax_gantry.plot(x, y, color="grey", alpha=0.5, linewidth=1, linestyle="--" if i in range(4) else "-")
-                # Plot average lines
-                limits_gantry_list = []
-                gantry_center_x = []
-                gantry_center_y = []
-                for i in [0, 2, 4, 6]:
-                    x1 = cax2bb[i][0]*np.cos(gantry[i]) + np.sin(gantry[i])*t
-                    x2 = cax2bb[i+1][0]*np.cos(gantry[i+1]) + np.sin(gantry[i+1])*t
-                    y1 = cax2bb[i][0]*np.sin(gantry[i]) + np.cos(gantry[i])*t
-                    y2 = cax2bb[i+1][0]*np.sin(gantry[i+1]) + np.cos(gantry[i+1])*t
-                    x = (x1+x2)/2
-                    y = (y1+y2)/2
-                    if i in [0, 4]:
-                        limits_gantry_list.append(np.max(np.abs([x])))
-                        gantry_center_x.append(x)
-                    else:
-                        limits_gantry_list.append(np.max(np.abs([y])))
-                        gantry_center_y.append(y)
-                    ax_gantry.plot(x, y, color="purple", linewidth=2, linestyle="--" if i in range(4) else "-")
-
-            elif len(cax2bb) == 4:
-                gantry = np.asarray([180, 270, 0, 90])*np.pi/180
-                t = np.linspace(-10, 10, 2)
-                # Plot average lines
-                limits_gantry_list = []
-                gantry_center_x = []
-                gantry_center_y = []
-                for i in range(len(cax2bb)):
-                    x = cax2bb[i][0]*np.cos(gantry[i]) + np.sin(gantry[i])*t
-                    y = cax2bb[i][0]*np.sin(gantry[i]) + np.cos(gantry[i])*t
-                    ax_gantry.plot(x, y, color="purple", linewidth=2, linestyle="--" if i in range(2) else "-")
-
-                    if i in [0, 2]:
-                        limits_gantry_list.append(np.max(np.abs([x])))
-                        gantry_center_x.append(x)
-                    else:
-                        limits_gantry_list.append(np.max(np.abs([y])))
-                        gantry_center_y.append(y)
-            else:
-                limits_gantry_list = [-1,1]
-                gantry_center_x = []
-                gantry_center_y = []
-            gantry_center_x = np.average(gantry_center_x)
-            gantry_center_y = np.average(gantry_center_y)
-            limits_gantry = np.max(limits_gantry_list) + 0.2
-            ax_gantry.set_xlim([-limits_gantry, limits_gantry])
-            ax_gantry.set_ylim([-limits_gantry, limits_gantry])
-            ax_gantry.set_xlabel("LAT [mm]")
-            ax_gantry.set_ylabel("VRT [mm]")
-            ax_gantry.set_title("Gantry 2D CAX projection")
-            ax_gantry.plot([0], [0], "r+", mew=3, ms=10, label="BB")
-            ax_gantry.plot([gantry_center_x], [gantry_center_y], "x", color="black", mew=1, ms=10, label="Axis")
-            ax_gantry.legend(framealpha=0, numpoints=1, ncol=2, loc='lower right', fontsize=8)
-            ax_gantry.autoscale(False)
+            fig_focal = plot_scatter_diagram(
+                cax2bb, epid2cax, img_numbers, gantries, collimators,
+                couches, pass_rate, success_rate, show_epid_points,
+                use_pylinac, use_couch, test_type
+            )
 
             script_focal = mpld3.fig_to_html(fig_focal, d3_url=D3_URL, mpld3_url=MPLD3_URL)
-            general_functions.delete_figure([fig_focal])
-            
+
             # Calculate radius from center of CAX cloud to CAX:
             average_x = np.average(cax2bb[:, 0])
             average_y = np.average(cax2bb[:, 1])
             cax_wobble = np.linalg.norm(np.column_stack((cax2bb[:, 0]-average_x, cax2bb[:, 1]-average_y)), axis=1)
-            
+
             # Calculate EPID position with respect to CAX:
             epid2cax_dev_avg = np.average(epid2cax, axis=0)
 
             variables = {
-                            "acquisition_datetime": acquisition_datetime,
-                            "script": script,
-                            "script_focal": script_focal,
-                            "cax_position": cax_position,
-                            "bb_position": bb_position,
-                            "result": result,
-                            "max_deviation": round(np.max(radius), 2),
-                            "cax_wobble_max": np.max(cax_wobble),
-                            "epid2cax_dev_avg": epid2cax_dev_avg,
-                            "radius": radius,
-                            "pass_rate": pass_rate,
-                            "image_numbers": img_numbers,
-                            "success_rate": success_rate,
-                            "coll_asym_tol": coll_asym_tol,
-                            "beam_dev_tol": beam_dev_tol,
-                            "SIDs": list(set(SIDs)),
-                            "apply_tolerance_to_coll_asym": apply_tolerance_to_coll_asym,
-                            "save_results": save_results
-                            }
-
+                "acquisition_datetime": acquisition_datetime,
+                "script": script,
+                "script_focal": script_focal,
+                "cax_position": cax_position,
+                "bb_position": bb_position,
+                "result": result,
+                "max_deviation": round(np.max(radius), 2),
+                "cax_wobble_max": np.max(cax_wobble),
+                "epid2cax_dev_avg": epid2cax_dev_avg,
+                "radius": radius,
+                "pass_rate": pass_rate,
+                "image_numbers": img_numbers,
+                "success_rate": success_rate,
+                "coll_asym_tol": coll_asym_tol,
+                "beam_dev_tol": beam_dev_tol,
+                "SIDs": list(set(SIDs)),
+                "apply_tolerance_to_coll_asym": apply_tolerance_to_coll_asym,
+                "save_results": save_results
+            }
             return template("winston_lutz_results", variables)
         else:
-            if test_type=="Gnt/coll + couch rotation":
-                M = 8  # redefine
-                # Add scatter plot for the diagram
-                fig_focal = Figure(figsize=(10.5, 5), tight_layout={"w_pad":0,  "pad": 0})
-                ax_focal = fig_focal.add_subplot(1,2,1, aspect=1)
-                ax_couch = fig_focal.add_subplot(1,2,2, aspect=1)
-                
+            if test_type == "Gnt/coll + couch rotation":
                 cax2bb_gntcoll = np.asarray(cax2bb)[:8]  # pick only the first 8 images!
                 epid2cax_gntcoll = np.asarray(epid2cax)[:8]
                 bb_position_couch = np.asarray(bb_position)[8:]
-                cax2epid_couch = -np.asarray(epid2cax)[8:]
 
-                colors = ["blue"]*M
-                colors2 = ["yellow"]*M
-                labels = ['Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(img_numbers[i], cax2bb_gntcoll[i, 0], cax2bb_gntcoll[i, 1], 
-                            np.linalg.norm(cax2bb_gntcoll[i, :])) for i in range(M)]
-                ax_focal.scatter(cax2bb_gntcoll[:,0], cax2bb_gntcoll[:, 1], c=colors, alpha=0.5,  s=80, zorder=1, linewidths=1)
-                scatter = ax_focal.plot(cax2bb_gntcoll[:,0], cax2bb_gntcoll[:, 1], linestyle="-", color="green", alpha=0.5, marker="o", markersize=12, zorder=2,  markerfacecolor='none', markeredgecolor='none')
-                tooltip = mpld3.plugins.PointLabelTooltip(scatter[0], labels=labels, location="top left")
-
-                if show_epid_points:
-                    labels2 = ['Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(img_numbers[i], epid2cax_gntcoll[i, 0], epid2cax_gntcoll[i, 1], 
-                                np.linalg.norm(epid2cax_gntcoll[i, :])) for i in range(M)]
-                    ax_focal.scatter(epid2cax_gntcoll[:,0], epid2cax_gntcoll[:, 1], c=colors2, alpha=0.5,  s=80, zorder=1, linewidths=1)
-                    scatter2 = ax_focal.plot(epid2cax_gntcoll[:,0], epid2cax_gntcoll[:, 1], linestyle="-", color="none", alpha=0.5, marker="o", markersize=12, zorder=2,  markerfacecolor='none', markeredgecolor='none')
-                    tooltip2 = mpld3.plugins.PointLabelTooltip(scatter2[0], labels=labels2, location="top left")
-                    mpld3.plugins.connect(fig_focal, tooltip, tooltip2)
-                    ax_focal.plot([None], [None], c="yellow", linestyle=None, alpha=0.5, marker="o", label="EPID") # Legend labels
-                else:
-                    mpld3.plugins.connect(fig_focal, tooltip)
-                
-                # Legend labels:
-                ax_focal.plot([None], [None], c="blue", linestyle=None, alpha=0.5, marker="o", label="CAX")
-        
-                limits_focal = pass_rate + 0.2 # Define the extent of the diagram
-                if show_epid_points:
-                    p = ax_focal.plot([0],[0], "r+", mew=3, ms=10, label="BB/CAX")
-                    tooltip3 = mpld3.plugins.PointLabelTooltip(p[0], labels=["Ballbearing or CAX"], location="top left")
-                else:
-                    p = ax_focal.plot([0],[0], "r+", mew=3, ms=10, label="BB")
-                    tooltip3 = mpld3.plugins.PointLabelTooltip(p[0], labels=["Ballbearing"], location="top left")
-                mpld3.plugins.connect(fig_focal, tooltip3)
-                ax_focal.add_patch(patches.Circle((0, 0), pass_rate, color='r', linestyle="dashed", fill=False))
-                ax_focal.add_patch(patches.Circle((0, 0), success_rate, color='g', linestyle="dashed", fill=False))
-                ax_focal.autoscale(False)
-                ax_focal.set_xlim([-limits_focal, limits_focal])
-                ax_focal.set_ylim([-limits_focal, limits_focal])
-                ax_focal.set_title("Gnt/coll diagram")
-                ax_focal.set_xlabel("X [mm]")
-                ax_focal.set_ylabel("Y [mm]")
-                ax_focal.legend(framealpha=0, numpoints=1, ncol=3, loc='lower right', fontsize=8)
-                fig_focal.set_tight_layout(True)
-        
                 # Plot scatter plot for couch!
-                # Calculate circle fit to BB point (with respect to CAX):
-                def calc_R(xc, yc):
-                    #calculate the distance of each 2D points from the center (xc, yc)
-                    # Do not include first point in the calculation!!!!1
-                    return np.sqrt((bb_position_couch[1:,0]-xc)**2 + (bb_position_couch[1:,1]-yc)**2)
-                
-                def f_2(c):
-                    #calculate the algebraic distance between the data points and the mean circle centered at c=(xc, yc)
-                    Ri = calc_R(*c)
+                def calc_distance2center(xc, yc):
+                    # Calculate the distance of 2D points from the center (xc, yc)
+                    # Do not include first point in the calculation.
+                    return np.sqrt((bb_position_couch[1:, 0]-xc)**2 + (bb_position_couch[1:, 1]-yc)**2)
+
+                def calc_distance(c):
+                    # Calculate the algebraic distance between the data points and
+                    # the mean circle centered at c=(xc, yc)
+                    Ri = calc_distance2center(*c)
                     return Ri - Ri.mean()
+
                 try:
-                    solution = optimize.least_squares(f_2, x0=[start_x, start_y], bounds=[-5, 5])
-                    center_2 = solution.x
+                    solution = optimize.least_squares(calc_distance, x0=[start_x, start_y], bounds=[-5, 5])
+                    circle_center = solution.x
                 except:
-                    center_2 = [np.nan, np.nan]
-                
-                Ri_2 = calc_R(*center_2)
-                R_2 = Ri_2.mean()
-                
+                    circle_center = [np.nan, np.nan]
+
+                circle_radius = calc_distance2center(*circle_center).mean()
+
                 # Calculate distance of couch axis from rad center
-                lat = (-result[0][0]-result[1][0]+result[4][0]+result[5][0])/4
-                long = (result[0][1]+result[1][1]+result[2][1]+result[3][1] +result[4][1]+result[5][1]+result[6][1]+result[7][1])/8
-                linac_iso_x = lat + bb_position_couch[0][0]  # Here you define the reference for linac isocenter
+                lat = (-result[0][0] - result[1][0] + result[4][0] + result[5][0])/4
+                long = (result[0][1] + result[1][1] + result[2][1] + result[3][1]
+                        + result[4][1] + result[5][1] + result[6][1] + result[7][1])/8
+
+                linac_iso_x = lat + bb_position_couch[0][0]
                 linac_iso_y = long + bb_position_couch[0][1]
-                #linac_iso_x = lat + bb_position[4][0]
-                #linac_iso_y = long + bb_position[4][1]  # Take the fitfh image from the first seuqence
-                couch_iso_dev_x = center_2[0] - linac_iso_x
-                couch_iso_dev_y = center_2[1] - linac_iso_y
-                
-                # Plot BB with respect to epid center (reference)
-                NN = len(bb_position_couch)
-                colors_couch = ["red"]*NN
-                labels_couch = ['Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(img_numbers[8+i], bb_position_couch[i, 0], bb_position_couch[i, 1], 
-                                np.linalg.norm(bb_position_couch[i, :])) for i in range(NN)]
-                ax_couch.scatter(bb_position_couch[:,0], bb_position_couch[:, 1], c=colors_couch, alpha=0.5,  s=80, zorder=1, linewidths=1)
-                scatter_couch = ax_couch.plot(bb_position_couch[:,0], bb_position_couch[:, 1], linestyle="-", color="green", alpha=0.5, marker="o", markersize=12, zorder=2,  markerfacecolor='none', markeredgecolor='none')
-                tooltip11 = mpld3.plugins.PointLabelTooltip(scatter_couch[0], labels=labels_couch, location="top left")
-    
-                # Plot CAX points with respect to epid center
-                labels_couch_cax = ['Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(img_numbers[8+i], cax2epid_couch[i, 0], cax2epid_couch[i, 1], 
-                                    np.linalg.norm(cax2epid_couch[i, :])) for i in range(NN)]
-                pp = ax_couch.plot(cax2epid_couch[:,0], cax2epid_couch[:,1], c="blue", linestyle=None, linewidth=0, alpha=0.85, markersize = 5, marker="o", label="CAX")
-                tooltip33 = mpld3.plugins.PointLabelTooltip(pp[0], labels=labels_couch_cax, location="top left")
-                
-                # Plot center of couch axis (circle)
-                ax_couch.add_patch(patches.Circle(center_2, R_2, color='black', alpha=0.85, fill=False, linewidth=1))
-                labels_cc = ['Couch axis, x = {:04.2f} mm, y = {:04.2f} mm'.format(center_2[0], center_2[1])]
-                ax_couch.plot([center_2[0]], [center_2[1]], linestyle="None", color="black", alpha=1, marker="x", markersize=12, zorder=2)
-                cc = ax_couch.plot([center_2[0]], [center_2[1]], linestyle="None", color="black", alpha=1, marker="o", markersize=15, zorder=2,  markerfacecolor='none', markeredgecolor='none')
-                tooltip4 = mpld3.plugins.PointLabelTooltip(cc[0], labels=labels_cc, location="top left")
-                
-                # Plot isocenter of linac
-                qq = ax_couch.plot([linac_iso_x],[linac_iso_y], c="blue", linestyle=None, linewidth=0, alpha=0.5, marker="s", markersize = 10, label="ISO")
-                tooltip331 = mpld3.plugins.PointLabelTooltip(qq[0], labels=["Linac isocenter x = {:04.2f} mm, y = {:04.2f} mm".format(linac_iso_x, linac_iso_y)], location="top left")
-                
-                # Plot pass rates as cricle etc
-                #ax_couch.add_patch(patches.Circle((0, 0), pass_rate, color='r', linestyle="dashed", fill=False))
-                #ax_couch.add_patch(patches.Circle((0, 0), success_rate, color='g', linestyle="dashed", fill=False))
 
-                ax_couch.plot([None], [None], c="red", linestyle=None, linewidth=0, alpha=0.5, marker="o", markersize = 10, label="BB")
-                ax_couch.plot([None], [None], c="black", linestyle=None, linewidth=0, alpha=1, markersize=10, marker="x", label="Axis") # Legend labels
-                
-                mpld3.plugins.connect(fig_focal, tooltip11, tooltip33, tooltip4, tooltip331)
-                
-                ax_couch.autoscale(False)
+                couch_iso_dev_x = circle_center[0] - linac_iso_x
+                couch_iso_dev_y = circle_center[1] - linac_iso_y
 
-                margin = 0.2
-                if 2*R_2 < 1:
-                    margin = 1 - R_2 + 0.2
-
-                limits_focal_couch_xmin = center_2[0] - R_2 - margin
-                limits_focal_couch_xmax = center_2[0] + R_2 + margin
-                limits_focal_couch_ymin = center_2[1] - R_2 - margin
-                limits_focal_couch_ymax = center_2[1] + R_2 + margin
-                
-                ax_couch.set_xlim([limits_focal_couch_xmin, limits_focal_couch_xmax])
-                ax_couch.set_ylim([limits_focal_couch_ymin, limits_focal_couch_ymax])
-                ax_couch.set_title("Couch diagram")
-                ax_couch.set_xlabel("LAT [mm]")
-                ax_couch.set_ylabel("LONG [mm]")
-                ax_couch.legend(framealpha=0, numpoints=1, ncol=4, loc='lower right', fontsize=8)
-        
+                fig_focal = plot_scatter_diagram(
+                    cax2bb, epid2cax, img_numbers, gantries, collimators,
+                    couches, pass_rate, success_rate, show_epid_points,
+                    use_pylinac, use_couch, test_type,
+                    circle_center, circle_radius, linac_iso_x, linac_iso_y
+                )
                 script_focal = mpld3.fig_to_html(fig_focal, d3_url=D3_URL, mpld3_url=MPLD3_URL)
-                general_functions.delete_figure([fig_focal])
-                
+
                 # Calculate radius from center of CAX cloud to CAX:
                 average_x = np.average(cax2bb_gntcoll[:, 0])
                 average_y = np.average(cax2bb_gntcoll[:, 1])
-                cax_wobble = np.linalg.norm(np.column_stack((cax2bb_gntcoll[:, 0]-average_x, cax2bb_gntcoll[:, 1]-average_y)), axis=1)
-        
+                cax_wobble = np.linalg.norm(
+                    np.column_stack(
+                        (cax2bb_gntcoll[:, 0]-average_x, cax2bb_gntcoll[:, 1]-average_y)),
+                    axis=1
+                )
+
                 # Calculate EPID position with respect to CAX:
                 epid2cax_dev_avg = np.average(epid2cax_gntcoll, axis=0)
 
                 variables = {
-                                "acquisition_datetime": acquisition_datetime,
-                                "script": script,
-                                "script_focal": script_focal,
-                                "cax_position": cax_position,
-                                "bb_position": bb_position,
-                                "result": result,
-                                "max_deviation": round(np.max(radius), 2),
-                                "cax_wobble_max": np.max(cax_wobble),
-                                "epid2cax_dev_avg": epid2cax_dev_avg,
-                                "radius": radius,
-                                "pass_rate": pass_rate,
-                                "image_numbers": img_numbers,
-                                "success_rate": success_rate,
-                                "coll_asym_tol": coll_asym_tol,
-                                "beam_dev_tol": beam_dev_tol,
-                                "couch_dist_tol": couch_dist_tol,
-                                "SIDs": list(set(SIDs)),
-                                "apply_tolerance_to_coll_asym": apply_tolerance_to_coll_asym,
-                                "couch_wobble": R_2,
-                                "couch_iso_dev_x": couch_iso_dev_x,
-                                "couch_iso_dev_y": couch_iso_dev_y,
-                                "save_results": save_results
-                                }
-                #gc.collect() # Collect and delete mpl plots
+                    "acquisition_datetime": acquisition_datetime,
+                    "script": script,
+                    "script_focal": script_focal,
+                    "cax_position": cax_position,
+                    "bb_position": bb_position,
+                    "result": result,
+                    "max_deviation": round(np.max(radius), 2),
+                    "cax_wobble_max": np.max(cax_wobble),
+                    "epid2cax_dev_avg": epid2cax_dev_avg,
+                    "radius": radius,
+                    "pass_rate": pass_rate,
+                    "image_numbers": img_numbers,
+                    "success_rate": success_rate,
+                    "coll_asym_tol": coll_asym_tol,
+                    "beam_dev_tol": beam_dev_tol,
+                    "couch_dist_tol": couch_dist_tol,
+                    "SIDs": list(set(SIDs)),
+                    "apply_tolerance_to_coll_asym": apply_tolerance_to_coll_asym,
+                    "couch_wobble": circle_radius,
+                    "couch_iso_dev_x": couch_iso_dev_x,
+                    "couch_iso_dev_y": couch_iso_dev_y,
+                    "save_results": save_results
+                }
 
                 return template("winston_lutz_results_gntcollcouch", variables)
 
             elif test_type == "Couch only":  # if only the couch is rotated, no gnt or coll
-                # Add scatter plot for the diagram
-                fig_couch = Figure(figsize=(7, 7))
-                ax_couch = fig_couch.add_subplot(1,1,1, aspect=1)
-
-                epid2cax = np.asarray(epid2cax)
-                cax2epid_couch = -np.asarray(epid2cax)
                 bb_position_couch = np.asarray(bb_position)
-                
-                def calc_R(xc, yc):
-                    #calculate the distance of each 2D points from the center (xc, yc)
-                    return np.sqrt((bb_position_couch[:,0]-xc)**2 + (bb_position_couch[:,1]-yc)**2)
-                
-                def f_2(c):
-                    #calculate the algebraic distance between the data points and the mean circle centered at c=(xc, yc)
-                    Ri = calc_R(*c)
+
+                def calc_distance2center(xc, yc):
+                    # Calculate the distance of 2D points from the center (xc, yc)
+                    # Do not include first point in the calculation.
+                    return np.sqrt((bb_position_couch[:, 0]-xc)**2 + (bb_position_couch[:, 1]-yc)**2)
+
+                def calc_distance(c):
+                    # Calculate the algebraic distance between the data points and
+                    # the mean circle centered at c=(xc, yc)
+                    Ri = calc_distance2center(*c)
                     return Ri - Ri.mean()
-                
+
                 try:
-                    solution = optimize.least_squares(f_2, x0=[start_x, start_y], bounds=[-5, 5])
-                    center_2 = solution.x
+                    solution = optimize.least_squares(calc_distance, x0=[start_x, start_y], bounds=[-5, 5])
+                    circle_center = solution.x
                 except:
-                    center_2 = [np.nan, np.nan]
-                
-                Ri_2 = calc_R(*center_2)
-                R_2 = Ri_2.mean()
-        
-                # Plot BB with respect to epid center (reference)
-                NN = len(bb_position_couch)
-                colors_couch = ["red"]*NN
-                labels_couch = ['Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(img_numbers[i], bb_position_couch[i, 0], bb_position_couch[i, 1], 
-                                np.linalg.norm(bb_position_couch[i, :])) for i in range(NN)]
-                ax_couch.scatter(bb_position_couch[:,0], bb_position_couch[:, 1], c=colors_couch, alpha=0.5,  s=80, zorder=1, linewidths=1)
-                scatter_couch = ax_couch.plot(bb_position_couch[:,0], bb_position_couch[:, 1], linestyle="-", color="green", alpha=0.5, marker="o", markersize=12, zorder=2,  markerfacecolor='none', markeredgecolor='none')
-                tooltip11 = mpld3.plugins.PointLabelTooltip(scatter_couch[0], labels=labels_couch, location="top left")
-    
-                # Plot CAX points with respect to epid center
-                labels_couch_cax = ['Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(img_numbers[i], cax2epid_couch[i, 0], cax2epid_couch[i, 1], 
-                                    np.linalg.norm(cax2epid_couch[i, :])) for i in range(NN)]
-                pp = ax_couch.plot(cax2epid_couch[:,0], cax2epid_couch[:,1], c="blue", linestyle=None, linewidth=0, alpha=0.85, markersize = 5, marker="o", label="CAX")
-                tooltip33 = mpld3.plugins.PointLabelTooltip(pp[0], labels=labels_couch_cax, location="top left")
-                
-                # Plot center of couch axis (circle)
-                ax_couch.add_patch(patches.Circle(center_2, R_2, color='black', alpha=0.85, fill=False, linewidth=1))
-                labels_cc = ['Couch axis, x = {:04.2f} mm, y = {:04.2f} mm'.format(center_2[0], center_2[1])]
-                ax_couch.plot([center_2[0]], [center_2[1]], linestyle="None", color="black", alpha=1, marker="x", markersize=12, zorder=2)
-                cc = ax_couch.plot([center_2[0]], [center_2[1]], linestyle="None", color="black", alpha=1, marker="o", markersize=15, zorder=2,  markerfacecolor='none', markeredgecolor='none')
-                tooltip4 = mpld3.plugins.PointLabelTooltip(cc[0], labels=labels_cc, location="top left")
+                    circle_center = [np.nan, np.nan]
 
-                ax_couch.plot([None], [None], c="red", linestyle=None, linewidth=0, alpha=0.5, marker="o", markersize = 10, label="BB")
-                ax_couch.plot([None], [None], c="black", linestyle=None, linewidth=0, alpha=1, markersize=10, marker="x", label="couch") # Legend labels
-                
-                mpld3.plugins.connect(fig_couch, tooltip11, tooltip33, tooltip4)
-                
-                ax_couch.autoscale(False)
-                margin = 0.2
-                if 2*R_2 < 1:
-                    margin = 1 - R_2 + 0.2
+                circle_radius = calc_distance2center(*circle_center).mean()
 
-                limits_focal_couch_xmin = center_2[0] - R_2 - margin
-                limits_focal_couch_xmax = center_2[0] + R_2 + margin
-                limits_focal_couch_ymin = center_2[1] - R_2 - margin
-                limits_focal_couch_ymax = center_2[1] + R_2 + margin
-                
-                ax_couch.set_xlim([limits_focal_couch_xmin, limits_focal_couch_xmax])
-                ax_couch.set_ylim([limits_focal_couch_ymin, limits_focal_couch_ymax])
-                ax_couch.set_title("Couch diagram")
-                ax_couch.set_xlabel("LAT [mm]")
-                ax_couch.set_ylabel("LONG [mm]")
-                ax_couch.legend(framealpha=0, numpoints=1, ncol=4, loc='lower right', fontsize=8)
-        
+                fig_couch = plot_couchcoll_scatter_diagram(
+                    cax2bb, epid2cax, img_numbers, test_type,
+                    circle_center=circle_center, circle_radius=circle_radius
+                )
+
                 script_focal = mpld3.fig_to_html(fig_couch, d3_url=D3_URL, mpld3_url=MPLD3_URL)
-                general_functions.delete_figure([fig_couch])
 
                 variables = {
-                                "acquisition_datetime": acquisition_datetime,
-                                "script": script,
-                                "script_focal": script_focal,
-                                "cax_position": cax_position,
-                                "cax_avg": np.average(cax_position, axis=0),
-                                "bb_position": bb_position,
-                                "result": result,
-                                "radius": radius,
-                                "iso_size": R_2,
-                                "iso_position": center_2,
-                                "image_numbers": img_numbers,
-                                "SIDs": list(set(SIDs)),
-                                "save_results": save_results
-                                }
+                    "acquisition_datetime": acquisition_datetime,
+                    "script": script,
+                    "script_focal": script_focal,
+                    "cax_position": cax_position,
+                    "cax_avg": np.average(cax_position, axis=0),
+                    "bb_position": bb_position,
+                    "result": result,
+                    "radius": radius,
+                    "iso_size": circle_radius,
+                    "iso_position": circle_center,
+                    "image_numbers": img_numbers,
+                    "SIDs": list(set(SIDs)),
+                    "save_results": save_results
+                }
 
                 return template("winston_lutz_results_couchonly", variables)
 
-            else: #test_type == "Colimator only":  # if only the collimator is rotated
-                # Add scatter plot for the diagram
-                fig_coll = Figure(figsize=(7, 7))
-                ax_coll = fig_coll.add_subplot(1,1,1, aspect=1)
-                
+            else:
                 cax2bb = np.asarray(cax2bb)
-                bb_position = np.asarray(bb_position)
-                
-                def calc_R(xc, yc):
-                    #calculate the distance of each 2D points from the center (xc, yc)
-                    return np.sqrt((cax2bb[:,0]-xc)**2 + (cax2bb[:,1]-yc)**2)
-                
-                def f_2(c):
-                    #calculate the algebraic distance between the data points and the mean circle centered at c=(xc, yc)
-                    Ri = calc_R(*c)
+                def calc_distance2center(xc, yc):
+                    # Calculate the distance of 2D points from the center (xc, yc)
+                    # Do not include first point in the calculation.
+                    return np.sqrt((cax2bb[:, 0]-xc)**2 + (cax2bb[:, 1]-yc)**2)
+
+                def calc_distance(c):
+                    # Calculate the algebraic distance between the data points and
+                    # the mean circle centered at c=(xc, yc)
+                    Ri = calc_distance2center(*c)
                     return Ri - Ri.mean()
-                
+
                 try:
-                    solution = optimize.least_squares(f_2, x0=[start_x, start_y], bounds=[-5, 5])
-                    center_2 = solution.x
+                    solution = optimize.least_squares(calc_distance, x0=[start_x, start_y], bounds=[-5, 5])
+                    circle_center = solution.x
                 except:
-                    center_2 = [np.nan, np.nan]
-                
-                Ri_2 = calc_R(*center_2)
-                R_2 = Ri_2.mean()
-        
-                # Plot BB with respect to epid center (reference)
-                NN = len(cax2bb)
+                    circle_center = [np.nan, np.nan]
 
-                # Plot CAX points with respect to epid center
-                labels_couch_cax = ['Img = {:d}, x = {:04.2f} mm, y = {:04.2f} mm, R = {:04.2f} mm'.format(img_numbers[i], cax2bb[i, 0], cax2bb[i, 1], 
-                                    np.linalg.norm(cax2bb[i, :])) for i in range(NN)]
-                pp = ax_coll.plot(cax2bb[:,0], cax2bb[:,1], c="blue", linestyle="-", linewidth=1, alpha=0.5, markersize = 10, marker="o", label="CAX")
-                tooltip33 = mpld3.plugins.PointLabelTooltip(pp[0], labels=labels_couch_cax, location="top left")
-                
-                # Plot center of axis (circle)
-                ax_coll.add_patch(patches.Circle(center_2, R_2, color='black', alpha=0.85, fill=False, linewidth=1))
-                labels_cc = ['Collimator axis, x = {:04.2f} mm, y = {:04.2f} mm'.format(center_2[0], center_2[1])]
-                ax_coll.plot([center_2[0]], [center_2[1]], linestyle="None", color="black", alpha=1, marker="x", markersize=12, zorder=2)
-                cc = ax_coll.plot([center_2[0]], [center_2[1]], linestyle="None", color="black", alpha=1, marker="o", markersize=15, zorder=2,  markerfacecolor='none', markeredgecolor='none')
-                tooltip4 = mpld3.plugins.PointLabelTooltip(cc[0], labels=labels_cc, location="top left")
+                circle_radius = calc_distance2center(*circle_center).mean()
 
-                ax_coll.plot([None], [None], c="black", linestyle=None, linewidth=0, alpha=1, markersize=10, marker="x", label="Axis") # Legend labels
-                #ax_coll.plot([None], [None], c="red", linestyle=None, linewidth=0, alpha=1, markersize=10, marker="+", label="BB") # Legend labels
-                
-                pe = ax_coll.plot([0],[0], "r+", mew=3, ms=10, label="BB")
-                tooltip3 = mpld3.plugins.PointLabelTooltip(pe[0], labels=["Ballbearing"], location="top left")
-                
-                mpld3.plugins.connect(fig_coll, tooltip3, tooltip33, tooltip4)
-                
-                ax_coll.autoscale(False)
-                limits_focal_coll_xmin = center_2[0] - R_2 - 0.2
-                limits_focal_coll_xmax = center_2[0] + R_2 + 0.2
-                limits_focal_coll_ymin = center_2[1] - R_2 - 0.2
-                limits_focal_coll_ymax = center_2[1] + R_2 + 0.2
-                
-                ax_coll.set_xlim([limits_focal_coll_xmin, limits_focal_coll_xmax])
-                ax_coll.set_ylim([limits_focal_coll_ymin, limits_focal_coll_ymax])
-                ax_coll.set_title("Collimator diagram")
-                ax_coll.set_xlabel("LAT [mm]")
-                ax_coll.set_ylabel("LONG [mm]")
-                ax_coll.legend(framealpha=0, numpoints=1, ncol=4, loc='lower right', fontsize=8)
+                fig_coll = plot_couchcoll_scatter_diagram(
+                    cax2bb, epid2cax, img_numbers, test_type,
+                    circle_center=circle_center, circle_radius=circle_radius
+                )
 
                 script_focal = mpld3.fig_to_html(fig_coll, d3_url=D3_URL, mpld3_url=MPLD3_URL)
-                general_functions.delete_figure([fig_coll])
 
                 variables = {
-                                "acquisition_datetime": acquisition_datetime,
-                                "script": script,
-                                "script_focal": script_focal,
-                                "cax_position": cax_position,
-                                "cax_avg": np.average(cax_position, axis=0),
-                                "bb_position": bb_position,
-                                "result": result,
-                                "radius": radius,
-                                "iso_size": R_2,
-                                "iso_position": center_2,
-                                "image_numbers": img_numbers,
-                                "SIDs": list(set(SIDs)),
-                                "save_results": save_results
-                                }
+                    "acquisition_datetime": acquisition_datetime,
+                    "script": script,
+                    "script_focal": script_focal,
+                    "cax_position": cax_position,
+                    "cax_avg": np.average(cax_position, axis=0),
+                    "bb_position": bb_position,
+                    "result": result,
+                    "radius": radius,
+                    "iso_size": circle_radius,
+                    "iso_position": circle_center,
+                    "image_numbers": img_numbers,
+                    "SIDs": list(set(SIDs)),
+                    "save_results": save_results
+                }
 
                 return template("winston_lutz_results_collimatoronly", variables)
 
@@ -1140,13 +1177,13 @@ def winstonlutz_helperf_catch_error(args):
         return template("error_template", {"error_message": str(e)})
 
 
-@wl_app.route('/winston_lutz_calculate/<clipbox>/<zoom>/<usepylinac>', method="POST")
-def winston_lutz_calculate(clipbox, zoom, usepylinac):
+@wl_app.route('/winston_lutz_calculate/<clipbox>/<zoom>/<use_pylinac>', method="POST")
+def winston_lutz_calculate(clipbox, zoom, use_pylinac):
     colormap = request.forms.hidden_colormap
     test_type = request.forms.hidden_testtype
     use_couch = True if request.forms.hidden_usecouch == "true" else False
     show_epid_points = True if request.forms.hidden_show_epid_points == "true" else False
-    usepylinac = True if usepylinac == "True" else False
+    use_pylinac = True if use_pylinac == "True" else False
     station = request.forms.hidden_station
     imgdescription = request.forms.hidden_imgdescription
     displayname = request.forms.hidden_displayname
@@ -1191,7 +1228,7 @@ def winston_lutz_calculate(clipbox, zoom, usepylinac):
         if imglist[i]:
             img_numbers.append(i+1)
 
-    if usepylinac:
+    if use_pylinac:
         pylinac_angles_full = json.loads(request.forms.pylinacangles)
         pylinac_angles_full = [int(float(x)) if x != "" else None for x in pylinac_angles_full]
 
@@ -1205,7 +1242,9 @@ def winston_lutz_calculate(clipbox, zoom, usepylinac):
             if imglist[i]:
                 pylinac_angles.append(pylinac_angles_full[i])
 
-        (folder_path, file_paths, file_paths_full) = RestToolbox.GetSeries2Folder(config.ORTHANC_URL, instances_list, imglist)
+        (folder_path, file_paths, file_paths_full) = RestToolbox.GetSeries2Folder(
+            config.ORTHANC_URL, instances_list, imglist
+        )
 
         if use_filenames:
             # Add coll/gantry/couch angles to the file name
@@ -1243,7 +1282,7 @@ def winston_lutz_calculate(clipbox, zoom, usepylinac):
                 file_paths.append(file_paths_full[i])
 
         if clipbox != 0:
-            for subfolder in file_paths:    
+            for subfolder in file_paths:
                 for filename in os.listdir(subfolder):
                     try:
                         orig_img = pylinacimage.DicomImage(os.path.join(subfolder, filename))
@@ -1256,7 +1295,7 @@ def winston_lutz_calculate(clipbox, zoom, usepylinac):
                             error_message="Unable to apply clipbox."
                         )
 
-    # Note that file_paths are dcm files if usepylinac==True else subfolders
+    # Note that file_paths are dcm files if use_pylinac==True else subfolders
 
     args = {
         "folder_path": folder_path,
@@ -1265,7 +1304,7 @@ def winston_lutz_calculate(clipbox, zoom, usepylinac):
         "colormap": colormap,
         "clipbox": clipbox,
         "zoom": zoom,
-        "usepylinac": usepylinac,
+        "use_pylinac": use_pylinac,
         "show_epid_points": show_epid_points,
         "use_filenames": use_filenames,
         "test_type": test_type,

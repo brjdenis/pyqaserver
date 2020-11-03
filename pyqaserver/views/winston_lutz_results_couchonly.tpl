@@ -109,9 +109,13 @@
                 <h3 class="panel-title">Estimated BB wobble</h3>
             </div>
             <div class="panel-body">
-                Radius:
             </div>
             <table class="table  table-borderless">
+                <tr>
+                    <td>
+                        Radius
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         {{round(iso_size, 2)}} mm
@@ -126,9 +130,13 @@
                 <h3 class="panel-title">Estimated couch axis to CAX distance</h3>
             </div>
             <div class="panel-body">
-                Distance:
             </div>
             <table class="table  table-borderless">
+                <tr>
+                    <td>
+                        Distance
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         {{round( ((cax_avg[0]-iso_position[0])**2 + (cax_avg[1]-iso_position[1])**2)**0.5 , 2)}} mm
