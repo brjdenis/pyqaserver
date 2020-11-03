@@ -85,6 +85,14 @@ Older versions:
 
 * [Version 1.0](https://brjdenis.github.io/pyqaserver/docs/version1.0/html/) , [PDF](/pdf/pyqaserver1.0.pdf)
 
+
+## Versions
+
+* Version 2.0.1 (latest)
+* Version 2.0.0
+* Version 1.0 (not on PyPI)
+
+
 ## Bugs and requests
 
 You can contribute to this project with suggestions or bug reports to: brjdenis2000@gmail.com.
