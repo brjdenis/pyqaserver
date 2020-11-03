@@ -56,11 +56,11 @@ This way was adapted for Elekta machines, but it will work in general. Four test
  
  - **Couch rotation only** 
 	
-	Set the Test type to **Couch only**. Put gantry to 0 and acquire images of the BB at different couch angles. The analysis is similar to the one above, only that this time the MV isocenter is missing from the image, and the software will assume the CAX as the true isocenter. 
+	Set the Test type to **Couch only**. Put gantry to 0 and acquire images of the BB at different couch angles. The analysis is similar to the one above, only that this time the MV isocenter is missing from the image. For each point in the scatter diagram, the EPID center is considered static. The CAX may wobble a bit, depending on the stability of the beam. 
 
  - **Collimator rotation only**
 
-	Set the Test type to **Collimator only**. If your collimator has some asymmetry or a significant wobble, you can estimate the radius of this with this test. Put the BB inside the field and acquire many images at different collimator angles. 
+	Set the Test type to **Collimator only**. If your collimator has some asymmetry or a significant wobble, you can estimate the radius of this with this test. Put the BB inside the field and acquire many images at different collimator angles. The BB is considered as static and all CAX scatter points are moving around.
 	
  
 Options
@@ -194,13 +194,16 @@ Interpreting results
 	When you do the *Gnt/coll + couch rotation* test, the software will calculate the position of the couch axis of rotation with respect to the average MV isocenter of the linac. Ideally, they should match.
 
 **Scatter diagram**
-	The BB is in the center of the diagram when only blue dots are shown. Blue dots represent field CAX. When *Show EPID2CAX on scatter plot?* is checked, additional yellow dots are displayed that represent the center of the EPID with respect to the field CAX, which is in the center of the diagram. The green circle corresponds to the normal tolerance, the red circle is the action tolerance. Both are defined in the configuration.
+	The BB is in the center of the diagram when only blue dots are shown. Blue dots represent field CAX. When *Show EPID2CAX on scatter plot?* is checked, additional yellow dots are displayed that represent the center of the EPID with respect to the field CAX, which is in the center of the diagram. The green circle corresponds to the normal tolerance, the red circle is the action tolerance. This diagram shows CAX points on the EPID plane, not in 3D space. 
 
 **Gantry 2D CAX projection**
-	The intersection of beam paths with the LAT-VRT plane (Winkler et al diagrams). Solid lines are beam paths at gantry angles 0 and 90. Dashed lines are beam paths at gantry angles 180 and 270. BB is in the center of the diagram. The cross represents the gantry axis of rotation.
+	(Winkler et al) The intersection of beam paths with the LAT-VRT plane (Winkler et al diagrams). Solid lines are beam paths at gantry angles 0 and 90. Dashed lines are beam paths at gantry angles 180 and 270. BB is in the center of the diagram. Purple lines are averages over opposing collimator angles. The cross represents the gantry axis of rotation.
 
 **Couch diagram**
-	When the right test type is chosen, this diagram will appear. The diagram's coordinate system is that of the EPID. The blue square is the average MV isocenter calculated from first 8 images. The first red dot is the reference image of the BB that is used to define the position of the average MV isocenter. Other red dots are BB positions projected onto the EPID at different couch angles. The cross is the center of the fitted circle which represents the couch axis of rotation. Small blue dots are CAX. They may change a bit because of errors in beam steering and MLC positioning between images, particularly on Elekta linacs.
+	The diagram's coordinate system is that of the EPID. The blue square is the average MV isocenter calculated from first 8 images. The first red dot is the reference image of the BB that is used to define the position of the average MV isocenter. Other red dots are BB positions projected onto the EPID at different couch angles. The cross is the center of the fitted circle which represents the couch axis of rotation. Small blue dots are CAX. They may change a bit because of errors in beam steering and MLC positioning between images, particularly on Elekta linacs. The "couch only" test gives a similar diagram, except that the MV isocenter is missing.
+
+**Collimator diagram**
+	Similar to couch diagram, except that the central point and reference is the BB not the EPID center.
 
 **Status**
 	You can get either Passed, Borderline or Failed status. If you are using 4 or 8 images, then you have the option of applying the tolerance to any each image in the series, or to the section *Collimator asymmetry* where radius R is calculated by averaging over collimator pairs. See your configuration.

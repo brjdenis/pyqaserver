@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Administration &mdash; pyqaserver 2.0.0 documentation</title>
+  <title>Administration &mdash; pyqaserver 2.0.1 documentation</title>
   
 
   
@@ -449,13 +449,18 @@ Admin users can:</p>
 </dd>
 <dt><strong>SEND_FROM_PASSWORD</strong></dt><dd><p>The password that you are using to access the account. It is not encrypted.</p>
 </dd>
-<dt><strong>SEND_TO</strong></dt><dd><p>A list of receivers. For example: <a class="reference external" href="mailto:person1&#37;&#52;&#48;gmail&#46;com">person1<span>&#64;</span>gmail<span>&#46;</span>com</a>, <a class="reference external" href="mailto:person2&#37;&#52;&#48;gmail&#46;com">person2<span>&#64;</span>gmail<span>&#46;</span>com</a>, etc. Use a comma to seperate addresses.</p>
+<dt><strong>SEND_TO</strong></dt><dd><p>A list of receivers. For example: <a class="reference external" href="mailto:person1&#37;&#52;&#48;gmail&#46;com">person1<span>&#64;</span>gmail<span>&#46;</span>com</a>, <a class="reference external" href="mailto:person2&#37;&#52;&#48;gmail&#46;com">person2<span>&#64;</span>gmail<span>&#46;</span>com</a>, etc. Use a comma to separate addresses.</p>
 </dd>
 </dl>
 </div></blockquote>
 </div>
 <div class="section" id="dynalogs-setting-up-scheduled-analysis">
 <h3>Dynalogs - Setting up scheduled analysis<a class="headerlink" href="#dynalogs-setting-up-scheduled-analysis" title="Permalink to this headline">¶</a></h3>
+<p>Open “dynalog_send_post_request.py” and edit the <em>http</em> variable</p>
+<p><code class="docutils literal notranslate"><span class="pre">http://localhost/dynalog_start_batch_analysis</span></code></p>
+<p>Change the address to that where pyqaserver is running. For example,</p>
+<p><code class="docutils literal notranslate"><span class="pre">http://192.168.14.255:80/dynalog_start_batch_analysis</span></code></p>
+<p>Do not forget the port, even if it is 80.</p>
 <p>Open Windows Task Scheduler and create “basic task”. Choose “Start a program”.
 For <em>Program/Script</em> set the path to python.exe. For <em>Arguments</em> set “dynalog_send_post_request.py”. And for <em>Start in</em> set the path to the folder where “dynalog_send_post_request.py” is located.</p>
 </div>

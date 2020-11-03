@@ -21,7 +21,7 @@ copyright = '2019, Denis Brojan'
 author = 'Denis Brojan'
 
 # The full version, including alpha/beta/rc tags
-release = '2.0.0'
+release = '2.0.1'
 
 
 # -- General configuration ---------------------------------------------------

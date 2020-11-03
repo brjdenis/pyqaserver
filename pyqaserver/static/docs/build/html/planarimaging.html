@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Planar imaging module &mdash; pyqaserver 2.0.0 documentation</title>
+  <title>Planar imaging module &mdash; pyqaserver 2.0.1 documentation</title>
   
 
   
@@ -201,13 +201,28 @@
 </dd>
 <dt><strong>Clip box</strong></dt><dd><p>Here you can enter the size of the central portion of the image beyond which pixel values will be set to background signal. If you don’t want to clip the image, put 0.</p>
 </dd>
-<dt><strong>Force angle</strong></dt><dd><p>Here you can force the angle of the phantom. This is useful when you see that Pylinac has wrongly detected the angle.</p>
+<dt><strong>Force angle</strong></dt><dd><p>Here you can force the angle of the phantom. This is useful when you see that Pylinac has wrongly detected the angle. Angle 0 is not forced, it sets the angle to automatic. An angle of 45 degrees will rotate the phantom by 45 degrees in the clock-wise direction.</p>
 </dd>
 <dt><strong>Show bounding box?</strong></dt><dd><p>If checked, a bounding box will be drawn around the phantom, and the image will be zoomed-in.</p>
 </dd>
 <dt><strong>Invert image?</strong></dt><dd><p>Check this if you need to invert the image.</p>
 </dd>
 </dl>
+<p>If no tolerance levels are defined in Administration, default values will be used:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 73%" />
+<col style="width: 27%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Low threshold</p></td>
+<td><p>0.05</p></td>
+</tr>
+<tr class="row-even"><td><p>High threshold</p></td>
+<td><p>0.1</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="how-to-use-the-module">
 <h2>How to use the module<a class="headerlink" href="#how-to-use-the-module" title="Permalink to this headline">¶</a></h2>

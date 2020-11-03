@@ -278,11 +278,21 @@ The *dynalog_config.ini* must be configured before pyqaserver is started. Here a
 		The password that you are using to access the account. It is not encrypted.
 
 	**SEND_TO**
-		A list of receivers. For example: person1@gmail.com, person2@gmail.com, etc. Use a comma to seperate addresses.
+		A list of receivers. For example: person1@gmail.com, person2@gmail.com, etc. Use a comma to separate addresses.
 
 
 Dynalogs - Setting up scheduled analysis
 --------------------------------------------------
+Open "dynalog_send_post_request.py" and edit the *http* variable
+
+``http://localhost/dynalog_start_batch_analysis``
+
+Change the address to that where pyqaserver is running. For example,
+
+``http://192.168.14.255:80/dynalog_start_batch_analysis``
+
+Do not forget the port, even if it is 80.
+
 Open Windows Task Scheduler and create "basic task". Choose "Start a program". 
 For *Program/Script* set the path to python.exe. For *Arguments* set "dynalog_send_post_request.py". And for *Start in* set the path to the folder where "dynalog_send_post_request.py" is located.
 

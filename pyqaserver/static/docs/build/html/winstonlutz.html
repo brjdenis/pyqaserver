@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Winston Lutz module &mdash; pyqaserver 2.0.0 documentation</title>
+  <title>Winston Lutz module &mdash; pyqaserver 2.0.1 documentation</title>
   
 
   
@@ -299,12 +299,12 @@ In order for this to work a predefined minimal set of images must be acquired. T
 </li>
 <li><p><strong>Couch rotation only</strong></p>
 <blockquote>
-<div><p>Set the Test type to <strong>Couch only</strong>. Put gantry to 0 and acquire images of the BB at different couch angles. The analysis is similar to the one above, only that this time the MV isocenter is missing from the image, and the software will assume the CAX as the true isocenter.</p>
+<div><p>Set the Test type to <strong>Couch only</strong>. Put gantry to 0 and acquire images of the BB at different couch angles. The analysis is similar to the one above, only that this time the MV isocenter is missing from the image. For each point in the scatter diagram, the EPID center is considered static. The CAX may wobble a bit, depending on the stability of the beam.</p>
 </div></blockquote>
 </li>
 <li><p><strong>Collimator rotation only</strong></p>
 <blockquote>
-<div><p>Set the Test type to <strong>Collimator only</strong>. If your collimator has some asymmetry or a significant wobble, you can estimate the radius of this with this test. Put the BB inside the field and acquire many images at different collimator angles.</p>
+<div><p>Set the Test type to <strong>Collimator only</strong>. If your collimator has some asymmetry or a significant wobble, you can estimate the radius of this with this test. Put the BB inside the field and acquire many images at different collimator angles. The BB is considered as static and all CAX scatter points are moving around.</p>
 </div></blockquote>
 </li>
 </ul>
@@ -428,11 +428,13 @@ In order for this to work a predefined minimal set of images must be acquired. T
 </dd>
 <dt><strong>Couch axis distance from average isocenter</strong></dt><dd><p>When you do the <em>Gnt/coll + couch rotation</em> test, the software will calculate the position of the couch axis of rotation with respect to the average MV isocenter of the linac. Ideally, they should match.</p>
 </dd>
-<dt><strong>Scatter diagram</strong></dt><dd><p>The BB is in the center of the diagram when only blue dots are shown. Blue dots represent field CAX. When <em>Show EPID2CAX on scatter plot?</em> is checked, additional yellow dots are displayed that represent the center of the EPID with respect to the field CAX, which is in the center of the diagram. The green circle corresponds to the normal tolerance, the red circle is the action tolerance. Both are defined in the configuration.</p>
+<dt><strong>Scatter diagram</strong></dt><dd><p>The BB is in the center of the diagram when only blue dots are shown. Blue dots represent field CAX. When <em>Show EPID2CAX on scatter plot?</em> is checked, additional yellow dots are displayed that represent the center of the EPID with respect to the field CAX, which is in the center of the diagram. The green circle corresponds to the normal tolerance, the red circle is the action tolerance. This diagram shows CAX points on the EPID plane, not in 3D space.</p>
 </dd>
-<dt><strong>Gantry 2D CAX projection</strong></dt><dd><p>The intersection of beam paths with the LAT-VRT plane (Winkler et al diagrams). Solid lines are beam paths at gantry angles 0 and 90. Dashed lines are beam paths at gantry angles 180 and 270. BB is in the center of the diagram. The cross represents the gantry axis of rotation.</p>
+<dt><strong>Gantry 2D CAX projection</strong></dt><dd><p>(Winkler et al) The intersection of beam paths with the LAT-VRT plane (Winkler et al diagrams). Solid lines are beam paths at gantry angles 0 and 90. Dashed lines are beam paths at gantry angles 180 and 270. BB is in the center of the diagram. Purple lines are averages over opposing collimator angles. The cross represents the gantry axis of rotation.</p>
 </dd>
-<dt><strong>Couch diagram</strong></dt><dd><p>When the right test type is chosen, this diagram will appear. The diagram’s coordinate system is that of the EPID. The blue square is the average MV isocenter calculated from first 8 images. The first red dot is the reference image of the BB that is used to define the position of the average MV isocenter. Other red dots are BB positions projected onto the EPID at different couch angles. The cross is the center of the fitted circle which represents the couch axis of rotation. Small blue dots are CAX. They may change a bit because of errors in beam steering and MLC positioning between images, particularly on Elekta linacs.</p>
+<dt><strong>Couch diagram</strong></dt><dd><p>The diagram’s coordinate system is that of the EPID. The blue square is the average MV isocenter calculated from first 8 images. The first red dot is the reference image of the BB that is used to define the position of the average MV isocenter. Other red dots are BB positions projected onto the EPID at different couch angles. The cross is the center of the fitted circle which represents the couch axis of rotation. Small blue dots are CAX. They may change a bit because of errors in beam steering and MLC positioning between images, particularly on Elekta linacs. The “couch only” test gives a similar diagram, except that the MV isocenter is missing.</p>
+</dd>
+<dt><strong>Collimator diagram</strong></dt><dd><p>Similar to couch diagram, except that the central point and reference is the BB not the EPID center.</p>
 </dd>
 <dt><strong>Status</strong></dt><dd><p>You can get either Passed, Borderline or Failed status. If you are using 4 or 8 images, then you have the option of applying the tolerance to any each image in the series, or to the section <em>Collimator asymmetry</em> where radius R is calculated by averaging over collimator pairs. See your configuration.</p>
 </dd>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Changelog &mdash; pyqaserver 2.0.0 documentation</title>
+  <title>Changelog &mdash; pyqaserver 2.0.1 documentation</title>
   
 
   
@@ -101,16 +101,20 @@
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html#included-software">Included software</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-2-0-1">Version 2.0.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#version-2-0-0">Version 2.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-1">Version 1.1</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Bug fixes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#winston-lutz">Winston Lutz</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#image-review">Image Review</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#planar-imaging">Planar imaging</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#catphan">Catphan</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dynalogs">Dynalogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#picket-fence">Picket Fence</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id5">Bug Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">Bug Fixes</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#web-server">Web server</a></li>
@@ -186,14 +190,26 @@
             
   <div class="section" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-2-0-1">
+<h2>Version 2.0.1<a class="headerlink" href="#version-2-0-1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bug-fixes">
+<h3>Bug fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>(Planar imaging) <a class="reference external" href="https://github.com/brjdenis/pyqaserver/issues/8">#8</a> Reference image analysis did not work.</p></li>
+<li><p>(Catphan) <a class="reference external" href="https://github.com/brjdenis/pyqaserver/issues/9">#9</a> Unable to save results to the database because of an error in the passing of variable to html.</p></li>
+<li><p>(Winston-Lutz) <a class="reference external" href="https://github.com/brjdenis/pyqaserver/issues/10">#10</a> The Winkler diagram was wrong. For gantry angles 180 and 90 the x axis inversion was not taken into account.</p></li>
+<li><p>(plotly.jy) Plotting in certain situations did not work in Chrome. Removed “scattergl”.</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="version-2-0-0">
 <h2>Version 2.0.0<a class="headerlink" href="#version-2-0-0" title="Permalink to this headline">¶</a></h2>
 <p>QAserver has been renamed to pyqaserver and is now part of PyPI.</p>
 </div>
 <div class="section" id="version-1-1">
 <h2>Version 1.1<a class="headerlink" href="#version-1-1" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="bug-fixes">
-<h3>Bug fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h3>Bug fixes<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>(Winston Lutz) <a class="reference external" href="https://github.com/brjdenis/pyqaserver/issues/2">#2</a> With Use Pylinac? checked the clip box option did not work.</p></li>
 <li><p>(Winston Lutz) Non-integer angles for Pylinac are now rounded to integers.</p></li>
@@ -242,8 +258,8 @@
 </div>
 <div class="section" id="picket-fence">
 <h3>Picket Fence<a class="headerlink" href="#picket-fence" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="id5">
-<h4>Bug Fixes<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id9">
+<h4>Bug Fixes<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
 </div>
 </div>
 <div class="section" id="web-server">
