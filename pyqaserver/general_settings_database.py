@@ -22,7 +22,7 @@ def create_general_settings_database(path):
                                 )
               """)
     c.execute("INSERT INTO Users (Name, Password, Admin, DisplayName) VALUES (?, ?, ?, ?)",
-              ("admin", pwd_context.hash("admin"), "Yes", "User"))
+              ("admin", pwd_context.hash("admin"), "Yes", "Admin"))
     
     ############################## ORTHANC SETTINGS ###########################
     c.execute("""CREATE TABLE Orthanc (

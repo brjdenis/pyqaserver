@@ -383,7 +383,7 @@ def main():
                     institution=config.INSTITUTION,
                     orthanc_url=config.ORTHANC_URL,
                     qaserver_version=config.QASERVER_VERSION,
-                    displayname=user_list["Name"],
+                    displayname=user_list["DisplayName"],
                     is_admin=check_is_admin(username)
                 )
 
