@@ -68,7 +68,7 @@ To start it as localhost:
 .. image:: _static/images/cmd.png
 	:align: center
 
-Open a web browser and go to the site that is being served: http://127.0.0.1:8080.
+Open a web browser and go to the site that is being served: http://127.0.0.1:8080. The default username/password is: admin/admin.
 
 You can stop the server by pressing CTRL+C. If you restart it again, you will notice that the files inside the database directory will not change. The server will use existing database.
 

@@ -15,6 +15,8 @@ Admin users can:
 * Set reference images for the planar imaging and catphan modules.
 * Check if dynalog analysis is currently running and start it if needed.
 
+The default username/password of the admin account is: admin/admin. You should change it after you set up pyqaserver.
+
 .. note::
 	Words and numbers that you enter in the input fields are not validated before storing. Try to stick to alphanumeric ASCI symbols. Avoid white spaces when defining machine names. If necessary, use _ instead of white spaces.
 
