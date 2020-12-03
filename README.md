@@ -58,7 +58,9 @@ Pyqaserver can be installed as a Python package starting with version 2.0.0.  Se
 pip install pyqaserver
 ~~~
 
-After that you can run it with this:
+The current version of pyqaserver will only work with matplotlib version 3.3.1. So make sure you install exactly this version.
+
+After that you can run pyqaserver with this:
 
 ~~~
 pyqaserver IP_ADDRESS:PORT PATH_TO_DATABASE_FOLDER
