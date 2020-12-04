@@ -50,7 +50,10 @@ Open Anaconda prompt and use pip to install pyqaserver:
 
 ``pip install pyqaserver``
 
-All should go well if you installed Anaconda afresh.
+All should go well if you installed Anaconda afresh. Right now pyqaserver is not compatible with matplotlib version 3.3.3 or greater. So make sure you are using the proper version:
+
+``pip install matplotlib==3.3.1``
+
 
 Running pyqaserver
 -------------------
