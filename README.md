@@ -90,7 +90,12 @@ And then install the new version:
 pip install pyqaserver==2.0.1
 ~~~
 
-Point the server to the same database directory and it should work.
+Point the server to the same database directory and it should work. If you encounter problem with matplotlib, use version 3.3.1
+
+~~~
+pip install matplotlib==3.3.1
+~~~
+
 
 ## Documentation
 
