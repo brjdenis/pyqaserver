@@ -124,4 +124,4 @@ What is the point of this project? Well, it started as an experiment. I wanted t
 
 I put together some personal notes on doing tests on Elekta linacs with Pylinac and QAserver: 
 
-[Notes on doing tests on Elekta linacs](https://brjdenis.github.io/pyqaserver/docs/qaserver-tips/html/)
+[Notes on doing tests on Elekta linacs](https://synergyqatips.readthedocs.io/en/latest/)
