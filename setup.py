@@ -17,7 +17,7 @@ setup(
                     'matplotlib == 3.3.1',
                     'jinja2',
                     'pylinac == 2.3.2',
-                    'httplib2 == 0.18.1',
+                    'httplib2 == 0.19.0',
                     'bokeh == 2.2.1',
                     'waitress == 1.4.4',
                     'passlib',
