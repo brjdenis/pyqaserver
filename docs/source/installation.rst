@@ -130,6 +130,12 @@ If you want to stop the server, press CTRL + C.
 .. note::
 	It is a good idea to check that Windows Firewall is not blocking Python.exe or Orthanc.exe, in case you have problems.
 
+
+Configuring pyqaserver
+------------------------
+Open pyqaserver main site and log in as admin. Go to Administration -> Edit Orthanc Connection. Change settings according to what you defined in the previous section.
+
+
 Sending data to Orthanc
 -------------------------------------
 Imaging workstation can be configured to send images directly to Orthanc via dicom transfer. This is particularly easy to do on Elekta's iView and XVI. If you do not feel competent to configure the export filters, ask your system administrator to do it.
