@@ -97,6 +97,13 @@ pip install matplotlib==3.3.1
 ~~~
 
 
+The entrance module for running pyqaserver from forked source is pyqaserver.py. Run it like this:
+
+~~~
+python pyqaserver.py 127.0.0.1:8080 PATH_TO_DATABASE_FOLDER
+~~~
+
+
 ## Documentation
 
 Documentation is available here:
