@@ -126,6 +126,8 @@ def get_unique_names(table):
     return [machines, beams, phantoms]
 
 def get_trend_data(Module, TestType, Parameters, Machine, Beam, Phantom, Date1, Date2):
+    Date1 += " 00:00:00"
+    Date2 += " 23:59:59"
     conn = sql.connect(config.TRENDS_DATABASE)
     curs = conn.cursor()
     select_declaration = "rowid, Datetime, User, Comment, {}".format(", ". join(Parameters))
