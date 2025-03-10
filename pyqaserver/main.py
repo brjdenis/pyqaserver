@@ -5,8 +5,8 @@ import re
 import sys
 
 from flask import redirect, send_from_directory, session
-from waitress import serve
 from gevent.pywsgi import WSGIServer
+from waitress import serve
 
 from pyqaserver import __version__, app, db, login_app
 from pyqaserver.models import db_general
@@ -32,7 +32,9 @@ def check_ip(address):
 
 
 def initialize_tables():
-    app.config["SQLALCHEMY_DATABASE_URI"] = f'sqlite:///{app.config["GENERAL_DATABASE"]}'
+    app.config["SQLALCHEMY_DATABASE_URI"] = (
+        f"sqlite:///{app.config['GENERAL_DATABASE']}"
+    )
     with app.app_context():
         if os.path.exists(app.config["GENERAL_DATABASE"]):
             db.init_app(app)
@@ -58,7 +60,9 @@ def main():
         formatter_class=argparse.RawTextHelpFormatter,
     )
     parser.add_argument(
-        "ip_port", type=str, help="Set the IP address and PORT. For example: 127.0.0.1:8080"
+        "ip_port",
+        type=str,
+        help="Set the IP address and PORT. For example: 127.0.0.1:8080",
     )
     parser.add_argument(
         "database_path",
@@ -86,7 +90,9 @@ def main():
         sys.exit()
 
     app.config["DATABASE_DIRECTORY"] = db_path
-    app.config["GENERAL_DATABASE"] = os.path.join(db_path, app.config["GENERAL_DATABASE_NAME"])
+    app.config["GENERAL_DATABASE"] = os.path.join(
+        db_path, app.config["GENERAL_DATABASE_NAME"]
+    )
 
     ip_address, port = args.ip_port.split(":")
 
@@ -137,26 +143,23 @@ def main():
     # Register listener that hashes input passwords when users are created
     db_general.add_psswd_hasher()
 
-
     if args.dev:
-        #print(app.url_map)
+        # print(app.url_map)
         app.run(host=ip_address, port=port, debug=True)
     else:
-        cert_key = os.path.join(app.config["FILE_DIR"], 'cert', 'server.key')
-        cert_crt = os.path.join(app.config["FILE_DIR"], 'cert', 'server.crt')
+        cert_key = os.path.join(app.config["FILE_DIR"], "cert", "server.key")
+        cert_crt = os.path.join(app.config["FILE_DIR"], "cert", "server.crt")
 
         if os.path.exists(cert_key) and os.path.exists(cert_crt):
             http_server = WSGIServer(
-                ('127.0.0.1', 8080),
-                app,
-                keyfile=cert_key,
-                certfile=cert_crt)
+                ("127.0.0.1", 8080), app, keyfile=cert_key, certfile=cert_crt
+            )
             print("Running encrypted with a self-signed certificate.")
         else:
-            http_server = WSGIServer(('127.0.0.1', 8080), app)
+            http_server = WSGIServer(("127.0.0.1", 8080), app)
             print("Running unencrypted.")
 
         http_server.spawn = 4
 
         http_server.serve_forever()
-        #serve(app, host=ip_address, port=port)
+        # serve(app, host=ip_address, port=port)
