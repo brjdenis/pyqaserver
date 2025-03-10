@@ -1,0 +1,42 @@
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-xs-12 col-md-3">
+            <div class="input-group">
+                <label class="input-group-text" for="patient-select-widget">Patient:</label>
+                <select class="selectpicker show-tick form-control border" data-live-search="true" data-size="15" name="patient-select-widget" id="patient-select-widget">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <div class="input-group">
+                <span class="input-group-text" for="study-select-widget">Study:</span>
+                <select class="selectpicker show-tick form-control border" data-live-search="true" data-size="15" name="study-select-widget" id="study-select-widget">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <div class="input-group">
+                <span class="input-group-text" for="series-select-widget">Series:</span>
+                <select class="selectpicker form-control border" data-live-search="true" data-size="15" name="series-select-widget" id="series-select-widget" multiple>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <div class="btn-group">
+                <button class="btn btn-light" type="button">
+                    <img src="{{url_for('login.static', filename='images/folder2.svg')}}" role="img" data-toggle="tooltip" data-placement="top" title="Load external files.">
+                </button>
+                <button class="btn btn-info" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm text-primary" id="orthancSpinner" role="status" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="btn btn-info" id="refresh-orthanc-button" name="refresh-orthanc-button" data-toggle="tooltip" data-placement="top" title="Reset data from Orthanc">
+                    <img src="{{url_for('login.static', filename='images/arrow-clockwise.svg')}}" role="img">
+                </button>
+                <button type="button" class="btn btn-danger" id="analyze-button" name="analyze-button" onclick="">Analyze</button>
+            </div>
+        </div>
+    </div>
+</div>

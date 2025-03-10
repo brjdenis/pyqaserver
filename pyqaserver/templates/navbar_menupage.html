@@ -1,0 +1,64 @@
+{% extends "navbar.html" %}
+
+{% block navbar_content %}
+    <a class="navbar-brand">{{module_name}}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('login.menu') }}">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" target="_blank" role="button" data-toggle="dropdown" aria-expanded="false">Modules</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ url_for('winston_lutz.winston_lutz') }}">Winston Lutz</a>
+                    <a class="dropdown-item" href="#">Starshot</a>
+                    <a class="dropdown-item" href="#">Catphan</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Trash</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" target="_blank" role="button" data-toggle="dropdown" aria-expanded="false">Tools</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#" target="_blank">Winston Lutz</a>
+                    <a class="dropdown-item" href="#" target="_blank">Starshot</a>
+                    <a class="dropdown-item" href="#" target="_blank">Catphan</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" target="_blank">Trash</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" target="_blank">Trends</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <img class="profileIcon" id="orthanc_wifi_image" src="" data-toggle="tooltip" data-placement="top" title=""/>
+
+            <li class="nav-item dropdown ml-2">
+                <a class="nav-link dropdown-toggle active" href="#" target="_blank" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <img class="profileIcon" src="{{ url_for('login.static', filename='images/person.svg') }}" />
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item disabled">
+                        <span class="inline-block">
+                            <img src="{{ url_for('login.static', filename='images/emoji-smile.svg') }}" />
+                        </span>
+                        <span class="inline-block m-2">
+                            {{current_user.display_name}}
+                        </span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ url_for('login.profile') }}">Profile</a>
+                    {% if current_user.is_admin %}
+                        <a class="dropdown-item" href="{{ url_for('admin.index') }}" target="_blank">Administration</a>
+                    {% endif %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ url_for('login.logout') }}">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+{% endblock navbar_content %}

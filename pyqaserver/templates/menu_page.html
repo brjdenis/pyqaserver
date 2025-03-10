@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block add_js %}
+	{{ super() }}
+	<script defer src="{{ url_for('login.static', filename='js/menu.js') }}" type="text/javascript"></script>
+{% endblock add_js %}
+
+{% block navbar %}
+	{% set module_name = 'pyQAserver' %}
+	{% include 'navbar_menupage.html' %}
+{% endblock navbar %}
+
+{% block main %}
+	{% include 'menu_cards.html' %}
+{% endblock main %}
+
+

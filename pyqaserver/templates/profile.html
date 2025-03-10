@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+    {% include "navbar_menupage.html" %}
+{% endblock %}
+
+{% block main %}
+    <div class="container mt-3">
+        <form class="card p-3" action="{{url_for('login.change_password')}}" method="POST">
+            <legend>{{current_user.display_name}}</legend>
+            <div class="mb-3">
+                <label for="password" class="form-label">New password</label>
+                <input type="text" class="form-control" id="password" name="password">
+            </div>
+            <button class="btn btn-danger w-100  mb-3" type="submit">Change password</button>
+        </form>
+    </div>
+{% endblock %}

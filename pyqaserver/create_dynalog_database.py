@@ -4,9 +4,9 @@ import sqlite3 as sql
 
 parent_module = sys.modules['.'.join(__name__.split('.')[:-1]) or '__main__']
 if __name__ == '__main__' or parent_module.__name__ == '__main__':
-    import config
+    import site_config
 else:
-    from . import config
+    from . import site_config
 
 def create_dynalog_database(path):
     conn = sql.connect(path)
