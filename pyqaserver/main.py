@@ -1,13 +1,15 @@
+"""The main module. It is called by __main__.py when run as a package."""
+
 import argparse
 import datetime
-import os
+import pathlib
 import re
 import sys
 
 from flask import redirect, send_from_directory, session
 from gevent.pywsgi import WSGIServer
-from waitress import serve
 
+# from waitress import serve
 from pyqaserver import __version__, app, db, login_app
 from pyqaserver.models import db_general
 from pyqaserver.modules.pylinac.winston_lutz import wl_bp
@@ -19,19 +21,20 @@ from pyqaserver.modules.server.orthanc import orthanc_bp
 app.config["QASERVER_VERSION"] = __version__
 
 
-def check_ip(address):
-    # Check that the ip address has the right shape
+def is_ip_valid(address):
+    """Check if the input IP address is valid."""
     regex = r"""^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(
             25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(
             25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(
             25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?):[0-9]+$"""
-    if re.search(regex, address):
-        return True
-    else:
-        return False
+    return re.search(regex, address)
 
 
 def initialize_tables():
+    """Build SQL tables for settings.
+
+    If sqlite database does not exist, create it. If it does, use it.
+    """
     app.config["SQLALCHEMY_DATABASE_URI"] = (
         f"sqlite:///{app.config['GENERAL_DATABASE']}"
     )
@@ -49,11 +52,11 @@ def main():
     # --dev in order to use the development server
     parser = argparse.ArgumentParser(
         description=(
-            "To run pyqaserver you must supply IP address and PORT for "
+            "To run pyqaserver you must supply the IP address and PORT for "
             "the server and the absolute path to the database folder. "
             "If you add the option '--dev' at the end, you will run "
-            "the server in development mode (flask wsgi) . Do not use "
-            "this mode for regular use. "
+            "the server in development mode (flask wsgi). Do not use "
+            "this mode for regular use! "
             "An example of regular use:\n\n"
             "python pyqaserver.py 127.0.0.1:8080 C:\\database\n"
         ),
@@ -78,10 +81,11 @@ def main():
     ip_port = args.ip_port
     db_path = args.database_path
 
-    if not check_ip(ip_port):
+    if not is_ip_valid(ip_port):
         print(
-            r"Invalid ip:port. Follow this example: \n"
-            + r"pyqaserver 127.0.0.1:8080 \path_to_database"
+            "\nInvalid ip:port. Follow this example: \n\n"
+            r"pyqaserver 127.0.0.1:8080 \path_to_database"
+            "\n"
         )
         sys.exit()
 

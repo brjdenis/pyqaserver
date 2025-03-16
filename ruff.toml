@@ -1,6 +1,6 @@
 [lint]
 select = ["ALL"]
-ignore = ["E501","ANN","ERA","FBT003","PLR2004","COM812","D401", "EXE002"]
+ignore = ["E501","ANN","ERA","FBT003","PLR2004","COM812","D401", "EXE002", "T201"]
 
 [format]
 quote-style = "double"
