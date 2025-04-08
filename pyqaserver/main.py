@@ -2,9 +2,9 @@
 
 import argparse
 import datetime
-import pathlib
 import re
 import sys
+from pathlib import Path
 
 from flask import redirect, send_from_directory, session
 from gevent.pywsgi import WSGIServer
@@ -39,7 +39,7 @@ def initialize_tables():
         f"sqlite:///{app.config['GENERAL_DATABASE']}"
     )
     with app.app_context():
-        if os.path.exists(app.config["GENERAL_DATABASE"]):
+        if Path(app.config["GENERAL_DATABASE"]).exists():
             db.init_app(app)
         else:
             db.init_app(app)
@@ -89,14 +89,12 @@ def main():
         )
         sys.exit()
 
-    if not os.path.exists(db_path):
+    if not Path(db_path).exists():
         print("Database directory does not exist.")
         sys.exit()
 
     app.config["DATABASE_DIRECTORY"] = db_path
-    app.config["GENERAL_DATABASE"] = os.path.join(
-        db_path, app.config["GENERAL_DATABASE_NAME"]
-    )
+    app.config["GENERAL_DATABASE"] = Path(db_path) / app.config["GENERAL_DATABASE_NAME"]
 
     ip_address, port = args.ip_port.split(":")
 
@@ -131,7 +129,7 @@ def main():
     @app.route("/favicon.ico")
     def favicon():
         return send_from_directory(
-            os.path.join(app.config["FILE_DIR"], "static", "base", "images"),
+            Path(app.config["FILE_DIR"]) / "static" / "base" / "images",
             "favicon.ico",
             mimetype="image/vnd.microsoft.icon",
         )
@@ -151,10 +149,10 @@ def main():
         # print(app.url_map)
         app.run(host=ip_address, port=port, debug=True)
     else:
-        cert_key = os.path.join(app.config["FILE_DIR"], "cert", "server.key")
-        cert_crt = os.path.join(app.config["FILE_DIR"], "cert", "server.crt")
+        cert_key = Path(app.config["FILE_DIR"]) / "cert" / "server.key"
+        cert_crt = Path(app.config["FILE_DIR"]) / "cert" / "server.crt"
 
-        if os.path.exists(cert_key) and os.path.exists(cert_crt):
+        if Path(cert_key).exists() and Path(cert_crt).exists():
             http_server = WSGIServer(
                 ("127.0.0.1", 8080), app, keyfile=cert_key, certfile=cert_crt
             )
