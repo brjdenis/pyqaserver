@@ -8,24 +8,24 @@ body {
   margin-top: 20px;
 }
 
-.table-condensed{
+.table-condensed {
   font-size: 11px;
 }
+
 tr:first-child {
   font-weight: bold;
 }
 
-iframe{
+iframe {
   border: none;
-  min-height:1600px;
+  min-height: 1600px;
 
 }
 
-.thumbnail
-{
-    min-width : 100%;
-    min-height: 230px;
-    object-fit: contain;
+.thumbnail {
+  min-width: 100%;
+  min-height: 230px;
+  object-fit: contain;
 }
 
 img {
@@ -34,15 +34,17 @@ img {
 }
 
 .input-group-addon-left {
-  min-width:50%;
-  text-align:left;
+  min-width: 50%;
+  text-align: left;
 }
 
 
 @keyframes spinner {
-  to {transform: rotate(360deg);}
+  to {
+    transform: rotate(360deg);
+  }
 }
- 
+
 .spinner:before {
   content: '';
   box-sizing: border-box;
@@ -65,10 +67,47 @@ img {
 
 @media (min-width: 1400px) {
   .container {
-      max-width: 1320px;
+    max-width: 1320px;
   }
 }
 
 .tabulator {
   font-size: 11px;
+}
+
+/* Had to add this in order to be able to scroll in navbar when screen size is small. 
+   https://github.com/twbs/bootstrap/issues/23374
+*/
+@media (max-width: 576px) {
+  .navbar-collapse {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+}
+
+.navbar-expand-md {
+  @media (max-width: 768px) {
+    .navbar-collapse {
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+  }
+}
+
+.navbar-expand-lg {
+  @media (max-width: 992px) {
+    .navbar-collapse {
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+  }
+}
+
+.navbar-expand-xl {
+  @media (max-width: 1200px) {
+    .navbar-collapse {
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+  }
 }

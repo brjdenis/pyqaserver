@@ -8,23 +8,26 @@
                 <div class="card-body">
                     <p class="text-left" id="stationDescriptionText">Station:</p>
                     <p>
-                        <button class="btn btn-info btn-block btn-sm" role="button" onclick="goToOrthancExplorer();">View in
+                        <button class="btn btn-info btn-block btn-sm" role="button"
+                            onclick="goToOrthancExplorer();">View in
                             Orthanc</a>
-                        <button class="btn btn-info btn-block btn-sm" type="button" data-toggle="collapse"
-                            data-target="#collapseImageDescription" aria-expanded="false"
-                            aria-controls="collapseImageDescription">
-                            Show image description
-                        </button>
-                        <div class="collapse" id="collapseImageDescription">
-                            <div class="card card-body">
-                                <small id="imageDescriptionText"></small>
+                            <button class="btn btn-info btn-block btn-sm" type="button" data-toggle="collapse"
+                                data-target="#collapseImageDescription" aria-expanded="false"
+                                aria-controls="collapseImageDescription">
+                                Show image description
+                            </button>
+                            <div class="collapse" id="collapseImageDescription">
+                                <div class="card card-body">
+                                    <small id="imageDescriptionText"></small>
+                                </div>
                             </div>
-                        </div>
                     </p>
                     <div class="table table-sm" id="instanceTable">
                     </div>
-                    <button type="button" class="btn btn-secondary btn-sm" id="instanceTableSelectAllButton">Select All</button>
-                    <button type="button" class="btn btn-secondary btn-sm" id="instanceTableDeselectAllButton">Deselect All</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="instanceTableSelectAllButton">Select
+                        All</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="instanceTableDeselectAllButton">Deselect
+                        All</button>
 
                 </div>
             </div>

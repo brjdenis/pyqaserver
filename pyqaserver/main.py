@@ -147,18 +147,18 @@ def main():
 
     if args.dev:
         # print(app.url_map)
-        app.run(host=ip_address, port=port, debug=True)
+        app.run(host=ip_address, port=int(port), debug=True)
     else:
         cert_key = Path(app.config["FILE_DIR"]) / "cert" / "server.key"
         cert_crt = Path(app.config["FILE_DIR"]) / "cert" / "server.crt"
 
         if Path(cert_key).exists() and Path(cert_crt).exists():
             http_server = WSGIServer(
-                ("127.0.0.1", 8080), app, keyfile=cert_key, certfile=cert_crt
+                (ip_address, int(port)), app, keyfile=cert_key, certfile=cert_crt
             )
             print("Running encrypted with a self-signed certificate.")
         else:
-            http_server = WSGIServer(("127.0.0.1", 8080), app)
+            http_server = WSGIServer((ip_address, int(port)), app)
             print("Running unencrypted.")
 
         http_server.spawn = 4

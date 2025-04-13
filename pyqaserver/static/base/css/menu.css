@@ -8,9 +8,11 @@ body {
   padding-bottom: 40px;
   background-color: #f5f5f5;
 }
-.btn-toolbar{
+
+.btn-toolbar {
   display: inline;
 }
+
 .dropdown-menu li:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
