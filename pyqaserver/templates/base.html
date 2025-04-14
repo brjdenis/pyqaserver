@@ -20,7 +20,7 @@
 	
 	{% block add_css %} {% endblock add_css %}
 	{% block add_js %}
-		<script defer>
+		<script async="false">
 			var orthancCallsTestOrthancConnection = "{{url_for('orthanc_calls.test_orthanc_connection', _external=True)}}";
 			var orthancCallsGoToOrthancExplorer = "{{url_for('orthanc_calls.go_to_orthanc_explorer', _external=True)}}";
 			var orthancCallsGetImageDescription = "{{url_for('orthanc_calls.get_image_description_for_instance', _external=True)}}";

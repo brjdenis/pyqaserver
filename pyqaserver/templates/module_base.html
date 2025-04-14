@@ -8,25 +8,27 @@
                 <div class="card-body">
                     <p class="text-left" id="stationDescriptionText">Station:</p>
                     <p>
-                        <button class="btn btn-info btn-block btn-sm" role="button"
-                            onclick="goToOrthancExplorer();">View in
-                            Orthanc</a>
-                            <button class="btn btn-info btn-block btn-sm" type="button" data-toggle="collapse"
-                                data-target="#collapseImageDescription" aria-expanded="false"
-                                aria-controls="collapseImageDescription">
-                                Show image description
-                            </button>
-                            <div class="collapse" id="collapseImageDescription">
-                                <div class="card card-body">
-                                    <small id="imageDescriptionText"></small>
-                                </div>
-                            </div>
+                        <button type="button" class="btn btn-secondary btn-block btn-sm" role="button"
+                            onclick="goToOrthancExplorer();" style="--bs-btn-font-size: .75rem;">View in
+                            Orthanc</button>
+                        <button type="button" class="btn btn-secondary btn-block btn-sm" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseImageDescription" aria-expanded="false"
+                            aria-controls="collapseImageDescription" style="--bs-btn-font-size: .75rem;">
+                            Show description
+                        </button>
+                    <div class="collapse" id="collapseImageDescription">
+                        <div class="card card-body">
+                            <small id="imageDescriptionText"></small>
+                        </div>
+                    </div>
                     </p>
                     <div class="table table-sm" id="instanceTable">
                     </div>
-                    <button type="button" class="btn btn-secondary btn-sm" id="instanceTableSelectAllButton">Select
+                    <button type="button" class="btn btn-secondary btn-sm" id="instanceTableSelectAllButton"
+                        style="--bs-btn-font-size: .75rem;">Select
                         All</button>
-                    <button type="button" class="btn btn-secondary btn-sm" id="instanceTableDeselectAllButton">Deselect
+                    <button type="button" class="btn btn-secondary btn-sm" id="instanceTableDeselectAllButton"
+                        style="--bs-btn-font-size: .75rem;">Deselect
                         All</button>
 
                 </div>

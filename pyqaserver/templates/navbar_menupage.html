@@ -2,7 +2,7 @@
 
 {% block navbar_content %}
 <a class="navbar-brand">{{module_name}}</a>
-<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
     <span class="navbar-toggler-icon"></span>
 </button>
 <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -11,7 +11,7 @@
             <a class="nav-link" href="{{ url_for('login.menu') }}">Home</a>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" target="_blank" role="button" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" href="#" target="_blank" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">Modules</a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="{{ url_for('winston_lutz.winston_lutz') }}">Winston Lutz</a>
@@ -22,7 +22,7 @@
             </div>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" target="_blank" role="button" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" href="#" target="_blank" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">Tools</a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="#" target="_blank">Winston Lutz</a>
@@ -37,19 +37,19 @@
         </li>
 
     </ul>
-    <ul class="navbar-nav ml-auto">
-        <img class="profileIcon" id="orthanc_wifi_image" src="" data-toggle="tooltip" data-placement="top" title=""
+    <ul class="navbar-nav ms-auto">
+        <img class="profileIcon" id="orthanc_wifi_image" src="" data-bs-toggle="tooltip" data-bs-placement="top" title=""
             style="max-width: 20px" />
 
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle active" href="#" target="_blank" role="button" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle active" href="#" target="_blank" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 <img class="profileIcon" src="{{ url_for('login.static', filename='images/person.svg') }}" />
             </a>
             <div class="dropdown-menu dropdown-menu-end dropdown-menu-right">
                 <a class="dropdown-item disabled">
                     <span class="inline-block">
-                        <img src="{{ url_for('login.static', filename='images/emoji-smile.svg') }}" />
+                        <img class="profileIcon" src="{{ url_for('login.static', filename='images/emoji-smile.svg') }}" />
                     </span>
                     <span class="inline-block m-2">
                         {{current_user.display_name}}
