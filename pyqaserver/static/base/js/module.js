@@ -58,7 +58,7 @@ $(document).ready(function() {
         layout:"fitDataFill",
         placeholder:"No Data Set",
         movableRows:true,
-        selectable:true,
+        selectableRows:true,
         index:"num",
         columns:[
             {title:"", field:"num", resizable:true, headerSort:true, hozAlign:"center"},

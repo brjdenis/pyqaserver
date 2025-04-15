@@ -2,7 +2,7 @@
 
 {% block add_js %}
     {{ super() }}
-	<script defer>
+	<script>
 		var orthancCallsGetPatientsAll = "{{ url_for('orthanc_calls.get_patients_all', _external=True) }}";
 		var orthancCallsGetStudiesForPatient = "{{ url_for('orthanc_calls.get_studies_for_patient', _external=True) }}";
 		var orthancCallsGetSeriesForStudy = "{{ url_for('orthanc_calls.get_series_for_study', _external=True) }}";
