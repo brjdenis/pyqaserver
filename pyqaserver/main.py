@@ -48,8 +48,11 @@ def initialize_tables():
 
 
 def main():
-    # The user defines: IP_address:PORT, path to database, and optional param
-    # --dev in order to use the development server
+    """The function is run from __main__.py which is the entry point for the script.
+
+    The user defines: IP_address:PORT, path to database, and optional param
+    --dev in order to use the development server
+    """
     parser = argparse.ArgumentParser(
         description=(
             "To run pyqaserver you must supply the IP address and PORT for "

@@ -1,3 +1,5 @@
+"""Here certain global variables and object are initialized."""
+
 import base64
 import datetime
 import os
