@@ -1,12 +1,18 @@
-import os
+"""Orthanc calls."""
+
+import contextlib
 from datetime import datetime as dt
+from datetime import timezone as tz
+from pathlib import Path
+
 import requests
 from flask import Blueprint, request
 from flask_login import login_required
-from pyqaserver.models import db_general
-from pyqaserver import site_config, abort_text
 
-NULL_DATE = "19000101"
+from pyqaserver import abort_text, site_config
+from pyqaserver.models import db_general
+
+NULL_DATE = "19700101"  # beginning of epoch (UTC)
 NULL_TIME = "000000"
 
 cur_dir = site_config.FILE_DIR
@@ -14,13 +20,14 @@ cur_dir = site_config.FILE_DIR
 orthanc_bp = Blueprint(
     "orthanc_calls",
     __name__,
-    template_folder=os.path.join(cur_dir, "templates"),
-    static_folder=os.path.join(cur_dir, "static", "base"),
+    template_folder=Path(cur_dir) / "templates",
+    static_folder=Path(cur_dir) / "static" / "base",
     url_prefix="/orthanc",
 )
 
 
 def make_orthanc_request(uri, headers, auth, timeout=10):
+    """Common orthanc http request."""
     try:
         resp = requests.get(uri, headers=headers, auth=auth, timeout=timeout)
         resp.raise_for_status()
@@ -35,7 +42,7 @@ def make_orthanc_request(uri, headers, auth, timeout=10):
 
 
 def test_orthanc():
-    # Get system status as a way of checking orthanc connection
+    """Get system status as a way of checking orthanc connection."""
     address = db_general.Orthanc.get_address()
     auth = (address.user, address.password)
     uri = f"http://{address.ip}:{address.port}/system"
@@ -45,12 +52,11 @@ def test_orthanc():
         "Connection": "close",
     }
     resp = make_orthanc_request(uri, headers, auth, timeout=10)
-    resp = resp.json()
-    return resp
+    return resp.json()
 
 
 def get_patients():
-    # Collect list of patients for patient-select widget
+    """Collect list of patients for patient-select widget."""
     address = db_general.Orthanc.get_address()
     auth = (address.user, address.password)
     uri = f"http://{address.ip}:{address.port}/patients"
@@ -99,6 +105,7 @@ def get_patients():
 
 
 def get_studies(patient_orthanc_id):
+    """Get a list of studies that belong to the selected patient."""
     address = db_general.Orthanc.get_address()
     auth = (address.user, address.password)
     uri = f"http://{address.ip}:{address.port}/patients/{patient_orthanc_id}"
@@ -111,10 +118,7 @@ def get_studies(patient_orthanc_id):
 
     resp = resp.json()
 
-    if "Studies" in resp:
-        resp = list(resp["Studies"])
-    else:
-        resp = []
+    resp = list(resp["Studies"]) if "Studies" in resp else []
 
     headers["Connection"] = "keep-alive"
     data = []
@@ -141,9 +145,11 @@ def get_studies(patient_orthanc_id):
         else:
             study_desc.append("")
         try:
-            study_dates.append(dt.strptime(dicomtags["StudyDate"], "%Y%m%d"))
+            study_dates.append(
+                dt.strptime(dicomtags["StudyDate"], "%Y%m%d").astimezone(tz.utc)
+            )
         except (KeyError, ValueError):
-            study_dates.append(dt.strptime(NULL_DATE, "%Y%m%d"))
+            study_dates.append(dt.strptime(NULL_DATE, "%Y%m%d").astimezone(tz.utc))
         orthanc_ids.append(study["ID"])
 
     study_dates_srt, study_desc_srt, study_ids_srt, orthanc_ids_srt = zip(
@@ -162,6 +168,7 @@ def get_studies(patient_orthanc_id):
 
 
 def get_series(study_orthanc_id):
+    """Get a sorted list of series that belong to a particular study_id."""
     address = db_general.Orthanc.get_address()
     auth = (address.user, address.password)
     uri = f"http://{address.ip}:{address.port}/studies/{study_orthanc_id}"
@@ -174,10 +181,7 @@ def get_series(study_orthanc_id):
 
     resp = resp.json()
 
-    if "Series" in resp:
-        resp = list(resp["Series"])
-    else:
-        resp = []
+    resp = list(resp["Series"]) if "Series" in resp else []
 
     headers["Connection"] = "keep-alive"
     data = []
@@ -212,9 +216,8 @@ def get_series(study_orthanc_id):
         if "Instances" in series:
             series_dt.append(get_series_dt(series["Instances"][0]))
         else:
-            series_dt.append(
-                dt.strptime(NULL_DATE + " " + NULL_TIME, "%Y%m%d %H:%M:%S")
-            )
+            st = NULL_DATE + " " + NULL_TIME
+            series_dt.append(dt.strptime(st, "%Y%m%d %H:%M:%S").astimezone(tz.utc))
         orthanc_ids.append(series["ID"])
 
     series_dt_srt, series_desc_srt, series_num_srt, orthanc_ids_srt = zip(
@@ -233,6 +236,7 @@ def get_series(study_orthanc_id):
 
 
 def get_series_dt(instance_orthanc_id):
+    """Gets date and time for a series to which instance belongs."""
     # Search by MainDicomTags, faster
     # If Creation datetime is not found, search in full tag list, slower
     address = db_general.Orthanc.get_address()
@@ -247,35 +251,19 @@ def get_series_dt(instance_orthanc_id):
     resp = resp.json()
     tags = resp["MainDicomTags"]
     try:
-        series_dt = dt.strptime(
+        st = (
             tags["InstanceCreationDate"]
             + " "
-            + tags["InstanceCreationTime"].strip()[0:6],
-            "%Y%m%d %H%M%S",
+            + tags["InstanceCreationTime"].strip()[0:6]
         )
+        series_dt = dt.strptime(st, "%Y%m%d %H%M%S").astimezone(tz.utc)
     except (KeyError, ValueError):
         series_dt = get_instance_dt(instance_orthanc_id)
     return series_dt
 
 
-def get_instance_dt(instance_orthanc_id):
-    address = db_general.Orthanc.get_address()
-    auth = (address.user, address.password)
-    uri = (
-        f"http://{address.ip}:{address.port}"
-        f"/instances/{instance_orthanc_id}/simplified-tags"
-    )
-    headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Connection": "close",
-    }
-    resp = make_orthanc_request(uri, headers, auth, timeout=60)
-    resp = resp.json()
-    return get_dt_from_instance(resp)
-
-
 def get_dt_from_instance(resp_json):
+    """Gets date and time from the orthanc json meta of an instance."""
     try:
         date_var = resp_json["AcquisitionDate"]
         time_var = resp_json["AcquisitionTime"]
@@ -296,15 +284,34 @@ def get_dt_from_instance(resp_json):
                     time_var = NULL_TIME
     # prevent empty date_var/time_var
     try:
-        datetime = dt.strptime(
-            date_var.strip() + " " + time_var.strip()[0:6], "%Y%m%d %H%M%S"
-        )
+        tt = date_var.strip() + " " + time_var.strip()[0:6]
+        datetime = dt.strptime(tt, "%Y%m%d %H%M%S").astimezone(tz.utc)
     except ValueError:
-        datetime = dt.strptime(NULL_DATE + " " + NULL_TIME, "%Y%m%d %H%M%S")
+        tt = NULL_DATE + " " + NULL_TIME
+        datetime = dt.strptime(tt, "%Y%m%d %H%M%S").astimezone(tz.utc)
     return datetime
 
 
+def get_instance_dt(instance_orthanc_id):
+    """Gets the date and time of a particular instance."""
+    address = db_general.Orthanc.get_address()
+    auth = (address.user, address.password)
+    uri = (
+        f"http://{address.ip}:{address.port}"
+        f"/instances/{instance_orthanc_id}/simplified-tags"
+    )
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Connection": "close",
+    }
+    resp = make_orthanc_request(uri, headers, auth, timeout=60)
+    resp = resp.json()
+    return get_dt_from_instance(resp)
+
+
 def get_instance_dt_and_label(instance_orthanc_id):
+    """Gets date and time together with the label for an instance."""
     address = db_general.Orthanc.get_address()
     auth = (address.user, address.password)
     uri = (
@@ -334,6 +341,7 @@ def get_instance_dt_and_label(instance_orthanc_id):
 
 
 def get_instances(series_orthanc_ids):
+    """Gets all the instance ids, labels and datetimes that belong to the series."""
     instance_orthanc_ids = []
     instance_labels = []
     instance_datetime = []
@@ -348,10 +356,7 @@ def get_instances(series_orthanc_ids):
         }
         resp = make_orthanc_request(uri, headers, auth, timeout=60)
         resp = resp.json()
-        if "Instances" in resp:
-            resp = list(resp["Instances"])
-        else:
-            resp = []
+        resp = list(resp["Instances"]) if "Instances" in resp else []
 
         for instance_id in resp:
             instance_orthanc_ids.append(instance_id)
@@ -379,6 +384,7 @@ def get_instances(series_orthanc_ids):
 
 
 def get_image_description(orthanc_instance_id):
+    """Gets the description of an instance."""
     address = db_general.Orthanc.get_address()
     auth = (address.user, address.password)
     uri = f"http://{address.ip}:{address.port}/instances/{orthanc_instance_id}/content"
@@ -399,6 +405,7 @@ def get_image_description(orthanc_instance_id):
 
 
 def get_series_description(orthanc_series_id):
+    """Gets the description of a series."""
     address = db_general.Orthanc.get_address()
     auth = (address.user, address.password)
     uri = f"http://{address.ip}:{address.port}/series/{orthanc_series_id}"
@@ -416,22 +423,15 @@ def get_series_description(orthanc_series_id):
     station = "Unknown"
     if "MainDicomTags" in resp:
         tags = resp["MainDicomTags"]
-        try:
+        with contextlib.suppress(KeyError, ValueError):
             manufacturer = tags["Manufacturer"]
-        except (KeyError, ValueError):
-            pass
-        try:
+        with contextlib.suppress(KeyError, ValueError):
             modality = tags["Modality"]
-        except (ValueError, KeyError):
-            pass
-        try:
+        with contextlib.suppress(KeyError, ValueError):
             protocol = tags["ProtocolName"]
-        except (ValueError, KeyError):
-            pass
-        try:
+        with contextlib.suppress(KeyError, ValueError):
             station = tags["StationName"]
-        except (ValueError, KeyError):
-            pass
+
     return {
         "manufacturer": manufacturer,
         "modality": modality,
@@ -443,6 +443,7 @@ def get_series_description(orthanc_series_id):
 @orthanc_bp.route("/go_to_orthanc_explorer", methods=["POST"])
 @login_required
 def go_to_orthanc_explorer():
+    """Send the address of the orthanc web explorer pointing to a specific series."""
     series_id = request.json["series_orthanc_id"]
     address = db_general.Orthanc.get_address()
     uri = (
@@ -454,13 +455,14 @@ def go_to_orthanc_explorer():
 @orthanc_bp.route("/test_orthanc", methods=["POST"])
 @login_required
 def test_orthanc_connection():
-    resp = test_orthanc()
-    return resp
+    """Tests the orthanc connection."""
+    return test_orthanc()
 
 
 @orthanc_bp.route("/get_patients_all", methods=["POST"])
 @login_required
 def get_patients_all():
+    """Collects all patients from orthanc database."""
     patients_data = get_patients()
     return {
         "orthanc_ids": patients_data["orthanc_ids"],
@@ -472,6 +474,7 @@ def get_patients_all():
 @orthanc_bp.route("/get_studies_for_patient", methods=["POST"])
 @login_required
 def get_studies_for_patient():
+    """Collects all studies that belong to a specific patient."""
     studies = get_studies(request.json["patient_orthanc_id"])
     return {
         "orthanc_ids": studies["orthanc_ids"],
@@ -484,6 +487,7 @@ def get_studies_for_patient():
 @orthanc_bp.route("/get_series_for_study", methods=["POST"])
 @login_required
 def get_series_for_study():
+    """Collects all series that belong to a specific study."""
     series = get_series(request.json["study_orthanc_id"])
     return {
         "orthanc_ids": series["orthanc_ids"],
@@ -496,29 +500,30 @@ def get_series_for_study():
 @orthanc_bp.route("/get_instances_for_series", methods=["POST"])
 @login_required
 def get_instances_for_series():
+    """Collects all instances that belong to multiple series."""
     # series_orthanc_id is an array of series orthanc_ids (multiple select)
     instances = get_instances(request.json["series_orthanc_ids"])
     nums = list(range(len(instances["orthanc_id"])))
-    result = []
-    for i in nums:
-        result.append(
-            {
-                "orthanc_id": instances["orthanc_id"][i],
-                "num": i,
-                "instance_label": instances["instance_label"][i],
-                "instance_datetime": instances["instance_datetime"][i],
-            }
-        )
-    return result
+    return [
+        {
+            "orthanc_id": instances["orthanc_id"][i],
+            "num": i,
+            "instance_label": instances["instance_label"][i],
+            "instance_datetime": instances["instance_datetime"][i],
+        }
+        for i in nums
+    ]
 
 
 @orthanc_bp.route("/get_image_description_for_instance", methods=["POST"])
 @login_required
 def get_image_description_for_instance():
+    """Gets the image description of an instance."""
     return get_image_description(request.json["orthanc_instance_id"])
 
 
 @orthanc_bp.route("/get_description_for_series", methods=["POST"])
 @login_required
 def get_description_for_series():
+    """Gets the description of a selected series."""
     return get_series_description(request.json["orthanc_series_id"][0])
