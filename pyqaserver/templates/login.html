@@ -12,7 +12,7 @@
 
 {% block add_js %}
 	{{ super() }}
-	<script defer>
+	<script async="false">
 		$(document).ready(function() {
 			$("#username").focus();
 			$("#username").select();

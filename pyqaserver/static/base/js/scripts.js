@@ -1,4 +1,20 @@
-function checkCookiesEnabled(){
+function testOrthancConnection() {
+    $.ajax({
+        type: 'POST',
+        url: orthancCallsTestOrthancConnection,
+        data: '',
+        dataType: 'json',
+        contentType: 'application/json'
+    })
+        .done(function (data) {
+            alert("Orthanc connection established.");
+        })
+        .fail(function () {
+            alert("Orthanc connection not established.");
+        });
+};
+
+function checkCookiesEnabled() {
     if (!navigator.cookieEnabled) {
         alert("Cookies must be enabled for pyqaserver to work.");
     }
@@ -14,16 +30,16 @@ function changeOptions(selectId, options, values) {
     return;
 }
 
-function setSelectWidgetsSpinner(truefalse){
-    if (truefalse == true){
+function setSelectWidgetsSpinner(truefalse) {
+    if (truefalse == true) {
         $("#orthancSpinner").prop('class', 'spinner-border spinner-border-sm text-danger');
     }
-    else{
+    else {
         $("#orthancSpinner").prop('class', 'spinner-border spinner-border-sm text-info');
     }
 }
 
-function disableSelectWidgets(truefalse){
+function disableSelectWidgets(truefalse) {
     setSelectWidgetsSpinner(truefalse);
     $('#patient-select-widget').prop('disabled', truefalse);
     $('#patient-select-widget').selectpicker('refresh');
@@ -35,138 +51,120 @@ function disableSelectWidgets(truefalse){
     $('#analyze-button').prop('disabled', truefalse);
 }
 
-function testOrthanc() {
-    $.ajax({
-        type: 'POST',
-        url: orthancCallsTestOrthancConnection,
-        data: '', 
-        dataType: 'json',
-        contentType: 'application/json'
-    })
-    .done(function(data) {
-        $('#orthanc_wifi_image').prop('src', orthancWifiImageON);
-        $('#orthanc_wifi_image').prop('title', 'Orthanc connection established.');
-      })
-    .fail(function() {
-        $('#orthanc_wifi_image').prop('src', orthancWifiImageOFF);
-        $('#orthanc_wifi_image').prop('title', 'Orthanc connection failed.');
-    });
-}
-
 function getPatients() {
     disableSelectWidgets(true);
     $.ajax({
-        type: 'POST', 
+        type: 'POST',
         url: orthancCallsGetPatientsAll,
-        data: '', 
+        data: '',
         dataType: 'json',
         contentType: 'application/json'
     })
-    .done(function(data) {
-        var orthancIds = [''].concat(data['orthanc_ids']);
+        .done(function (data) {
+            var orthancIds = [''].concat(data['orthanc_ids']);
             var patientNames = [''].concat(data['patients_names']);
             var patientIds = [''].concat(data['patients_ids']);
 
             var opt = [''];
-            for (i = 1; i < orthancIds.length; i++){
+            for (i = 1; i < orthancIds.length; i++) {
                 var patientNameString = patientNames[i] + ' (' + patientIds[i] + ')';
                 opt.push(patientNameString)
             }
             changeOptions('patient-select-widget', opt, orthancIds);
             disableSelectWidgets(false);
-      })
-    .fail(function( jqXHR, textStatus, error ) {
-        alert( jqXHR.responseText );
-        setSelectWidgetsSpinner(false);
-    });
+        })
+        .fail(function (jqXHR, textStatus, error) {
+            alert(jqXHR.responseText);
+            setSelectWidgetsSpinner(false);
+        });
 }
 
 function getStudies(patientOrthancId) {
     disableSelectWidgets(true);
     $.ajax({
-        type: 'POST', 
+        type: 'POST',
         url: orthancCallsGetStudiesForPatient,
-        data: JSON.stringify({'patient_orthanc_id': patientOrthancId}), 
+        data: JSON.stringify({ 'patient_orthanc_id': patientOrthancId }),
         dataType: 'json',
         contentType: 'application/json'
     })
-    .done(function(data) {
-        var orthancIds = [''].concat(data['orthanc_ids']);
-        var studyIds = [''].concat(data['study_ids']);
-        var studyDesc = [''].concat(data['study_desc']);
-        var studyDates = [''].concat(data['study_dates']);
+        .done(function (data) {
+            var orthancIds = [''].concat(data['orthanc_ids']);
+            var studyIds = [''].concat(data['study_ids']);
+            var studyDesc = [''].concat(data['study_desc']);
+            var studyDates = [''].concat(data['study_dates']);
 
-        var opt = [''];
-        for (i = 1; i < orthancIds.length; i++){
-            var studyDescriptionString = ' - ';
-            if (studyDesc != ''){
-                studyDescriptionString = ' (' + studyDesc[i] + ') | ';
+            var opt = [''];
+            for (i = 1; i < orthancIds.length; i++) {
+                var studyDescriptionString = ' - ';
+                if (studyDesc != '') {
+                    studyDescriptionString = ' (' + studyDesc[i] + ') | ';
+                }
+                opt.push(studyIds[i] + studyDescriptionString + studyDates[i])
             }
-            opt.push(studyIds[i] + studyDescriptionString + studyDates[i])
-        }
-        changeOptions('study-select-widget', opt, orthancIds);
-        disableSelectWidgets(false);
-    })
-    .fail(function( jqXHR, textStatus, error ) {
-        alert( jqXHR.responseText );
-        setSelectWidgetsSpinner(false);
-    });
+            changeOptions('study-select-widget', opt, orthancIds);
+            disableSelectWidgets(false);
+        })
+        .fail(function (jqXHR, textStatus, error) {
+            alert(jqXHR.responseText);
+            setSelectWidgetsSpinner(false);
+        });
 }
 
 function getSeries(studyOrthancId) {
     disableSelectWidgets(true);
     $.ajax({
-        type: 'POST', 
+        type: 'POST',
         url: orthancCallsGetSeriesForStudy,
-        data: JSON.stringify({'study_orthanc_id': studyOrthancId}), 
+        data: JSON.stringify({ 'study_orthanc_id': studyOrthancId }),
         dataType: 'json',
         contentType: 'application/json'
     })
-    .done(function(data) {
-        var orthancIds = [''].concat(data['orthanc_ids']);
+        .done(function (data) {
+            var orthancIds = [''].concat(data['orthanc_ids']);
             var seriesNum = [''].concat(data['series_num']);
             var seriesDesc = [''].concat(data['series_desc']);
             var seriesDates = [''].concat(data['series_datetimes']);
 
             var opt = [''];
-            for (i = 1; i < orthancIds.length; i++){
+            for (i = 1; i < orthancIds.length; i++) {
                 var seriesNumString = ' - ';
-                if (seriesNum != ''){
+                if (seriesNum != '') {
                     seriesNumString = ' (' + seriesNum[i] + ') | ';
                 }
                 opt.push(seriesDesc[i] + seriesNumString + seriesDates[i])
             }
             changeOptions('series-select-widget', opt, orthancIds);
             disableSelectWidgets(false);
-    })
-    .fail(function( jqXHR, textStatus, error ) {
-        alert( jqXHR.responseText );
-        setSelectWidgetsSpinner(false);
-    });
+        })
+        .fail(function (jqXHR, textStatus, error) {
+            alert(jqXHR.responseText);
+            setSelectWidgetsSpinner(false);
+        });
 }
 
 function changeDecimal() {
     this.value = this.value.replace(/,/, '.');
 }
 
-function goToOrthancExplorer(){
-    if ($('#series-select-widget').val().length < 1){
+function goToOrthancExplorer() {
+    if ($('#series-select-widget').val().length < 1) {
         alert('Pick a series.');
         return;
     }
     var series_orthanc_ids = $('#series-select-widget').val()[0];
     $.ajax({
-        type: 'POST', 
+        type: 'POST',
         url: orthancCallsGoToOrthancExplorer,
-        data: JSON.stringify({'series_orthanc_id': series_orthanc_ids}), 
+        data: JSON.stringify({ 'series_orthanc_id': series_orthanc_ids }),
         dataType: 'json',
         contentType: 'application/json'
     })
-    .done(function(data) {
-        window.open(data['uri'], '_blank'); 
-    })
-    .fail(function( jqXHR, textStatus, error ) {
-        
-    });
+        .done(function (data) {
+            window.open(data['uri'], '_blank');
+        })
+        .fail(function (jqXHR, textStatus, error) {
+
+        });
 }
 

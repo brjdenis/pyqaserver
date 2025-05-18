@@ -1,4 +1,4 @@
 $(document).ready(function() {
-    testOrthanc();
-    setInterval(testOrthanc, 5000);
+    //testOrthanc();
+    //setInterval(testOrthanc, 5000);
 });
