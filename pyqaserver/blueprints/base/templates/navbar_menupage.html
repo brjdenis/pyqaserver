@@ -8,7 +8,7 @@
 <div class="collapse navbar-collapse" id="navbarCollapse">
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('login.menu') }}">Home</a>
+            <a class="nav-link" href="{{ url_for('base.menu') }}">Home</a>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" target="_blank" role="button" data-bs-toggle="dropdown"
@@ -41,27 +41,27 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle active" href="#" target="_blank" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                <img class="profileIcon" src="{{ url_for('login.static', filename='images/person.svg') }}" />
+                <img class="profileIcon" src="{{ url_for('base.static', filename='images/person.svg') }}" />
             </a>
             <div class="dropdown-menu dropdown-menu-end dropdown-menu-right">
                 <a class="dropdown-item disabled">
                     <span class="inline-block">
                         <img class="profileIcon"
-                            src="{{ url_for('login.static', filename='images/emoji-smile.svg') }}" />
+                            src="{{ url_for('base.static', filename='images/emoji-smile.svg') }}" />
                     </span>
                     <span class="inline-block m-2">
                         {{current_user.display_name}}
                     </span>
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ url_for('login.profile') }}">Profile</a>
+                <a class="dropdown-item" href="{{ url_for('base.profile') }}">Profile</a>
                 {% if current_user.is_admin %}
                 <a class="dropdown-item" href="{{ url_for('admin.index') }}" target="_blank">Administration</a>
                 {% endif %}
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item btn" onclick="testOrthancConnection()">Test orthanc connection</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ url_for('login.logout') }}">Logout</a>
+                <a class="dropdown-item" href="{{ url_for('base.logout') }}">Logout</a>
             </div>
         </li>
     </ul>

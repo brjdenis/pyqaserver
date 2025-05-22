@@ -10,12 +10,9 @@ from flask import redirect, send_from_directory, session
 from gevent.pywsgi import WSGIServer
 
 # from waitress import serve
-from pyqaserver import __version__, app, db, login_app
+from pyqaserver import __version__, app, db, loginmanager_app
+from pyqaserver.blueprints.base.routes import AnonymousUser, login_bp
 from pyqaserver.models import db_general
-from pyqaserver.modules.pylinac.winston_lutz import wl_bp
-from pyqaserver.modules.server.admin import register_admin
-from pyqaserver.modules.server.login import AnonymousUser, login_bp
-from pyqaserver.modules.server.orthanc import orthanc_bp
 
 # Set version in the site_config module
 app.config["QASERVER_VERSION"] = __version__
@@ -45,6 +42,21 @@ def initialize_tables():
             db.init_app(app)
             db.create_all()
             db_general.add_starting_data()
+
+
+def collect_and_mount_blueprints():
+    """Collect non-default blueprints and mount them to app."""
+    from pyqaserver.blueprints.admin.admin import register_admin
+    from pyqaserver.blueprints.orthanc.routes import orthanc_bp
+    from pyqaserver.blueprints.winstonlutz.routes import wl_bp
+    # Register blueprints. Each blueprint corresponds to a module.
+
+    app.register_blueprint(login_bp)
+    app.register_blueprint(orthanc_bp)
+    app.register_blueprint(wl_bp)
+
+    # Register admin pages
+    register_admin()
 
 
 def main():
@@ -104,9 +116,9 @@ def main():
     # If run in dev mode, disable loginn
     if args.dev:
         app.config["LOGIN_DISABLED"] = True
-        login_app.anonymous_user = AnonymousUser
+        loginmanager_app.anonymous_user = AnonymousUser
 
-    login_app.init_app(app)
+    loginmanager_app.init_app(app)
 
     # Make session expire after some time
     @app.before_request
@@ -114,7 +126,7 @@ def main():
         session.permanent = True
         app.permanent_session_lifetime = datetime.timedelta(days=1)
 
-    @login_app.user_loader
+    @loginmanager_app.user_loader
     def load_user(user_id):
         # For some reason db.session ... doesn't work.
         return db_general.User.query.get(user_id)
@@ -137,13 +149,7 @@ def main():
             mimetype="image/vnd.microsoft.icon",
         )
 
-    # Register blueprints. Each blueprint corresponds to a module.
-    app.register_blueprint(login_bp)
-    app.register_blueprint(orthanc_bp)
-    app.register_blueprint(wl_bp)
-
-    # Register admin pages
-    register_admin()
+    collect_and_mount_blueprints()
 
     # Register listener that hashes input passwords when users are created
     db_general.add_psswd_hasher()

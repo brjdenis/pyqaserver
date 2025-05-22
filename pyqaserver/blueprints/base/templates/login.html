@@ -29,7 +29,7 @@
 	<div class="container vh-100 d-flex justify-content-center align-items-center">
 		<div class="row">
 			<div class="col">
-				<form class="form-signin card p-3" autocomplete="off" id="form-id" action="{{ url_for('login.login', next=next_page)}}" method="POST">
+				<form class="form-signin card p-3" autocomplete="off" id="form-id" action="{{ url_for('base.login', next=next_page)}}" method="POST">
 					<h1 class="h3 mb-4 font-weight-normal">Sign in to pyQAserver</h1>
 					<div class="form-group mb-4">
 						<label for="username">Username</label>

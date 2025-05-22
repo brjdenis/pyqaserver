@@ -8,7 +8,7 @@
 		var orthancCallsGetSeriesForStudy = "{{ url_for('orthanc_calls.get_series_for_study', _external=True) }}";
 		var orthancCallsGetInstancesForSeries = "{{ url_for('orthanc_calls.get_instances_for_series', _external=True) }}";
 	</script>
-	<script defer src="{{ url_for('login.static', filename='js/module.js') }}" type="text/javascript"></script>
+	<script defer src="{{ url_for('base.static', filename='js/module.js') }}" type="text/javascript"></script>
 {% endblock add_js %}
 
 {% block navbar %}

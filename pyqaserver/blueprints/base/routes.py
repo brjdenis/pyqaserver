@@ -15,12 +15,11 @@ from pyqaserver import site_config
 from pyqaserver.models import db_general
 
 cur_dir = site_config.FILE_DIR
-
 login_bp = Blueprint(
-    "login",
-    __name__,
-    template_folder=Path(cur_dir) / "templates",
-    static_folder=Path(cur_dir) / "static",
+    "base",
+    "base",
+    template_folder=Path(__file__).resolve().parent / "templates",
+    static_folder=Path(__file__).resolve().parent / "static",
     url_prefix="/login",
 )
 
@@ -37,7 +36,7 @@ def login():
             flash("User not recognized. Try again.", "danger")
         elif user.check_pass(password):
             login_user(user, remember=True)
-            return redirect(url_for("login.menu"))
+            return redirect(url_for("base.menu"))
         else:
             flash("The password you entered is incorrect.", "danger")
     return render_template("login.html")

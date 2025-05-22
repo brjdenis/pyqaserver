@@ -6,7 +6,7 @@
 
 {% block main %}
     <div class="container mt-3">
-        <form class="card p-3" action="{{url_for('login.change_password')}}" method="POST">
+        <form class="card p-3" action="{{url_for('base.change_password')}}" method="POST">
             <legend>{{current_user.display_name}}</legend>
             <div class="mb-3">
                 <label for="password" class="form-label">New password</label>

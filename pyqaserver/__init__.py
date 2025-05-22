@@ -23,9 +23,9 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["REMEMBER_COOKIE_DURATION"] = datetime.timedelta(days=1)
 app.config["LOGIN_DISABLED"] = False
 
-login_app = LoginManager(app)
-login_app.session_protection = "strong"
-login_app.login_view = "/login"  # Redirect to login at non-auth requst # type: ignore
+loginmanager_app = LoginManager(app)
+loginmanager_app.session_protection = "strong"
+loginmanager_app.login_view = "/login"  # Redirect to login at non-auth requst # type: ignore  # Redirect to login at non-auth requst # type: ignore
 
 db = SQLAlchemy()
 

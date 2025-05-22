@@ -19,9 +19,9 @@ cur_dir = site_config.FILE_DIR
 
 orthanc_bp = Blueprint(
     "orthanc_calls",
-    __name__,
-    template_folder=Path(cur_dir) / "templates",
-    static_folder=Path(cur_dir) / "static",
+    "orthanc_calls",
+    template_folder=Path(__file__).resolve().parent / "templates",
+    static_folder=Path(__file__).resolve().parent / "static",
     url_prefix="/orthanc",
 )
 
