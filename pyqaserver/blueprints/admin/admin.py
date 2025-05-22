@@ -23,10 +23,16 @@ class MyModelView(ModelView):
         return False
 
 
+class UserModelView(MyModelView):
+    """Do not show password column."""
+
+    column_exclude_list = "password"
+
+
 def register_admin():
     """Adds admin tabs to admin pages."""
     app_admin = Admin(app, name="Admin", template_mode="bootstrap4")
-    app_admin.add_view(MyModelView(db_general.User, db.session))
+    app_admin.add_view(UserModelView(db_general.User, db.session))
     app_admin.add_view(MyModelView(db_general.Orthanc, db.session))
     app_admin.add_view(MyModelView(db_general.Machine, db.session))
     app_admin.add_view(MyModelView(db_general.DicomMapping, db.session))

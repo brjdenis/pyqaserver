@@ -11,7 +11,7 @@ wl_bp = Blueprint(
     "winston_lutz",
     __name__,
     template_folder=os.path.join(cur_dir, "templates", "modules", "winston_lutz"),
-    static_folder=os.path.join(cur_dir, "static", "base"),
+    static_folder=os.path.join(cur_dir, "static"),
     url_prefix="/winston_lutz",
 )
 

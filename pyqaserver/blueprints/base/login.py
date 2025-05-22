@@ -20,7 +20,7 @@ login_bp = Blueprint(
     "login",
     __name__,
     template_folder=Path(cur_dir) / "templates",
-    static_folder=Path(cur_dir) / "static" / "base",
+    static_folder=Path(cur_dir) / "static",
     url_prefix="/login",
 )
 

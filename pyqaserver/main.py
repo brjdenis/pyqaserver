@@ -132,7 +132,7 @@ def main():
     @app.route("/favicon.ico")
     def favicon():
         return send_from_directory(
-            Path(app.config["FILE_DIR"]) / "static" / "base" / "images",
+            Path(app.config["FILE_DIR"]) / "static" / "images",
             "favicon.ico",
             mimetype="image/vnd.microsoft.icon",
         )
