@@ -1,17 +1,15 @@
-import os
+from pathlib import Path
 
 from flask import Blueprint, render_template
 from flask_login import login_required
 
-from pyqaserver import site_config
-
-cur_dir = site_config.FILE_DIR
+BLUEPRINT_PATH = Path(__file__).parent.resolve()
 
 wl_bp = Blueprint(
     "winston_lutz",
     __name__,
-    template_folder=os.path.join(cur_dir, "templates", "modules", "winston_lutz"),
-    static_folder=os.path.join(cur_dir, "static"),
+    template_folder=BLUEPRINT_PATH / "templates",
+    static_folder=BLUEPRINT_PATH / "static",
     url_prefix="/winston_lutz",
 )
 
@@ -19,4 +17,4 @@ wl_bp = Blueprint(
 @wl_bp.route("/", methods=["GET", "POST"])
 @login_required
 def winston_lutz():
-    return render_template("winston_lutz.html")
+    return render_template("index.html")

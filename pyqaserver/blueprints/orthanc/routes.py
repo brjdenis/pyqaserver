@@ -9,19 +9,19 @@ import requests
 from flask import Blueprint, request
 from flask_login import login_required
 
-from pyqaserver import abort_text, site_config
+from pyqaserver import abort_text
 from pyqaserver.models import db_general
 
 NULL_DATE = "19700101"  # beginning of epoch (UTC)
 NULL_TIME = "000000"
 
-cur_dir = site_config.FILE_DIR
+BLUEPRINT_PATH = Path(__file__).parent.resolve()
 
 orthanc_bp = Blueprint(
     "orthanc_calls",
     "orthanc_calls",
-    template_folder=Path(__file__).resolve().parent / "templates",
-    static_folder=Path(__file__).resolve().parent / "static",
+    template_folder=BLUEPRINT_PATH / "templates",
+    static_folder=BLUEPRINT_PATH / "static",
     url_prefix="/orthanc",
 )
 

@@ -9,13 +9,11 @@ from pathlib import Path
 from flask import redirect, send_from_directory, session
 from gevent.pywsgi import WSGIServer
 
-# from waitress import serve
-from pyqaserver import __version__, app, db, loginmanager_app
+from pyqaserver import app, db, loginmanager_app
 from pyqaserver.blueprints.base.routes import AnonymousUser, login_bp
 from pyqaserver.models import db_general
 
-# Set version in the site_config module
-app.config["QASERVER_VERSION"] = __version__
+MAIN_PATH = Path(__file__).parent.resolve()
 
 
 def is_ip_valid(address):
@@ -144,7 +142,7 @@ def main():
     @app.route("/favicon.ico")
     def favicon():
         return send_from_directory(
-            Path(app.config["FILE_DIR"]) / "static" / "images",
+            MAIN_PATH / "blueprints" / "base" / "static" / "images",
             "favicon.ico",
             mimetype="image/vnd.microsoft.icon",
         )
@@ -158,10 +156,11 @@ def main():
         # print(app.url_map)
         app.run(host=ip_address, port=int(port), debug=True)
     else:
-        cert_key = Path(app.config["FILE_DIR"]) / "cert" / "server.key"
-        cert_crt = Path(app.config["FILE_DIR"]) / "cert" / "server.crt"
+        cert_key = MAIN_PATH / "cert" / "server.key"
+        cert_crt = MAIN_PATH / "cert" / "server.crt"
 
         if Path(cert_key).exists() and Path(cert_crt).exists():
+            app.config["SESSION_COOKIE_SECURE"] = True
             http_server = WSGIServer(
                 (ip_address, int(port)), app, keyfile=cert_key, certfile=cert_crt
             )

@@ -11,15 +11,15 @@ from flask_login import (
     logout_user,
 )
 
-from pyqaserver import site_config
 from pyqaserver.models import db_general
 
-cur_dir = site_config.FILE_DIR
+BLUEPRINT_PATH = Path(__file__).parent.resolve()
+
 login_bp = Blueprint(
     "base",
     "base",
-    template_folder=Path(__file__).resolve().parent / "templates",
-    static_folder=Path(__file__).resolve().parent / "static",
+    template_folder=BLUEPRINT_PATH / "templates",
+    static_folder=BLUEPRINT_PATH / "static",
     url_prefix="/login",
 )
 
