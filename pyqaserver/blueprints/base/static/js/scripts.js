@@ -32,10 +32,10 @@ function changeOptions(selectId, options, values) {
 
 function setSelectWidgetsSpinner(truefalse) {
     if (truefalse == true) {
-        $("#orthancSpinner").prop('class', 'spinner-border spinner-border-sm text-danger');
+        $("#orthancSpinner").css("visibility", "visible")
     }
     else {
-        $("#orthancSpinner").prop('class', 'spinner-border spinner-border-sm text-info');
+        $("#orthancSpinner").css("visibility", "hidden")
     }
 }
 

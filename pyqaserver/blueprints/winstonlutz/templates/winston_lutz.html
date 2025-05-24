@@ -1,0 +1,16 @@
+{% extends "module_base.html" %}
+{% block add_js %}
+    {{ super() }}
+	<script defer src="{{ url_for('base.static', filename='js/module.js') }}" type="text/javascript"></script>
+{% endblock add_js %}
+
+{% block add_selected_images_card_body %}
+	{% include "selected_images_card_body.html" %}
+{% endblock add_selected_images_card_body %}
+
+{% block add_module_settings_card_body %}
+
+{% endblock add_module_settings_card_body %}
+
+{% set module_name='Winston-Lutz' %}
+

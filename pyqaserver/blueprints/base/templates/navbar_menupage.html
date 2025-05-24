@@ -54,9 +54,10 @@
                     </span>
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ url_for('base.profile') }}">Profile</a>
+                <a class="dropdown-item" href="{{ url_for('base.profile') }}">Profile settings</a>
+                <a class="dropdown-item" href="{{ url_for('base.profile') }}">My files</a>
                 {% if current_user.is_admin %}
-                <a class="dropdown-item" href="{{ url_for('admin.index') }}" target="_blank">Administration</a>
+                    <a class="dropdown-item" href="{{ url_for('admin.index') }}" target="_blank">Administration</a>
                 {% endif %}
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item btn" onclick="testOrthancConnection()">Test orthanc connection</a>

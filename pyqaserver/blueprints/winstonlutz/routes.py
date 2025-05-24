@@ -1,3 +1,5 @@
+"""Pylinac winston_lutz module."""
+
 from pathlib import Path
 
 from flask import Blueprint, render_template
@@ -17,4 +19,4 @@ wl_bp = Blueprint(
 @wl_bp.route("/", methods=["GET", "POST"])
 @login_required
 def winston_lutz():
-    return render_template("index.html")
+    return render_template("winston_lutz.html")

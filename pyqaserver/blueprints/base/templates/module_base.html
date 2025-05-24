@@ -1,3 +1,11 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+{% include "navbar_menupage.html" %}
+{% endblock navbar %}
+
+{% block main %}
+{% include "orthanc_search_widgets.html" %}
 <div class="threepart-container container">
     <div class="row">
         <div class="col-xs-12 col-md-3">
@@ -6,31 +14,9 @@
                     Selected images
                 </div>
                 <div class="card-body">
-                    <p class="text-left" id="stationDescriptionText">Station:</p>
-                    <p>
-                        <button type="button" class="btn btn-secondary btn-block btn-sm" role="button"
-                            onclick="goToOrthancExplorer();" style="--bs-btn-font-size: .75rem;">View in
-                            Orthanc</button>
-                        <button type="button" class="btn btn-secondary btn-block btn-sm" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapseImageDescription" aria-expanded="false"
-                            aria-controls="collapseImageDescription" style="--bs-btn-font-size: .75rem;">
-                            Show description
-                        </button>
-                    <div class="collapse" id="collapseImageDescription">
-                        <div class="card card-body">
-                            <small id="imageDescriptionText"></small>
-                        </div>
-                    </div>
-                    </p>
-                    <div class="table table-sm" id="instanceTable">
-                    </div>
-                    <button type="button" class="btn btn-secondary btn-sm" id="instanceTableSelectAllButton"
-                        style="--bs-btn-font-size: .75rem;">Select
-                        All</button>
-                    <button type="button" class="btn btn-secondary btn-sm" id="instanceTableDeselectAllButton"
-                        style="--bs-btn-font-size: .75rem;">Deselect
-                        All</button>
+                    {% block add_selected_images_card_body %}
 
+                    {% endblock add_selected_images_card_body %}
                 </div>
             </div>
             <div class="card">
@@ -38,12 +24,15 @@
                     Settings
                 </div>
                 <div class="card-body" id="settings_panel">
+                    {% block add_module_settings_card_body %}
 
+                    {% endblock add_module_settings_card_body %}
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-md-9">
+        <div class="col-xs-12 col-md-9" id="result_region">
 
         </div>
     </div>
 </div>
+{% endblock main %}

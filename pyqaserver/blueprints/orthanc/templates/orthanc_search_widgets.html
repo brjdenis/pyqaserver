@@ -3,7 +3,8 @@
         <div class="col-xs-12 col-md-3">
             <div class="input-group">
                 <label class="input-group-text" for="patient-select-widget" style="width: 100px">Patient:</label>
-                <select class="selectpicker show-tick form-control border" data-live-search="true" data-size="15" name="patient-select-widget" id="patient-select-widget">
+                <select class="selectpicker show-tick form-control border" data-live-search="true" data-size="15"
+                    name="patient-select-widget" id="patient-select-widget">
                     <option value=""></option>
                 </select>
             </div>
@@ -11,7 +12,8 @@
         <div class="col-xs-12 col-md-3">
             <div class="input-group">
                 <span class="input-group-text" for="study-select-widget" style="width: 100px">Study:</span>
-                <select class="selectpicker show-tick form-control border" data-live-search="true" data-size="15" name="study-select-widget" id="study-select-widget">
+                <select class="selectpicker show-tick form-control border" data-live-search="true" data-size="15"
+                    name="study-select-widget" id="study-select-widget">
                     <option value=""></option>
                 </select>
             </div>
@@ -19,23 +21,28 @@
         <div class="col-xs-12 col-md-3">
             <div class="input-group">
                 <span class="input-group-text" for="series-select-widget" style="width: 100px">Series:</span>
-                <select class="selectpicker form-control border" data-live-search="true" data-size="15" name="series-select-widget" id="series-select-widget" multiple>
+                <select class="selectpicker form-control border" data-live-search="true" data-size="15"
+                    name="series-select-widget" id="series-select-widget" multiple>
                     <option value=""></option>
                 </select>
             </div>
         </div>
         <div class="col-xs-12 col-md-3">
             <div class="btn-group">
-                <button class="btn btn-light" type="button">
-                    <img src="{{url_for('base.static', filename='images/folder2.svg')}}" role="img" data-bs-toggle="tooltip" data-bs-placement="top" title="Load external files.">
+                <button class="btn btn-outline-secondary" type="button">
+                    <img src="{{url_for('base.static', filename='images/folder2.svg')}}" role="img"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Load external files.">
                 </button>
-                <button class="btn btn-info" type="button" disabled>
-                    <span class="spinner-border spinner-border-sm text-primary" id="orthancSpinner" role="status" aria-hidden="true"></span>
+                <button class="btn btn-outline-secondary" type="button">
+                    <span class="spinner-border spinner-border-sm text-secondary" id="orthancSpinner" role="status"
+                        aria-hidden="true"></span>
                 </button>
-                <button type="button" class="btn btn-info" id="refresh-orthanc-button" name="refresh-orthanc-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Reset data from Orthanc">
+                <button type="button" class="btn btn-outline-secondary" id="refresh-orthanc-button" name="refresh-orthanc-button"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Reset data from Orthanc">
                     <img src="{{url_for('base.static', filename='images/arrow-clockwise.svg')}}" role="img">
                 </button>
-                <button type="button" class="btn btn-danger" id="analyze-button" name="analyze-button" onclick="">Analyze</button>
+                <button type="button" class="btn btn-danger" id="analyze-button" name="analyze-button"
+                    onclick="">Analyze</button>
             </div>
         </div>
     </div>

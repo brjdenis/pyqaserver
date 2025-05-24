@@ -1,0 +1,21 @@
+<p class="text-left" id="stationDescriptionText">Station:</p>
+<button type="button" class="btn btn-secondary btn-block btn-sm" role="button" onclick="goToOrthancExplorer();"
+    style="--bs-btn-font-size: .75rem;">View in
+    Orthanc</button>
+<button type="button" class="btn btn-secondary btn-block btn-sm" data-bs-toggle="collapse"
+    data-bs-target="#collapseImageDescription" aria-expanded="false" aria-controls="collapseImageDescription"
+    style="--bs-btn-font-size: .75rem;">
+    Show description</button>
+<div class="collapse" id="collapseImageDescription">
+    <div class="card card-body">
+        <small id="imageDescriptionText"></small>
+    </div>
+</div>
+<div class="table table-sm" id="instanceTable">
+</div>
+<button type="button" class="btn btn-secondary btn-sm" id="instanceTableSelectAllButton"
+    style="--bs-btn-font-size: .75rem;">Select
+    All</button>
+<button type="button" class="btn btn-secondary btn-sm" id="instanceTableDeselectAllButton"
+    style="--bs-btn-font-size: .75rem;">Deselect
+    All</button>

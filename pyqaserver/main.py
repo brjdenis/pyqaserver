@@ -45,6 +45,7 @@ def initialize_tables():
 def collect_and_mount_blueprints():
     """Collect non-default blueprints and mount them to app."""
     from pyqaserver.blueprints.admin.admin import register_admin
+    from pyqaserver.blueprints.js_fetcher.routes import js_fetcher_bp
     from pyqaserver.blueprints.orthanc.routes import orthanc_bp
     from pyqaserver.blueprints.winstonlutz.routes import wl_bp
     # Register blueprints. Each blueprint corresponds to a module.
@@ -55,6 +56,9 @@ def collect_and_mount_blueprints():
 
     # Register admin pages
     register_admin()
+
+    # register last
+    app.register_blueprint(js_fetcher_bp)
 
 
 def main():
@@ -154,6 +158,7 @@ def main():
 
     if args.dev:
         # print(app.url_map)
+        app.config["EXPLAIN_TEMPLATE_LOADING"] = True
         app.run(host=ip_address, port=int(port), debug=True)
     else:
         cert_key = MAIN_PATH / "cert" / "server.key"

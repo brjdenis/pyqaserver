@@ -1,9 +1,7 @@
 {% extends "base.html" %}
-
 {% block navbar %}
     {% include "navbar_menupage.html" %}
 {% endblock %}
-
 {% block main %}
     <div class="container mt-3">
         <form class="card p-3" action="{{url_for('base.change_password')}}" method="POST">
@@ -16,3 +14,4 @@
         </form>
     </div>
 {% endblock %}
+{% set module_name='pyQAserver' %}
