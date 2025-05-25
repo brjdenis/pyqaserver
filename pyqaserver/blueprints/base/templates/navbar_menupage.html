@@ -12,7 +12,18 @@
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" target="_blank" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">Modules</a>
+                aria-expanded="false">Pylinac modules</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{ url_for('winston_lutz.winston_lutz') }}">Winston Lutz</a>
+                <a class="dropdown-item" href="#">Starshot</a>
+                <a class="dropdown-item" href="#">Catphan</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Trash</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" target="_blank" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Other modules</a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="{{ url_for('winston_lutz.winston_lutz') }}">Winston Lutz</a>
                 <a class="dropdown-item" href="#">Starshot</a>
@@ -32,10 +43,6 @@
                 <a class="dropdown-item" href="#" target="_blank">Trash</a>
             </div>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" target="_blank">Trends</a>
-        </li>
-
     </ul>
     <ul class="navbar-nav ms-auto">
         <li class="nav-item dropdown">

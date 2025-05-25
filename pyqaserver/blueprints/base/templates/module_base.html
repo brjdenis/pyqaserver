@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 
+{% block add_js %}
+{{ super() }}
+<script>
+    var orthancCallsGoToOrthancExplorer = "{{url_for('orthanc_calls.go_to_orthanc_explorer', _external=True)}}";
+    var orthancCallsGetImageDescription = "{{url_for('orthanc_calls.get_image_description_for_instance', _external=True)}}";
+    var orthancCallsGetSeriesDescription = "{{url_for('orthanc_calls.get_description_for_series', _external=True)}}";
+    var orthancCallsGetPatientsAll = "{{ url_for('orthanc_calls.get_patients_all', _external=True) }}";
+    var orthancCallsGetStudiesForPatient = "{{ url_for('orthanc_calls.get_studies_for_patient', _external=True) }}";
+    var orthancCallsGetSeriesForStudy = "{{ url_for('orthanc_calls.get_series_for_study', _external=True) }}";
+    var orthancCallsGetInstancesForSeries = "{{ url_for('orthanc_calls.get_instances_for_series', _external=True) }}";
+</script>
+{% endblock add_js %}
+
 {% block navbar %}
 {% include "navbar_menupage.html" %}
 {% endblock navbar %}

@@ -99,6 +99,9 @@ $(document).ready(function() {
     $('#instanceTableDeselectAllButton').on("click", function(){
         instanceTable.deselectRow();
     });
+    $('#instanceTableSortButton').on("click", function(){
+        instanceTable.setSort("instance_datetime", "asc");
+    });
     
 });
 
