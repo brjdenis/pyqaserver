@@ -4,6 +4,7 @@ from pathlib import Path
 
 from flask import Blueprint, render_template
 from flask_login import login_required
+import time
 
 BLUEPRINT_PATH = Path(__file__).parent.resolve()
 
@@ -19,4 +20,6 @@ wl_bp = Blueprint(
 @wl_bp.route("/", methods=["GET", "POST"])
 @login_required
 def winston_lutz():
+    for i in range(100):
+        time.sleep(1)
     return render_template("winston_lutz.html")
