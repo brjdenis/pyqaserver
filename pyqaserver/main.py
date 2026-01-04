@@ -115,7 +115,7 @@ def main():
 
     ip_address, port = args.ip_port.split(":")
 
-    # If run in dev mode, disable loginn
+    # If run in dev mode, disable login
     if args.dev:
         app.config["LOGIN_DISABLED"] = True
         loginmanager_app.anonymous_user = AnonymousUser

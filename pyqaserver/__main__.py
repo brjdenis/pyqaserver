@@ -1,6 +1,6 @@
 """Entry point for the script.
 
-Taken as an example from https://github.com/coleifer/sqlite-web.
+Taken from https://github.com/coleifer/sqlite-web.
 """
 
 from pyqaserver.main import main
