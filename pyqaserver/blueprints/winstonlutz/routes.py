@@ -20,6 +20,5 @@ wl_bp = Blueprint(
 @wl_bp.route("/", methods=["GET", "POST"])
 @login_required
 def winston_lutz():
-    for i in range(100):
-        time.sleep(1)
+    
     return render_template("winston_lutz.html")
